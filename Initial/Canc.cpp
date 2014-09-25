@@ -35,7 +35,6 @@ void gen_trans_rate(vector<double> &transr) {
 	cout << "Generating rates...." << endl; 
 	double rbar = ( r[0]*n[0] + r[1]*n[1] + r[2]*n[2] ) / N;
 	cout << "rbar: " << rbar << endl; 
-<<<<<<< HEAD
 	transr[0] = ( (1-u1)*r[0]*n[0]*n[1] ) / (N * rbar);
 	transr[1] = ( (1-u1)*r[0]*n[0]*n[2] ) / (N * rbar);
 	transr[2] = ( ( u1*r[0]*n[0]/N ) + ( (1-u2)*r[1]*n[1]/N ) ) * n[0] / rbar;
@@ -43,15 +42,6 @@ void gen_trans_rate(vector<double> &transr) {
 	transr[4] = ( ( u2*r[1]*n[1]/N ) + ( r[2]*n[2]/N ) ) * n[0] / rbar;
 	transr[5] = ( ( u2*r[1]*n[1]/N ) + ( r[2]*n[2]/N ) ) * n[1] / rbar;
 	cout << "Trans rates: " << transr[0] << "\t" << transr[1] << "\t" << transr[2] << "\t" << transr[3] << "\t" << transr[4] << "\t" << transr[5] << endl; 
-=======
-	transr[1] = ( (1-u1)*r[0]*n[0]*n[1] ) / (N * rbar);
-	transr[2] = ( (1-u1)*r[0]*n[0]*n[2] ) / (N * rbar);
-	transr[3] = ( ( u1*r[0]*n[0]/N ) + ( (1-u2)*r[1]*n[1]/N ) ) * n[0] / rbar;
-	transr[4] = ( ( u1*r[0]*n[0]/N ) + ( (1-u2)*r[1]*n[1]/N ) ) * n[2] / rbar;
-	transr[5] = ( ( u2*r[1]*n[1]/N ) + ( r[2]*n[2]/N ) ) * n[0] / rbar;
-	transr[6] = ( ( u2*r[1]*n[1]/N ) + ( r[2]*n[2]/N ) ) * n[1] / rbar;
-	cout << "Trans rates: " << transr[1] << "\t" << transr[2] << "\t" << transr[3] << "\t" << transr[4] << "\t" << transr[5] << "\t" << transr[6] << endl; 
->>>>>>> FETCH_HEAD
 }
 
 int main() { 
@@ -86,26 +76,17 @@ int main() {
 		for(int k = 1; k <= 6 ; k++) { 
 
 			for(int m = 1; m <= (k-1); m++) { 
-<<<<<<< HEAD
 				s1 += tr[m-1]; 
 			}
 
 			for(int l = 1; l <= (k); l++) { 
 				s2 += tr[l-1]; 
-=======
-				s1 += tr[m]; 
-			}
-
-			for(int l = 1; l <= (k); l++) { 
-				s2 += tr[l]; 
->>>>>>> FETCH_HEAD
 			}
 
 			if(s1 < (r2*a0) && (r2*a0) <= s2) { 
 				mu = k; 
 				cout << "Mu has been set to " << mu << endl;
 			}
-
 		}
 
 		t += delta; 
@@ -128,6 +109,8 @@ int main() {
 				break;
 			case 6:
 				n[1]--; n[2]++;
+				break;
+			default: 
 				break;
 		}
 		cout << "Population: " << n[0] << ", " << n[1] << ", " << n[2] << endl; 
