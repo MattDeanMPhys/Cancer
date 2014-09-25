@@ -1,0 +1,1 @@
+Using equations in the Stochastic Tunneling of Two Mutations on page 3, implemented the basic simulation of the cells reproducing on dieing. This was incorrect and not what we aimed for as it does not take into acount the mutations going from one type of cell to another. Still it was a good basic exercise to get back into the swing of things. 
