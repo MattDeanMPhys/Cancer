@@ -12,7 +12,7 @@ using namespace std;
 static const double N = 10; 
 static const double u1 = 0.01;
 static const double u2 = 0.01;
-double r[3] = {1,2,1}; 
+double r[3] = {1,1,1}; 
 double n[3] = {0,0,0};
 double r1; 
 double r2; 
@@ -40,7 +40,7 @@ void gen_trans_rate(vector<double> &transr) {
 	transr[3] = ( ( u1*r[0]*n[0]/N ) + ( (1-u2)*r[1]*n[1]/N ) ) * n[2] / rbar;
 	transr[4] = ( ( u2*r[1]*n[1]/N ) + ( r[2]*n[2]/N ) ) * n[0] / rbar;
 	transr[5] = ( ( u2*r[1]*n[1]/N ) + ( r[2]*n[2]/N ) ) * n[1] / rbar;
-	//cout << "Trans rates: " << transr[0] << "\t" << transr[1] << "\t" << transr[2] << "\t" << transr[3] << "\t" << transr[4] << "\t" << transr[5] << endl; 
+	cout << "Trans rates: " << transr[0] << "\t" << transr[1] << "\t" << transr[2] << "\t" << transr[3] << "\t" << transr[4] << "\t" << transr[5] << endl; 
 }
 
 bool fixation_test() { 
@@ -68,14 +68,17 @@ double run_time() {
 		r1 = dist(mt);
 		r2 = dist(mt);
 
-		//cout << "Random Numbers: " << r1 << ", " << r2 << endl; 
+		cout << "Random Numbers: " << r1 << ", " << r2 << endl; 
 		
 		for(vector<double>::iterator it = tr.begin() ; it != tr.end(); ++it) { 
 			a0 += (*it); 
 		}
 
+		cout << "a0: " << a0 << endl; 
+
 		delta = (1/a0)*log(1/r1); 
 
+		cout << "delta: " << delta << endl; 
 		while (mu_tmp != 0) {
 
 			double big_sum = 0;
@@ -89,7 +92,7 @@ double run_time() {
 					small_sum += tr[k];
 				}
 
-				//cout << small_sum << " " << (r2*a0) << " " << big_sum << endl;
+				cout << small_sum << " " << (r2*a0) << " " << big_sum << endl;
 
 				bool big_sum_test = ( (r2*a0) <= big_sum );
 				bool small_sum_test = ( (r2*a0) > small_sum );
@@ -137,20 +140,6 @@ double run_time() {
 }
 
 int main(int argc, char** argv) { 
-	ofstream myfile ("data.txt");
-	for(int m = 0; m < 11; m++){
-		double fix_time = 0; 
-		r[1] = 1 + 0.02*m; 
-		for(int l = 0; l < (5*pow(10.0, 3.0)); l++) { 
-			fix_time += run_time(); 
-		}
-		fix_time = fix_time / (5*pow(10.0, 3.0)); 
-		if (myfile.is_open()) {
-			myfile << r[1] << "\t" << fix_time << endl; 
-		}
-		else cout << "Unable to open file";
-	}
-
-	myfile.close();
+	double t = run_time(); 
 	return 0; 
 }
