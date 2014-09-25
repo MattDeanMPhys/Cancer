@@ -3,15 +3,14 @@
 #include <chrono>
 #include <random> 
 #include <cmath>
-#include <fstream>
 
 using namespace std; 
 
 //########### Define Constants ###########
 static const double N = 10; 
-static const double iter = 10;
-static const double u1 = 0.1;
-static const double u2 = 0.1;
+static const double iter = 10000;
+static const double u1 = 0.01;
+static const double u2 = 0.01;
 double r[3] = {1,2,1}; 
 double n[3] = {0,0,0};
 double r1; 
@@ -42,7 +41,7 @@ void gen_trans_rate(vector<double> &transr) {
 	transr[3] = ( ( u1*r[0]*n[0]/N ) + ( (1-u2)*r[1]*n[1]/N ) ) * n[2] / rbar;
 	transr[4] = ( ( u2*r[1]*n[1]/N ) + ( r[2]*n[2]/N ) ) * n[0] / rbar;
 	transr[5] = ( ( u2*r[1]*n[1]/N ) + ( r[2]*n[2]/N ) ) * n[1] / rbar;
-	cout << "Trans rates: " << transr[0] << "\t" << transr[1] << "\t" << transr[2] << "\t" << transr[3] << "\t" << transr[4] << "\t" << transr[5] << endl; 
+	//cout << "Trans rates: " << transr[0] << "\t" << transr[1] << "\t" << transr[2] << "\t" << transr[3] << "\t" << transr[4] << "\t" << transr[5] << endl; 
 }
 
 int main() { 
@@ -55,11 +54,10 @@ int main() {
 	//}
 
 	n[0] = N; 
-	ofstream myfile ("population.txt");
-	
+
 	for(int j = 0; j < iter; j++) {  
 		double a0 = 0, delta = 0, s1 = 0, s2 = 0; 
-		int mu = 6; 
+		int mu = 0; 
  
  		//cout << "About to gen rates..." << endl; 
 		gen_trans_rate(tr); 
@@ -75,35 +73,53 @@ int main() {
 
 		delta = (1/a0)*log(1/r1); 
 
-		while (mu != 0) {
 
-			double big_sum = 0;
-			double small_sum = 0;
-				//sum the array 
 
-				for (int k = 0; k < mu; k++) {
-					big_sum += tr[k];
-				}
+	//Dean's Algorithm for finding mu
+	//cout << "Entering Dean's Algo" << endl; 
+	double target = r2*a0 ;
+	int mu_dean = 6 ;
+	while (mu_dean != 0) {
 
-				for (int k = 0; k < (mu-1); k++) {
-					small_sum += tr[k];
-				}
+	double big_sum = 0;
+	double small_sum = 0;
+		//sum the array 
 
-				cout << small_sum << " " << (r2*a0) << " " << big_sum << endl;
+		for (int k = 0; k < mu_dean; k++) {
 
-				bool big_sum_test = ( (r2*a0) <= big_sum );
-				bool small_sum_test = ( (r2*a0) > small_sum );
+			big_sum += tr[k];
 
-				if (big_sum_test) {
-					if (small_sum_test) {
-						cout << "Dean's mu: " << mu << endl;
-						break;
-					}
-				}
-				mu--;
 		}
 
-		t += delta; 
+		for (int k = 0; k < mu_dean-1; k++) {
+
+			small_sum += tr[k];
+
+		}
+
+
+		//small_sum = big_sum - tr[mu] ; 
+
+		//cout << small_sum << " " << target << " " << big_sum << endl;
+
+		bool big_sum_test = target <= big_sum ;
+		bool small_sum_test = target > small_sum ;
+
+		if (big_sum_test) {
+			if (small_sum_test) {
+				//cout << "Dean's mu: " << mu_dean << endl;
+				mu = mu_dean;
+				break;
+			}
+		}
+
+		mu_dean--;
+	}
+
+	//cout << "Exciting  Dean's Algo" << endl; 
+	//Dean's algorithm end
+	mu = mu_dean;	
+	t += delta; 
 
 		switch(mu) { 
 			case 1: 
@@ -127,17 +143,12 @@ int main() {
 			default: 
 				break;
 		}
-		if (n[0]*n[1]*n[2] < 0 ) {
+		if (n[2]==10 ) {
+		cout << j << endl;
 			return 0;
 		}
-		
-		if (myfile.is_open())
-		{
-			myfile << "(Event" << j << ") Population: " << n[0] << ", " << n[1] << ", " << n[2] << endl; 
-		}
-		else cout << "Unable to open file";
+		cout << n[0] << ", " << n[1] << ", " << n[2] << endl; 
 	}
-	myfile.close();
 
 	return 0; 
 }
