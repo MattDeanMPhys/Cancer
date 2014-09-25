@@ -4,7 +4,7 @@ Deans Diary
 25/09/14
 ---
 
-Today we implemented the Gilespie alogrithm in an attempt to replicate the [Manchester paper]{https://github.com/MattDeanMPhys/Cancer/Papers/AshcroftMichorGalla.pdf} data. 
+Today we implemented the Gilespie alogrithm in an attempt to replicate the [Manchester paper](https://github.com/MattDeanMPhys/Cancer/Papers/AshcroftMichorGalla.pdf) data. 
 
 It looks like we've managed to get the initial implementation done, getting a good stochastic graph from the changes in population. 
 
