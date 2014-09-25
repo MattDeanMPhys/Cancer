@@ -3,13 +3,20 @@
 #include <chrono>
 #include <random> 
 #include <cmath>
+<<<<<<< HEAD
 #include <string>
 #include <fstream>
+=======
+>>>>>>> FETCH_HEAD
 
 using namespace std; 
 
 //########### Define Constants ###########
 static const double N = 10; 
+<<<<<<< HEAD
+=======
+static const double iter = 10000;
+>>>>>>> FETCH_HEAD
 static const double u1 = 0.01;
 static const double u2 = 0.01;
 double r[3] = {1,2,1}; 
@@ -54,6 +61,7 @@ double run_time() {
 	n[0] = N; n[1] = 0; n[2] = 0;
 	double t = 0; 
 
+<<<<<<< HEAD
 	int j = 0;
 	bool fixation = false;  
 	while(!fixation) {
@@ -61,6 +69,13 @@ double run_time() {
 		double a0 = 0, delta = 0, s1 = 0, s2 = 0; 
 		int mu; 
 		int mu_tmp = 6; 
+=======
+	n[0] = N; 
+
+	for(int j = 0; j < iter; j++) {  
+		double a0 = 0, delta = 0, s1 = 0, s2 = 0; 
+		int mu = 0; 
+>>>>>>> FETCH_HEAD
  
  		//cout << "About to gen rates..." << endl; 
 		gen_trans_rate(tr); 
@@ -76,6 +91,7 @@ double run_time() {
 
 		delta = (1/a0)*log(1/r1); 
 
+<<<<<<< HEAD
 		while (mu_tmp != 0) {
 
 			double big_sum = 0;
@@ -90,10 +106,41 @@ double run_time() {
 				}
 
 				//cout << small_sum << " " << (r2*a0) << " " << big_sum << endl;
+=======
 
-				bool big_sum_test = ( (r2*a0) <= big_sum );
-				bool small_sum_test = ( (r2*a0) > small_sum );
 
+	//Dean's Algorithm for finding mu
+	//cout << "Entering Dean's Algo" << endl; 
+	double target = r2*a0 ;
+	int mu_dean = 6 ;
+	while (mu_dean != 0) {
+
+	double big_sum = 0;
+	double small_sum = 0;
+		//sum the array 
+
+		for (int k = 0; k < mu_dean; k++) {
+
+			big_sum += tr[k];
+
+		}
+
+		for (int k = 0; k < mu_dean-1; k++) {
+
+			small_sum += tr[k];
+
+		}
+
+
+		//small_sum = big_sum - tr[mu] ; 
+
+		//cout << small_sum << " " << target << " " << big_sum << endl;
+>>>>>>> FETCH_HEAD
+
+		bool big_sum_test = target <= big_sum ;
+		bool small_sum_test = target > small_sum ;
+
+<<<<<<< HEAD
 				if (big_sum_test) {
 					if (small_sum_test) {
 						//cout << "Dean's mu: " << mu_tmp << endl;
@@ -102,9 +149,23 @@ double run_time() {
 					}
 				}
 				mu_tmp--;
+=======
+		if (big_sum_test) {
+			if (small_sum_test) {
+				//cout << "Dean's mu: " << mu_dean << endl;
+				mu = mu_dean;
+				break;
+			}
+>>>>>>> FETCH_HEAD
 		}
 
-		t += delta; 
+		mu_dean--;
+	}
+
+	//cout << "Exciting  Dean's Algo" << endl; 
+	//Dean's algorithm end
+	mu = mu_dean;	
+	t += delta; 
 
 		switch(mu) { 
 			case 1: 
@@ -128,6 +189,7 @@ double run_time() {
 			default: 
 				break;
 		}
+<<<<<<< HEAD
 
 		fixation = fixation_test();  
 		j++;
@@ -149,6 +211,13 @@ int main(int argc, char** argv) {
 			myfile << r[1] << "\t" << fix_time << endl; 
 		}
 		else cout << "Unable to open file";
+=======
+		if (n[2]==10 ) {
+		cout << j << endl;
+			return 0;
+		}
+		cout << n[0] << ", " << n[1] << ", " << n[2] << endl; 
+>>>>>>> FETCH_HEAD
 	}
 
 	myfile.close();
