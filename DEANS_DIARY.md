@@ -1,4 +1,4 @@
-Diary
+Deans Diary
 ===
 
 25/09/14
