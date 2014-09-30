@@ -1,6 +1,6 @@
-"Risk Assesment"
+Risk Assesment
 ===
-#Hazards
+##Hazards
 
 * RSI
 * Eye strain 
@@ -9,22 +9,22 @@
 * Lone working 
 * Obstructions
 
-#Who might be harmed 
+##Who might be harmed 
 
 * Us
 
-#Evaluation
+##Evaluation
 
 * Controlled with breaks etc. 
 
-#Actions
+##Actions
 
 * Make sure both partners are aware
 
-#Review 
+##Review 
 
 *As and when 
 
-#Record
+##Record
 
 * Available on our github and on each persons laptop. 
