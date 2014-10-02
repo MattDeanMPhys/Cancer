@@ -126,11 +126,11 @@ double run_time() {
 
 		int dim = number_mutations+1; 
 		
-		cout << n[0] << "\t" << n[1]  << "\t" << n[2] << endl;
+		//cout << n[0] << "\t" << n[1]  << "\t" << n[2] << endl;
 
-		if (n[2] ==10) {
-			return 0;
-		}
+		//if (n[2] ==10) {
+		//	return 0;
+		//}
 
 		// Total number of transition rates
 		double ntr = number_mutations*( ( 2 ) + ( number_mutations-1 ) );
