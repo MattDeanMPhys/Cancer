@@ -66,7 +66,7 @@ void gen_trans_rate(vector<double> &transr) {
 
 // Fixation test
 bool fixation_test() { 
-	if(n[2] == N) {return true;}
+	if(n[nm] == N) {return true;}
 	else {return false;}
 }
 
@@ -100,7 +100,7 @@ void read_data(string file) {
 
 	cout << "finished reading in u's and r's" << endl;
 
-	nm = line; 
+	nm = (line-1); 
 	u.push_back(0);
 
 	myReadFile.close();
@@ -129,7 +129,7 @@ double run_time() {
 
 	n.clear();
 	n.push_back(N);
-	for(int k = 0; k < (nm-1); k++)	{ 
+	for(int k = 0; k < nm; k++)	{ 
 		n.push_back(0);
 	}
 	
@@ -145,9 +145,13 @@ double run_time() {
 	//for(int j=0; j<max_reac; j++) { 
 	
 	while(progress) {
-		cout << n[0] <<"," << n[1] << "," << n[2] << endl; 
+		for(int i = 0; i < n.size(); i++) { 
+			cout << n[i] << ", "; 	
+		}
+		cout << "\n"; 
+		
 		int dim = nm+1; 
-	
+		
 		// Total number of transition rates
 		double ntr = nm*( ( 2 ) + ( nm-1 ) );
 		
@@ -286,6 +290,7 @@ double run_time() {
 			}
 		//fixation = fixation_test();  
 		}
+
 		if(fixation_test()) { 
 			progress = false;
 		}
