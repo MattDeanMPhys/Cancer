@@ -1,0 +1,16 @@
+Usage for program version 3: 
+
+Canc3.cpp is compiled in the same way as previous versions. To run type: ./Canc3 (filename)
+
+File setup (seperated by tabs): 
+(number of cells) (time in units of reactions) (r1 start) (r1 end) (number of steps) (amount of runs to average over)
+(r_i) (u_i)
+(r_j) (u_j)
+.
+.
+.
+(r_n) (u_n)
+
+where n is the number of mutations
+
+Running this code will output a file data_filename.txt
