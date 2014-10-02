@@ -1,0 +1,2 @@
+Graph (a) on the paper: r0 = r2 = 1, u1 =0.1, u2 = (0.1, 0.01, 0.001)
+Graph (f) on the paper: r0 = 1, r2 = 2, u1 = 0.001, u2 = (0.1, 0.01, 0.001) 
