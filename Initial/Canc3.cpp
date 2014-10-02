@@ -66,8 +66,8 @@ void gen_trans_rate(vector<double> &transr) {
 
 // Fixation test
 bool fixation_test() { 
-	if(n[2] == N) {return false;}
-	else {return true;}
+	if(n[2] == N) {return true;}
+	else {return false;}
 }
 
 
@@ -116,13 +116,24 @@ void read_data(string file) {
 
 //Produce time of fixation
 double run_time() { 
+	cout << "r values: " << endl;
+	for(int i = 0; i < r.size(); i++) { 
+		cout << r[i] << ", ";
+	}
+	cout << "\n";
+	cout << "u values: " << endl;
+	for(int i = 0; i < u.size(); i++) { 
+		cout << u[i] << ", ";
+	}
+	cout << "\n";
+
 	n.clear();
 	n.push_back(N);
 	for(int k = 0; k < (nm-1); k++)	{ 
 		n.push_back(0);
 	}
 	
-	if(true) {
+	if(debug) {
 		cout << "n0 ,n1, n2:" << n[0] <<"," << n[1] << "," << n[2] << endl; 
 	}
 	
@@ -132,13 +143,11 @@ double run_time() {
 	//while(fixation) { 
 
 	//for(int j=0; j<max_reac; j++) { 
-		int paper = 1;
+	
 	while(progress) {
-
+		cout << n[0] <<"," << n[1] << "," << n[2] << endl; 
 		int dim = nm+1; 
-		
-
-
+	
 		// Total number of transition rates
 		double ntr = nm*( ( 2 ) + ( nm-1 ) );
 		
@@ -148,8 +157,6 @@ double run_time() {
 				tr_new[row][col] = 0;
 			}
 		}
-
-		vector<double> tr(6,0); 
 
 		double a0=0, delta=0;
 		int mu = 0;  
@@ -199,11 +206,15 @@ double run_time() {
 
 		// Increment time after reaction
 		
+		/*
 		if((t+=delta) > max_reac) {
 			 progress = false; 
 			 t -= delta; 
 		} 
-		
+		*/
+
+		t+=delta; 
+		if(false) { }
 		else { 
 			// Find mu given that sum_j=1^mu-1 < r2*a0 <= sum_j=1^mu
 			for(int k=ntr; k != 0; k--) { 
@@ -275,7 +286,9 @@ double run_time() {
 			}
 		//fixation = fixation_test();  
 		}
-		paper++;
+		if(fixation_test()) { 
+			progress = false;
+		}
 	}
 	return t; 
 }
@@ -286,7 +299,10 @@ int main(int argc, char** argv) {
 	else { file = argv[1]; } 
 
 	read_data(file);
+	cout << "Starting runtime: " << endl;
+	double dummy = run_time();
 
+	/*
 	ofstream myfile ("data_"+file+".txt");
 	
 	for(int m = 0; m < steps; m++){
@@ -312,9 +328,9 @@ int main(int argc, char** argv) {
 		}		
 		else cout << "Unable to open file" << endl; 
 	}
-
+	
 	myfile.close();
-
+	*/
 
 	return 0; 
 }
