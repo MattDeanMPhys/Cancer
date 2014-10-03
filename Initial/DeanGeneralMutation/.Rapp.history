@@ -1,0 +1,250 @@
+source("data_test.r")
+grph
+source("data_test.r")
+grph
+which(population$Two==10)
+which(population$Two==10)[1]
+ChickWeight
+head(ChickWeight)
+source("data_test.r")
+source("data_test.r")
+source("data_test.r")
+df
+head(df)
+ggplot(df, aes(x=ts, y=pop, colour=mut, group=mut)) + geom_line()
+source("data_test.r")
+grph
+source("data_test.r")
+ls()
+grph
+source("data_test.r")
+source("data_test.r")
+grph
+source("data_test.r")
+grph
+grph + scale_y_continuous(breaks=NULL)
+grph + scale_y_continuous(breaks=NULL) + scale_x_continuous(breaks=NULL)
+source("data_test.r")
+source("data_test.r")
+grph
+source("data_test.r")
+source("data_test.r")
+grph
+source("data_test.r")
+grph
+source("data_test.r")
+source("GraphRepro.r")
+ls()
+vals
+source("GraphRepro.r")
+ls()
+vals
+plot(vals)
+source("GraphRepro.r")
+source("GraphRepro.r")
+ls()
+vals1
+plot(vals1)
+matplot(vals2, add=T)
+matplot(vals3, add=T)
+vals2
+vals3
+head(vals1)
+source("GraphRepro.r")
+ls()
+r1
+plot(r1)
+plot(u1)
+source("GraphRepro.r")
+df
+source("GraphRepro.r")
+source("GraphRepro.r")
+source("GraphRepro.r")
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+a
+source("GraphRepro.r")
+a
+u1
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+a + scale_colour_manual(breaks = c(0.1, 0.01, 0.001), labels = c("0.1", "0.01", "0.001"), values=c(""#E69F00", "#56B4E9", "#009E73"))
+)
+""
+a + scale_colour_manual(breaks = c(0.1, 0.01, 0.001), labels = c("0.1", "0.01", "0.001"), values=c("#E69F00", "#56B4E9", "#009E73"))
+a + scale_colour_manual(breaks = c("0.1", "0.01", "0.001"), labels = c("0.1", "0.01", "0.001"), values=c("#E69F00", "#56B4E9", "#009E73"))
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+a
+source("GraphRepro.r")
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+a
+source("GraphRepro.r")
+source("GraphRepro.r")
+source("GraphRepro.r")
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+source("GraphRepro.r")
+source("GraphRepro.r")
+source("GraphRepro.r")
+source("GraphRepro.r")
+source("GraphRepro.r")
+source("GraphRepro.r")
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+library(grid)
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+source("GraphRepro.r")
+a
+load.csv("GenData.txt")
+a = read.csv("GenData.txt")
+a
+plot(a)
+plot(a$V3)
+plot(a$V2)
+a
+head(a)
+a = read.csv("GenData.txt", headed=F)
+a = read.csv("GenData.txt", headed=FALSE)
+a = read.csv("GenData.txt", header=FALSE)
+a
+plot(a$V2)
+plot(a$V2, type=l)
+plot(a$V2, type=line)
+plot(a$V2, type="line")
+head(a)
+nrows(a)
+nrow(a)
+tail(a)
+which(a$V2==10)
+which(a$V3==10)
+which(a$V3==9)
+a = read.csv("GenData2.txt", header=FALSE)
+a
+plot(a$V3)
+plot(a$V3, type="line")
+source("GenData.r")
+source("GenData.r")
+source("GenData.r")
+source("GenData.r")
+source("GenData.r")
+source("GenData.r")
+a
+source("GenData.r")
+source("GenData.r")
+a
+head(a)
+a[1,1]
+a[1,2]
+a[1,3]
+source("GenData.r")
+source("50muts.r")
+source("50muts.r")
+source("50muts.r")
+source("50muts.r")
+pop
+head(pop)
+source("50muts.r")
+ls()
+rm(list=ls())
+a = read.csv("GenData2.txt", header = F)
+a = read.csv("GenData2.txt", header = F)
+a
+plot(a)
+plot(a$V1)
+source("phase.r")
+plot(data$V1, type="l")
+source("phase.r")
+source("phase.r")
+source("phase.r")
+nrow(data)
+source("phase.r")
+source("phase.r")
+source("phase.r")
+source("phase.r")
+source("phase.r")
+data$V1[1]
+source("phase.r")
+ls()
+diff
+source("phase.r")
+ls()
+diff
+diff[1]
+source("phase.r")
+ls()
+delta
+source("phase.r")
+source("phase.r")
+ls()
+delta
+plot(data$V1, diff)
+plot(data$V1, diff[2:])
+plot(data$V1, diff[2:end])
+plot(data$V1, delta[2:length(delta)])
+plot(data$V1, delta)
+plot(data$V1, delta, type="l")
