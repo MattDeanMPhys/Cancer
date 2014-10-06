@@ -1,4 +1,18 @@
-double find_mu(transmissions, double random_2) {
+#include<iostream>
+#include<vector>
+#include<cmath>
+#include<string>
+
+using namespace std;
+
+int main() {
+
+cout << "Test" << endl;
+
+return 0;
+}
+
+double find_mu(double transmissions[][], double random_2) {
 
 	int mu;
 	double small_sum = 0 ;
@@ -6,7 +20,7 @@ double find_mu(transmissions, double random_2) {
 	bool small_sum_test = 0;
 	bool big_sum_test = 0;
 
-	double a0;
+	double a0 = 0;
 
 	int transmissions_rows = sizeof(transmissions)/sizeof(transmissions[0]);
 
@@ -19,8 +33,8 @@ double find_mu(transmissions, double random_2) {
 	
 	int test_mu = 1;
 
-	for (int i = 0; i < transmissions_row ; i++) {
-		for (int j=0; j < transmissions_row; j++) {
+	for (int i = 0; i < transmissions_rows ; i++) {
+		for (int j=0; j < transmissions_rows; j++) {
 
 			small_sum = big_sum;
 
