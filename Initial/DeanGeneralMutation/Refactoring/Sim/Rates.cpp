@@ -1,39 +1,11 @@
+#include "Rates.h"
 #include <numeric>
 #include <vector> 
 #include <iostream>
 #include <random>
 #include <chrono>
 
-class Transmission_Rates_Data {
-
-	int mu;
-	double random_number;
-	double rbar;	
-	double total_number_cells;
-	double a0;
-	
-		
-	std::vector<int> populations;
-	std::vector<double> fitness;
-	std::vector<double> mutate;	
-
-	std::vector < std::vector < double >> rates; 
-
-	public:
-		Transmission_Rates_Data( std::vector<int>, std::vector<double>, std::vector<double> );
-		void Find_Mu();
-		void Rates();
-		void Generate_Random_Number();
-		void Calculate_rbar();
-		void Print_Vars();
-		void Generate_Rates();
-		void Print_Rates();
-		double Calculate_Rates(int, int, double);
-		void Total_Cells();
-
-};
-
-Transmission_Rates_Data::Transmission_Rates_Data(std::vector<int> n, std::vector<double> r, std::vector<double> u) { 
+Rates::Rates(std::vector<int> n, std::vector<double> r, std::vector<double> u) { 
 
 	populations = n;
 	fitness = r;
@@ -45,18 +17,19 @@ Transmission_Rates_Data::Transmission_Rates_Data(std::vector<int> n, std::vector
 	Generate_Random_Number();
 
 	Generate_Rates();
-
+	
+	Find_Mu();	
 
 	std::cout << "Object created" << std::endl;
 
 }
 
-void Transmission_Rates_Data::Calculate_rbar() {
+void Rates::Calculate_rbar() {
 
 	rbar = inner_product(populations.begin(), populations.end(), fitness.begin(), 0)/total_number_cells;
 }
 
-void Transmission_Rates_Data::Print_Vars() {
+void Rates::Print_Vars() {
 
 	std::cout << "rbar: " << rbar << std::endl;
 	std::cout << "Random Numbers: " << random_number << std::endl;
@@ -66,7 +39,7 @@ void Transmission_Rates_Data::Print_Vars() {
 
 }
 
-void Transmission_Rates_Data::Generate_Rates() {
+void Rates::Generate_Rates() {
 
 	rates.resize(populations.size(), std::vector<double> (populations.size(), 0));
 
@@ -81,7 +54,7 @@ void Transmission_Rates_Data::Generate_Rates() {
 
 }
 
-void Transmission_Rates_Data::Print_Rates() {
+void Rates::Print_Rates() {
 
 	for(int rows = 0; rows < populations.size(); rows ++) {
 
@@ -94,7 +67,7 @@ void Transmission_Rates_Data::Print_Rates() {
 }
 	
 
-double Transmission_Rates_Data::Calculate_Rates(int j, int i, double rbar) { 
+double Rates::Calculate_Rates(int j, int i, double rbar) { 
 
 	double tr;
 
@@ -117,7 +90,7 @@ double Transmission_Rates_Data::Calculate_Rates(int j, int i, double rbar) {
 	return tr; 
 } 
 
-void Transmission_Rates_Data::Total_Cells() {
+void Rates::Total_Cells() {
 
 	double N = 0 ;
 
@@ -130,7 +103,7 @@ void Transmission_Rates_Data::Total_Cells() {
 	total_number_cells = N;
 }
 
-void Transmission_Rates_Data::Generate_Random_Number() {
+void Rates::Generate_Random_Number() {
 	auto seed = 10;
 	//auto seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
 	std::mt19937 mt(seed);
@@ -140,7 +113,7 @@ void Transmission_Rates_Data::Generate_Random_Number() {
 
 }
 
-void Transmission_Rates_Data::Find_Mu()	{
+void Rates::Find_Mu()	{
 
 	int test_mu = 1; 
 	double small_sum = 0;
@@ -170,22 +143,4 @@ void Transmission_Rates_Data::Find_Mu()	{
 
 }
 
-
-int main() {
-
-
-std::vector<int> n {8, 2, 0}; 
-std::vector<double> r {1,1,1};
-std::vector<double>  u {0 , 0.1, 0.1, 0};
-
-Transmission_Rates_Data trans(n,r,u);
-
-trans.Print_Vars();
-trans.Print_Rates();
-trans.Find_Mu();
-
-trans.Print_Vars();
-
-return 0;
-}	
 
