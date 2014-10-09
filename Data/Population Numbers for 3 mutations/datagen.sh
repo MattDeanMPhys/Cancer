@@ -2,12 +2,11 @@
 
 > Bigfile.txt
 
-for i in `seq 1 100`
+for i in `seq 1 10`
 
 do
 
 	./Simulation >> "$i".txt
 
 	cat "$i".txt >> Bigfile.txt
-	rm "$i".txt
 done 
