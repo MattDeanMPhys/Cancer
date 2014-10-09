@@ -18,4 +18,7 @@ We have enough to present to Galla, i.e. the animated bar chart and the stochast
 Today we have succesfully reporduced the graphs in the Haeno paper, using the exact same parameters, this shows that our code is working. 
 We also generalised the program to take in N types of mutations and just starting to analyse the data that will come from that. 
 
+07/10/14
+---
 
+Refactored the code using classes. The bare bones basic complied version is working. Need to fully write the simulation to finnish off the refactoring work and make sure that it performs as exepected. Main troubles will be passing the object between each other:
