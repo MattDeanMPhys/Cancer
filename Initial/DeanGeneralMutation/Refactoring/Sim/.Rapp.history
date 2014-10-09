@@ -1,0 +1,44 @@
+ls()
+source("multruns.r")
+source("multruns.r")
+source("multruns.r")
+source("multruns.r")
+source("multruns.r")
+paste("a", i)
+paste("a", i) = 10
+class(paste("a", i))
+source("multruns.r")
+source("multruns.r")
+ls
+ls()
+a1
+a1[V1]
+a1[a1$V1]
+a1
+head(a1)
+a1[V1]
+a1[,V1]
+a1["V1"]
+source("multruns.r")
+source("multruns.r")
+source("multruns.r")
+source("multruns.r")
+ls()
+source("multruns.r")
+ls
+ls()
+a1 = a1[keep]
+a1
+a2 = a2[keep]
+a3 = a3[keep]
+a4 = a4[keep]
+a5 = a5[keep]
+a5
+head(a1)
+a1$V1[1]
+nrow(a1)
+nrow(a2)
+nrow(a3)
+nrow(a4)
+nrow(a5)
+quit()
