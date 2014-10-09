@@ -5,6 +5,11 @@
 #include <random>
 #include <chrono>
 
+auto seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+std::mt19937 mt(seed);
+std::uniform_real_distribution<double> dist(0,1);
+
+
 Rates::Rates(std::vector<int> n, std::vector<double> r, std::vector<double> u) { 
 
 	populations = n;
@@ -20,7 +25,7 @@ Rates::Rates(std::vector<int> n, std::vector<double> r, std::vector<double> u) {
 	
 	Find_Mu();	
 
-	std::cout << "Object created" << std::endl;
+	//std::cout << "Object created" << std::endl;
 
 }
 
@@ -104,10 +109,7 @@ void Rates::Total_Cells() {
 }
 
 void Rates::Generate_Random_Number() {
-	auto seed = 10;
-	//auto seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
-	std::mt19937 mt(seed);
-	std::uniform_real_distribution<double> dist(0,1);
+
 
 	random_number = dist(mt);
 
@@ -119,20 +121,25 @@ void Rates::Find_Mu()	{
 	double small_sum = 0;
 	double big_sum = 0;
 
+	Generate_Random_Number();
+
 	double target = a0 * random_number;
 
-	for( int i = 0; i < populations.size(); i++){
-		for( int j = 0; j < populations.size(); j++){
+	for( int rows = 0; rows < populations.size(); rows++){
+		for( int cols = 0; cols < populations.size(); cols++){
 
 			small_sum = big_sum;
 
-			big_sum = big_sum + rates.at(j).at(i) ;
+			big_sum = big_sum + rates.at(cols).at(rows) ;
 
 			bool small_sum_test = small_sum < target;
 			bool big_sum_test = big_sum >= target;
 
 			if(small_sum_test && big_sum_test){
 				mu = test_mu ;
+				mu_birth = rows;
+				mu_death = cols; 
+				
 				break;
 			}
 			else {
@@ -143,4 +150,42 @@ void Rates::Find_Mu()	{
 
 }
 
+void Rates::Update( std::vector<int> n ) {
+
+	populations = n;
+
+	Calculate_rbar();
+
+	a0 = 0;
+
+	for(int rows = 0; rows < populations.size(); rows++){
+		for( int cols = 0; cols < populations.size(); cols++){
+
+			rates.at(rows).at(cols) = Calculate_Rates(rows, cols, rbar);
+
+			a0 = a0 + rates.at(rows).at(cols);
+		}
+	}
+
+	Find_Mu();
+
+
+}
+
+std::vector<int> Rates::Get_Population_Change() {
+
+	std::vector<int> populationchange (2,0); 
+
+	populationchange.at(0) = mu_death;
+	populationchange.at(1) = mu_birth;
+
+	return populationchange;
+
+}
+
+double Rates::Get_a0() {
+
+	return a0;	
+
+}
 

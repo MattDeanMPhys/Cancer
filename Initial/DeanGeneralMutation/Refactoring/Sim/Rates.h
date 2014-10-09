@@ -1,11 +1,16 @@
 #ifndef RATES_H
 #define RATES_H
 #include <vector>
+#include <random>
 
 
 class Rates {
 
+
 	int mu;
+	int mu_birth;
+	int mu_death;
+
 	double random_number;
 	double rbar;	
 	double total_number_cells;
@@ -21,7 +26,6 @@ class Rates {
 	public:
 		Rates( std::vector<int>, std::vector<double>, std::vector<double> );
 		void Find_Mu();
-		//void Rates();
 		void Generate_Random_Number();
 		void Calculate_rbar();
 		void Print_Vars();
@@ -29,7 +33,9 @@ class Rates {
 		void Print_Rates();
 		double Calculate_Rates(int, int, double);
 		void Total_Cells();
-
+		void Update(std::vector<int>);
+		std::vector<int> Get_Population_Change();
+		double Get_a0();
 
 
 };
