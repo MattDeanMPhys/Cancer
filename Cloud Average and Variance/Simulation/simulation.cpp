@@ -22,8 +22,8 @@ std::ofstream outputFile;
 outputFile.open("Output.txt");
 
 
-int NUMBER_OF_CELLS = 1000;
-int NUMBER_OF_MUTATIONS = 5;
+int NUMBER_OF_CELLS = 10000;
+int NUMBER_OF_MUTATIONS = 25;
 
 std::vector<double> r(NUMBER_OF_MUTATIONS, 1);
 std::vector<double> u(NUMBER_OF_MUTATIONS, 0.1);
@@ -37,11 +37,11 @@ double time = 0;
 double time_end = 10;
 bool fixxed = false;
 
-int iterations = 1000 ;
+int iterations = 100 ;
 int z = 0;
 
 std::vector< std::vector <double>> averageArray;
-int finalTime = 250;
+int finalTime = 2500;
 double stepTime = 1;
 double timeRows = finalTime/stepTime;
 
@@ -50,8 +50,11 @@ PopulateAverageArrayTimes(averageArray, stepTime);
 
 
 while(z < iterations){
-
-	std::cout << z  << std::endl;
+	
+	//if( z%100 ==0){
+	
+		std::cout << z  << std::endl;
+	//}
 
 	Population pop_test(NUMBER_OF_MUTATIONS,NUMBER_OF_CELLS);
 	Rates rates_test(pop_test.Get_Population(),r,u);
@@ -117,35 +120,45 @@ while(z < iterations){
 	z++;
 
 
-	for(int rows = 0; rows < averageArray.size(); rows++){
-		for(int cols = 0; cols < averageArray[0].size(); cols++){
-
-//			std::cout << averageArray.at(rows).at(cols) << "\t";
-
-		}
-
-//		std::cout << std::endl;
-
-	}
 		
 }
 
-//Writing outputArray to file
-/*
-for(int rows = 0; rows < outputArray.size(); rows++){
-	for(int cols = 0; cols < outputArray[0].size(); cols++){
+outputFile.close();
 
-		outputFile << outputArray.at(rows).at(cols) << "\t";
+int resizeValue;
+
+for(int row = 0; row < averageArray.size(); row++){
+
+	double maxSizeSum = 0;
+
+	for( int col = 1; col < averageArray.at(0).size(); col ++){
+
+		averageArray.at(row).at(col) =  averageArray.at(row).at(col) /iterations ; 
+		maxSizeSum += averageArray.at(row).at(col); 
+	}
+
+	if( maxSizeSum == 0) {
+		
+		 resizeValue = row;
+		 break;
+	}
+
+}
+
+averageArray.resize(resizeValue);
+//std::cout << resizeValue << std::endl;
+
+for(int row = 0; row < averageArray.size(); row++){
+	for( int col = 0; col < averageArray.at(0).at(col); col ++){
+
+		std::cout << averageArray.at(row).at(col) << "\t"; 
 
 	}
 
-	outputFile << std::endl;
-
+	std::cout << std::endl; 
 }
-*/
-outputFile.close();
 
-//Do_Statistics(outputArray);
+Do_Statistics(averageArray);
 
 
 return 0;
@@ -157,7 +170,7 @@ void Do_Statistics( std::vector < std::vector <double>> data) {
 	std::cout << "Doing Stats" << std::endl;
 
 	std::ofstream statisticsOutputFile;
-	statisticsOutputFile.open("Statistic_Output.txt");
+	statisticsOutputFile.open("Statistic_Output_25Muts.txt");
 
 	std::vector<int> binCount;
 	std::vector<double> typeAverage;
