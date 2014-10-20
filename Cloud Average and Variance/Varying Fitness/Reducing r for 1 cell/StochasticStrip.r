@@ -6,7 +6,7 @@ StochasticStrip = function(x){
 	x = x[1:maxIndex,]
 
 	
-	write.table(x, "Stripped_r8.txt", sep = "\t")
+	write.table(x, "Stripped_flat.txt", sep = "\t")
 
 	return(x)
 
@@ -14,7 +14,7 @@ StochasticStrip = function(x){
 }
 
 
-data = read.csv("Statistic_Output_r8.txt", sep = "\t", head = F)
+data = read.csv("Statistic_Output_flat.txt", sep = "\t", head = F)
 
 
 StochasticStrip(data)
