@@ -1,0 +1,9 @@
+u = 0.1 for all
+r = 1 for all
+r = 0.5 for selected
+
+N = 10000 cells
+Averaged over 25 run throughs
+10 mutations
+
+time step of 1
