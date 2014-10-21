@@ -1,0 +1,94 @@
+ls()
+data = read.csv("3muts.txt", head=F, sep = "\t")
+data = read.csv("3muts.txt", head=F, sep = "\t")
+source("3muts.r")
+plot(data$V1, data$V2)
+plot(data$V1, data$V2, type="l")
+matplot(data$V1, data$V3, type="l", add=T)
+matplot(data$V1, data$V4, type="l", add=T)
+source("3muts.r")
+ls()
+head(pops)
+pops[1]
+pops[,1]
+pops[1,]
+source("3muts.r")
+source("3muts.r")
+a
+source("3muts.r")
+a
+b
+pops[2,]
+source("3muts.r")
+a
+b
+head(pops_r)
+weights
+source("3muts.r")
+a
+b
+apply(pops_r, 1, function(x) weighted.mean(x,weights))
+apply(pops_r, 1, function(x) weighted.mean(x,weights))[1]
+apply(pops_r, 1, function(x) weighted.mean(x,weights))[2]
+b
+source("3muts.r")
+plot(means)
+plot(means, type="l")
+plot(data$V1, means, type="l")
+source("3muts.r")
+plot(data$V1, means, type="l")
+ls()
+head(means)
+data[1,1]
+data[2,1]
+data[1,2]
+source("3muts.r")
+plot(data$V1, means, type="l")
+tail(means)
+tail(pops_r)
+source("3muts.r")
+source("3muts.r")
+source("3muts.r")
+ls()
+deansmean(pops_r[,1])
+pops_r[,1]
+pops_r[1,]
+deansmean(pops_r[1,])
+deansmean(pops_r[1,1])
+deansmean(pops_r[1,2])
+pops_r[1,1]
+pops_r[1,2]
+source("3muts.r")
+deansmean(pops_r[1,])
+source("3muts.r")
+deansmean(pops_r[1,])
+source("3muts.r")
+source("3muts.r")
+ls()
+tail(w_mean_data)
+plot(w_mean_data)
+plot(data$V1, w_mean_data, type="l")
+source("3muts.r")
+ls()
+bin_count
+head(bin_count)
+which(pops_r[1,]==0)
+source("3muts.r")
+head(bin_count)
+tail(bin_count)
+plot(bin_count)
+plot(bin_count[1:which(bin_count < 5)[1]])
+plot(bin_count[1:which(bin_count > 5)[1]])
+plot(bin_count[1:which(bin_count >= 3)[1]])
+plot(bin_count[1:80000])
+data = read.csv("Statistic_Output.txt", head = F, sep = "\t")
+head(data)
+plot(data$V1, data$V2)
+plot(data$V1, data$V2, type="l")
+plot(data$V1, data$V3, type="l")
+plot(data$V1, data$V3, type="l")
+data5 = read.csv("Statistic_Output_5muts.txt", head = F, sep = "\t")
+head(data5)
+plot(data$V1, data$V3, type="l")
+plot(data5$V1, data5$V3, type="l")
+plot(data5$V1, data5$V2, type="l")
