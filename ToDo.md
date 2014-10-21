@@ -17,3 +17,11 @@ To Do
 * Look at the means, variances (count bins), spread. I.e. statistical tests.  
 
 * Vary r1, vary N. 
+
+##21/10/14
+
+* More species in the simulations to check the linearity of the averages and velocity.
+* Change mutation rates (Matt).
+* Change fitness landscapes (Dean).
+* Derive the PDE. (Thursday)
+
