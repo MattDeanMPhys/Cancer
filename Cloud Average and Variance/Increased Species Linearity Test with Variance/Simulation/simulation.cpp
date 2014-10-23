@@ -10,8 +10,6 @@ void Do_Statistics(std::vector<std::vector < double>> data );
 
 void PopulateAverageArrayTimes(std::vector <std::vector <double>> &avgArray, double step);
 
-std::vector< std::vector <double>> Condense(std::vector<std::vector<double>> arr, double timeStep);  
-
 int main(){
 
 auto seed = 10;
@@ -20,7 +18,7 @@ std::uniform_real_distribution<double> dist(0,1);
 
 
 int NUMBER_OF_CELLS = 10000;
-int NUMBER_OF_MUTATIONS = 10;
+int NUMBER_OF_MUTATIONS = 20;
 
 std::vector<double> r(NUMBER_OF_MUTATIONS, 1);
 std::vector<double> u(NUMBER_OF_MUTATIONS, 0.1);
@@ -34,7 +32,7 @@ Rates rates_test(pop_test.Get_Population(),r,u);
 double time = 0;
 bool fixxed = false;
 
-int iterations = 2 ;
+int iterations = 25 ;
 int z = 0;
 
 std::vector< std::vector <double>> averageArray;
@@ -48,7 +46,7 @@ PopulateAverageArrayTimes(averageArray, stepTime);
 
 while(z < iterations){
 	
-	
+
 	std::cout << z  << std::endl;
 
 	Population pop_test(NUMBER_OF_MUTATIONS,NUMBER_OF_CELLS);
@@ -101,6 +99,7 @@ while(z < iterations){
 	}
 
 	z++;
+
 		
 }
 
@@ -148,7 +147,7 @@ return 0;
 void Do_Statistics( std::vector < std::vector <double>> data) {
 	std::cout << "Doing Stats" << std::endl;
 	
-	std::string rchange = "flat";
+	std::string rchange = "test";
 
 	std::ofstream statisticsOutputFile;
 	statisticsOutputFile.open("Statistic_Output_" + rchange +".txt");
@@ -185,9 +184,11 @@ void Do_Statistics( std::vector < std::vector <double>> data) {
 
 		varianceiArray.push_back(variance);
 
-		if(rows != 0){
-
-			double velocity = (typeAverage.at(rows) - typeAverage.at(rows-1))/(data.at(rows).(0) - data.at(rows-1).at(0));
+		if(rows == 0){
+			velocityArray.push_back(0);
+		}
+		else{
+			double velocity = (typeAverage.at(rows) - typeAverage.at(rows-1))/(data.at(rows).at(0) - data.at(rows-1).at(0));
 			velocityArray.push_back(velocity);
 		}
 
@@ -195,11 +196,11 @@ void Do_Statistics( std::vector < std::vector <double>> data) {
 
 
 	//wirting to a file the r$i is for ggplot
-//TODO FINISH OUTPUT AND COMPILE AND TEST
-	statisticsOutputFile << "Time" << "\t" << 
+	statisticsOutputFile << "Time" << "\t" << "Displacement" << "\t" << "BinCount" << "\t" << "Variance" << "\t" << "Velocity" << "\t" << "Label" << std::endl; 
 
 	for(int j = 0; j < binCount.size(); j++){
-		statisticsOutputFile << data.at(j).at(0) << "\t"  << typeAverage.at(j) << "\t" << binCount.at(j) << "\t"  << varianceiArray.at(j) << "\t" << rchange << std::endl;
+		statisticsOutputFile << data.at(j).at(0) << "\t"  << typeAverage.at(j) << "\t" << binCount.at(j) << "\t"  <<
+						varianceiArray.at(j) << "\t" << velocityArray.at(j) << "\t" <<  rchange << std::endl;
 	}
 
 	statisticsOutputFile.close();
