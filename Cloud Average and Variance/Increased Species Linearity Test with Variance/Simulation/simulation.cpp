@@ -17,14 +17,19 @@ std::mt19937 mt_time(seed);
 std::uniform_real_distribution<double> dist(0,1);
 
 
-int NUMBER_OF_CELLS = 10000;
-int NUMBER_OF_MUTATIONS = 20;
+int NUMBER_OF_CELLS = 1000;
+int NUMBER_OF_MUTATIONS = 30;
 
 std::vector<double> r(NUMBER_OF_MUTATIONS, 1);
 std::vector<double> u(NUMBER_OF_MUTATIONS, 0.1);
 u.at(0) = 0;
 u.push_back(0);
 
+/*
+for(int antitrap_iter = 10; antitrap_iter < 15; antitrap_iter ++){
+	r.at(antitrap_iter) = 0.5 ; 
+}
+*/
 
 Population pop_test(NUMBER_OF_MUTATIONS,NUMBER_OF_CELLS);
 Rates rates_test(pop_test.Get_Population(),r,u);
@@ -147,10 +152,10 @@ return 0;
 void Do_Statistics( std::vector < std::vector <double>> data) {
 	std::cout << "Doing Stats" << std::endl;
 	
-	std::string rchange = "test";
+	std::string rchange = "flat";
 
 	std::ofstream statisticsOutputFile;
-	statisticsOutputFile.open("Statistic_Output_" + rchange +".txt");
+	statisticsOutputFile.open("Statistic_Output_" + rchange +"_30muts_1000cells.txt");
 
 	std::vector<int> binCount;
 	std::vector<double> typeAverage;

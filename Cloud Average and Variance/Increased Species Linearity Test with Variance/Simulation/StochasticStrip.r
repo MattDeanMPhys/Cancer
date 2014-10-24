@@ -1,12 +1,14 @@
+rm(list=ls())
+
 StochasticStrip = function(x){
 
 
-	maxIndex = which( x$V2 == max(x$V2)) 
+	maxIndex = which( x$Displacement == max(x$Displacement)) 
 
 	x = x[1:maxIndex,]
 
 	
-	write.table(x, "Stripped_flat.txt", sep = "\t")
+	write.table(x, "Stripped_flat_20muts.txt", sep = "\t")
 
 	return(x)
 
@@ -14,7 +16,7 @@ StochasticStrip = function(x){
 }
 
 
-data = read.csv("Statistic_Output_flat.txt", sep = "\t", head = F)
+data = read.csv("Statistic_Output_flat_20muts.txt", sep = "\t")
 
 
 StochasticStrip(data)
