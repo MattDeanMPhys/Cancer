@@ -1,0 +1,2 @@
+test:
+	g++ simulation.cpp Population.cpp Rates.cpp -o test -std=c++11

@@ -1,0 +1,136 @@
+ls()
+install.package("network")
+install.packages("network")
+library(network)
+a = c(2,0,4)
+b = c(1,3,2)
+c = c(0,0,6)
+dat = data.frame(a,b,c)
+dat
+net <- network(dat)
+plot(net)
+net
+as.network(dat)
+as.network(dat, edgelist)
+as.network(dat, matrix.type = edgelist)
+as.network(dat, matrix.type = "edgelist")
+as.network(dat, loops=T)
+net = network(dat, loops=T)
+plot(net)
+test.matrix = matrix(0, ncol = 3, nrow = 3)
+test
+test.matrix
+test = matrix(0, ncol = 3, nrow = 3)
+test
+test[1,1] = 2
+test[3,1] = 4
+test[2,1] = 1
+test[2,2] = 3
+test[2,3] = 2
+test[3,3] = 6
+test
+test[3,2] = 2
+test
+test[2,1] = 0
+test
+test[1,2] = 1
+test[2,3] = 0
+test
+colnames(test) = c(0,1,2)
+rownames(test) = c(0,1,2)
+test
+network(test)
+plot(network(test))
+plot(network(test, matrix.type="edgelist"))
+plot(network(test, matrix.type="adjacency"))
+plot(network(test, matrix.type="incidence"))
+test
+ntest = network(test)
+ntest
+install.packages("igraph")
+library(igraph)
+graph.adjacency(test)
+test
+plot(graph.adjacency(test))
+plot(graph.adjacency(test, mode="undirected", weighted=TRUE))
+plot(graph.adjacency(test, weighted=TRUE))
+antitrap = read.csv("FixationTimesAntiTrap.txt", head = F)
+head(antitrap)
+flat = read.csv("FixationTimesFlat.txt", head = F)
+histogram(flat)
+hist(flat)
+hist(flat$V1)
+library(ggplot2)
+grph = ggplot(flat) + geom_hisogram(aes(V1))
+grph = ggplot(flat) + geom_histogram(aes(V1))
+grph
+flat$V2 = rep.int("flat", nrow(flat))
+antitrap$V2 = rep.int("antitrap", nrow(antitrap))
+head(flat)
+comboData = rbind(flat, antitrap)
+grph = ggplot(comboData, aes(fill = V2)) + geom_histogram()
+grph
+grph = ggplot(comboData, aes(x = V1, fill = V2)) + geom_histogram()
+grph
+hist(antitrap$V2)
+hist(antitrap$V1)
+hist(antitrap$V1, 10)
+hist(antitrap$V1, 30)
+grph = ggplot(comboData, aes(x = V1, fill = V2)) + geom_histogram(alpha = 0.5)
+grph
+grph = ggplot(comboData, aes(x = V1, fill = V2)) + geom_histogram(binwidth = 10, alpha = 0.5)
+grph
+grph = ggplot(comboData, aes(x = V1, fill = V2)) + geom_density(binwidth = 10, alpha = 0.5)
+grph
+grph + xlab("Fixation Time")
+grph + ggtitle("10 mutations, 1000 cells, r=0.5 at r3:r6 (including), u=0.1, 1000 iterations")
+grph = grph + xlab("Fixation Time")
+grph
+grph + ggtitle("10muts, 1000cells, r=0.5 r3:r6 inc., u=0.1, 1000its")
+ggsave("fixationvar.png")
+antitrapGrph = ggplot(antitrap, aes(x=V1)) + geom_density(binwidth = 10)
+antitrapGrph
+antiTraphNorm = antitrap
+antiTraphNorm$V1 = antiTraphNorm / max(antiTraphNorm$V1)
+antiTraphNorm$V1 = antiTraphNorm$V1 / max(antiTraphNorm$V1)
+flatNorm = flat
+flatNorm$V1 = flatNorm$V1 / max(flatNorm$V1)
+normed = rbind(flatNorm, antiTraphNorm)
+grphNorm = ggplot(normed, aes(x=V1, fill = V2)) + geom_density(alpha = 0.5)
+grphNorm
+antitrapGrph
+antitrapGrph = ggplot(antitrap, aes(x=V1, fill - V2)) + geom_density(binwidth = 10)
+antitrapGrph = ggplot(antitrap, aes(x=V1, fill = V2)) + geom_density(binwidth = 10)
+antitrapGrph
+antitrapGrph + ggtitle("AntiTrap On It's Own")
+antitrapGrph + ggtitle("AntiTrap Distribution Fixation Times")
+antitrapGrph + ggtitle("AntiTrap Distribution Fixation Times") + xlab("Fixation Time")
+ggsave("AntiTrapDist.png")
+flatGraph = ggplot(flat, aes(x= V1, fill = V2)) + geom_density(binwidth = 10)
+flatGraph
+flatGraph + ggtitle("Flat Distribution") + xlab("Fixation Time")
+ggsave("FlatDist.png")
+newsim = read.csv("Statistic_Output_10Mutations10000Cells20IterationsFlat.txt", sep = "\t")
+head(newsim)
+plot(newsim$Time, newsim$Displacement, type="l")
+plot(newsim$Time, newsim$Variance, type="l")
+plot(newsim$Time, newsim$Displacement, type="l")
+maxIndex = which(newsim$Displacement = max(newsim$Displacement))
+maxIndex = which(newsim$Displacement == max(newsim$Displacement))
+maxIndex
+plot(newsim$Time[1:177], newsim$Displacement[1:177], type="l")
+plot(newsim$Time[1:177], newsim$Variance[1:177], type="l")
+plot(newsim$Time[1:177], newsim$Velocity[1:177], type="l")
+tail(newsim[,1:178])
+tail(newsim[1:178,])
+tail(newsim[1:188,])
+tail(newsim[1:180,])
+tail(newsim[178:183,])
+tail(newsim[220:225,])
+tail(newsim[220:226,])
+newsim2 = read.csv("Statistic_Output_10Mutations10000Cells5IterationsFlat.txt", sep = "\t")
+plot(newsim2$Time, newsim2$Displacement, type="l")
+newsim2 = read.csv("Statistic_Output_10Mutations10000Cells5IterationsFlat.txt", sep = "\t")
+plot(newsim2$Time, newsim2$Displacement, type="l")
+plot(newsim2$Time, newsim2$Variance, type="l")
+plot(newsim2$Time, newsim2$Velocity, type="l")

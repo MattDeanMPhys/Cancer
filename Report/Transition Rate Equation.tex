@@ -1,8 +1,84 @@
-\documentclass[]{article}
+\documentclass[a4paper]{article}
+\usepackage{amsmath}
+
 \begin{document}
+
 \section{Generalised Transition Rate Equation}
+
 \begin{equation}
 T^{j\rightarrow i} = \left(u_i r_{i-1} \frac{n_{i-1}}{N} + \left(1 - u_{i+1} \right) r_i \frac{n_i}{N} \right) \frac{n_j}{\bar{r}}
 \end{equation}
+
 When setting up the system, $u_0 = 0$ and $u_{N+1} = 0$ must be defined in order to stop cells mutating past the maximum number of mutations. 
+
+\subsection{Diffusion with Drift Derivation}
+
+Taking the large $N$ limit. 
+
+\begin{align*}
+ \dot{x} _i & = \frac{1}{N} \left[ \sum _j T^{j \rightarrow i} - T^{i \rightarrow j} \right]\\
+\end{align*}
+
+Using the generalised transition rate equation:
+
+\begin{align*}
+\bar{r} \dot{x}_i & = \sum _j u _i r_{i-1} x_{i-1} x_j - u_j r_{j-1} x_{j-1} x_{i} + x_j x_i \left[ ( 1- u_{i+1} ) r_i - (1 - u_{j+1} ) r_j \right] \\
+\alpha & = u _i r _{i-1} \\
+\beta & = u_j r_{j-1} \\
+\gamma & = ( 1 - u_{i+1} ) r_i - ( 1- u_{j+1} )r_j ) \\
+\bar{r} \dot{x}_i & = \sum _j \alpha x_j x_{i-1} - \beta x_{j-1} x_i + \gamma x_j x_i \\
+\end{align*}
+
+In a flat fitness and mutation landscape, away from the absorbing state $ u_i, r_i = 1 \forall i$. 
+From this $\alpha = 1, \beta = 1, \gamma = 0, \bar{r} = 1$.
+
+\begin{align*}
+\dot{\rho} _i & = \sum _j \rho _j \rho _{i-1} - \rho _{j-1} \rho _{i} \\
+\end{align*}
+
+We now want to expand this sum in order to simplify; 
+
+\begin{align*}
+\dot{\rho} _i & = \rho _0 \rho _{i - 1} + ( \rho _1 \rho _{i-1} - \rho _0 \rho _i ) + ( \rho _2 \rho _{i-1} - \rho _1 \rho _i ) + ... + ( \rho _{N - 1} \rho _{i-1} - \rho _{N-2} \rho _i ) + ( \rho _N \rho _{i-1} - \rho _{N-1} \rho _i ) \\
+& = \rho _0 ( \rho _{i-1} - \rho _i ) + \rho _1 ( \rho _{i-1} - \rho _i ) + ... + \rho _N \rho _{i-1} \\
+& = \sum _k ^{N -1} ( \rho _{i-1} - \rho _i ) \rho _k + \rho _N \rho _{i-1} \\
+& = ( \rho _{i-1} - \rho _i ) ( 1 - \rho _N ) + \rho _N \rho _{i-1} \\
+& = \rho _{i-1} + ( \rho _N - 1) \rho _i \\
+\dot{\rho} _i & = \rho _{i-1} + (\rho _N - 1 ) \rho _i
+\end{align*} 
+
+In the large mutation limit $\rho _N \rightarrow 0 $.
+
+\begin{equation}
+\dot{\rho} _i  = \rho _{i-1} - \rho _i 
+\end{equation} 
+
+We might be breaking our previous assumptions, but for $i=0$:
+
+\begin{align*}
+\dot{\rho} _0 & = 0 - \rho _0 \\
+\rho _0 & = A e^{-t} \\
+A & = 1 \\
+\rho _0 & = e^{-t} \\
+\end{align*}
+
+This gives us the first step in solving generally. 
+
+\begin{align*}
+\dot{\rho} _1 & = \rho _0 - \rho _1 \\
+& = e^{-t} - \rho _1 \\
+\rho _1 & = t e ^{-t} \\
+\dot{\rho} _2 & = \rho _1 - \rho _2 \\
+\rho _2 & = \frac{1}{2} e^{-t} t ^2 \\
+\end{align*}
+
+From this we can see that the general solution for $\rho _i$; 
+
+\begin{equation}
+\rho _i = \frac{t ^i}{i!} e ^{-t} 
+\end{equation}
+
+
+
+
 \end{document}
