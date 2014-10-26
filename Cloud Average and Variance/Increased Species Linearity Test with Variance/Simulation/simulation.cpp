@@ -5,12 +5,17 @@
 #include <fstream>
 #include <algorithm>
 #include <cmath>
+#include <time.h>
+#include <string>
 
-void Do_Statistics(std::vector<std::vector < double>> data );
+void Do_Statistics(std::vector<std::vector < double>> datai, std::string statisticFileName );
 
 void PopulateAverageArrayTimes(std::vector <std::vector <double>> &avgArray, double step);
 
 int main(){
+
+clock_t t;
+t = clock(); 
 
 auto seed = 10;
 std::mt19937 mt_time(seed);
@@ -18,7 +23,7 @@ std::uniform_real_distribution<double> dist(0,1);
 
 
 int NUMBER_OF_CELLS = 1000;
-int NUMBER_OF_MUTATIONS = 30;
+int NUMBER_OF_MUTATIONS = 10;
 
 std::vector<double> r(NUMBER_OF_MUTATIONS, 1);
 std::vector<double> u(NUMBER_OF_MUTATIONS, 0.1);
@@ -26,7 +31,7 @@ u.at(0) = 0;
 u.push_back(0);
 
 /*
-for(int antitrap_iter = 10; antitrap_iter < 15; antitrap_iter ++){
+for(int antitrap_iter = 3; antitrap_iter < 7; antitrap_iter ++){
 	r.at(antitrap_iter) = 0.5 ; 
 }
 */
@@ -37,8 +42,11 @@ Rates rates_test(pop_test.Get_Population(),r,u);
 double time = 0;
 bool fixxed = false;
 
-int iterations = 25 ;
+int iterations = 1000 ;
 int z = 0;
+
+std::string fitnessLandscape = "Flat";  
+std::string outputFileName = std::to_string(NUMBER_OF_MUTATIONS) + "Mutations" + std::to_string(NUMBER_OF_CELLS) + "Cells" + std::to_string(iterations) + "Iterations" + fitnessLandscape;
 
 std::vector< std::vector <double>> averageArray;
 int finalTime = 250000;
@@ -47,6 +55,12 @@ double timeRows = finalTime/stepTime;
 
 averageArray.resize(timeRows, std::vector<double>(NUMBER_OF_MUTATIONS+1, 0));
 PopulateAverageArrayTimes(averageArray, stepTime);
+
+//std::cout << "Initialisation time: " << (float)(clock() - t) << std::endl;
+
+
+std::ofstream testOutputFile;
+testOutputFile.open("FixationTimes" + fitnessLandscape +  ".txt");
 
 
 while(z < iterations){
@@ -63,11 +77,16 @@ while(z < iterations){
 	fixxed = false;
 	time = 0;
 
+//	std::cout << "Made it to the loop" << std::endl;
+
 	while (!fixxed) {
 
-
+//std::cout << "One reaction: " << std::endl;
+//t = clock();
+ 
 		if ( pop_test.Fixation_Test() ) {
-			std::cout << "Fixed!" << std::endl;
+			std::cout << "Fixation Time: " <<  averageArray.at(avgCounter).at(0)  << std::endl;
+			testOutputFile <<  averageArray.at(avgCounter).at(0)  << std::endl;
 			fixxed = pop_test.Fixation_Test();
 			
 			averageArray.at(avgCounter).at(NUMBER_OF_MUTATIONS) = NUMBER_OF_CELLS;
@@ -75,6 +94,9 @@ while(z < iterations){
 			break;
 		}
 		
+
+//std::cout << "Fixation test took: " << (float)(clock() - t) << std::endl;
+//t = clock(); 
 
 		if(avgWriteTest){
 			for (int g = 1; g < NUMBER_OF_MUTATIONS+1; g++) {
@@ -85,22 +107,31 @@ while(z < iterations){
 			avgCounter ++;
 		}
 
-
+//std::cout << "Average write test took: " << (float)(clock() - t) << std::endl;
+//t = clock();
+ 
 		double random_1 = dist(mt_time);
 
 		double delta = (1 / rates_test.Get_a0()) * log(1/random_1);
 
+//std::cout << "Time  update took: " << (float)(clock() - t) << std::endl;
+//t = clock(); 
 		auto change = rates_test.Get_Population_Change();
 		
 		pop_test.Update(change);
 
+//std::cout << "population update took: " << (float)(clock() - t) << std::endl;
+//t = clock(); 
 		rates_test.Update(pop_test.Get_Population());
 
+//std::cout << "Rates update took: " << (float)(clock() - t) << std::endl;
+//t = clock(); 
 		time = time + delta;
 		
 			
 		avgWriteTest = time > averageArray.at(avgCounter).at(0); 
 		
+//std::cout << "Write test update took: " << (float)(clock() - t) << std::endl;
 	}
 
 	z++;
@@ -131,6 +162,7 @@ for(int row = 0; row < averageArray.size(); row++){
 
 averageArray.resize(resizeValue);
 
+
 for(int row = 0; row < averageArray.size(); row++){
 	for( int col = 0; col < averageArray.at(0).size(); col ++){
 
@@ -141,21 +173,22 @@ for(int row = 0; row < averageArray.size(); row++){
 	std::cout << std::endl; 
 }
 
-Do_Statistics(averageArray);
+Do_Statistics(averageArray, outputFileName);
 
+std::cout << "\a" ;
 
 return 0;
 
 }
 
 
-void Do_Statistics( std::vector < std::vector <double>> data) {
+void Do_Statistics( std::vector < std::vector <double>> data, std::string statisticFileName) {
 	std::cout << "Doing Stats" << std::endl;
 	
 	std::string rchange = "flat";
 
 	std::ofstream statisticsOutputFile;
-	statisticsOutputFile.open("Statistic_Output_" + rchange +"_30muts_1000cells.txt");
+	statisticsOutputFile.open("Statistic_Output_" + statisticFileName + ".txt");
 
 	std::vector<int> binCount;
 	std::vector<double> typeAverage;
