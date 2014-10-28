@@ -1,0 +1,7 @@
+Number of cells: 	 10000
+Number of mutations: 	 10
+Number of iteration: 	 1
+Fitness Landscape: 	 FLAT
+Mutation Landscape: 	 FLAT
+Flat Fitness Value: 	 1
+Flat Mutation Value: 	 0.1
