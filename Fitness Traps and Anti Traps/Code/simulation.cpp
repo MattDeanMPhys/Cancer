@@ -16,10 +16,10 @@ int main(){
 
 //########## Parameters to set ########## 
 
-int NUMBER_OF_CELLS = 10000;
+int NUMBER_OF_CELLS = 1000;
 int NUMBER_OF_MUTATIONS = 10;
 
-int iterations = 1 ;
+int iterations = 5 ;
 
 double rFlat = 1;
 double uFlat = 0.1; 
@@ -58,8 +58,8 @@ parameterOutputFile << "Number of mutations: \t " << NUMBER_OF_MUTATIONS << std:
 parameterOutputFile << "Number of iteration: \t " << iterations << std::endl;
 parameterOutputFile << "Fitness Landscape: \t " << rLandscape << std::endl;
 parameterOutputFile << "Mutation Landscape: \t " << uLandscape << std::endl;
-parameterOutputFile << "Flat Fitness Value: \t " << rFlat << std::endl;
-parameterOutputFile << "Flat Mutation Value: \t " << uFlat << std::endl;
+parameterOutputFile << "Fitness Flat Value: \t " << rFlat << std::endl;
+parameterOutputFile << "Mutation Flat Value: \t " << uFlat << std::endl;
 //#############################################
 
 
@@ -69,17 +69,17 @@ if( rLandscape.compare("FLAT") != 0){
 
 	pop_test.Modify_FitnessLandscape(rTrap, rTrapStart, rTrapEnd);
 
-	parameterOutputFile << "Trap Fitness Value: \t " << rTrap << std::endl;
-	parameterOutputFile << "Trap Fitness Start: \t " << rTrapStart << std::endl;
-	parameterOutputFile << "Trap Fitness End: \t " << rTrapEnd << std::endl;
+	parameterOutputFile << "Fitness Trap Value: \t " << rTrap << std::endl;
+	parameterOutputFile << "Fitness Trap Start: \t " << rTrapStart << std::endl;
+	parameterOutputFile << "Fitness Trap End: \t " << rTrapEnd << std::endl;
 }
 if( uLandscape.compare("FLAT") != 0 ){
 
 	pop_test.Modify_MutationLandscape(uTrap, uTrapStart, uTrapEnd);
 
-	parameterOutputFile << "Trap Mutation Value: \t " << uTrap << std::endl;
-	parameterOutputFile << "Trap Mutation Start: \t " << uTrapStart << std::endl;
-	parameterOutputFile << "Trap Mutation End: \t " << uTrapEnd << std::endl;
+	parameterOutputFile << "Mutation Trap Value: \t " << uTrap << std::endl;
+	parameterOutputFile << "Mutation Trap Start: \t " << uTrapStart << std::endl;
+	parameterOutputFile << "Mutation Trap End: \t " << uTrapEnd << std::endl;
 }
 
 parameterOutputFile.close();
@@ -118,7 +118,7 @@ populationFile.open(fileNameID +"_Populations.txt");
 while(z < iterations){
 	
 
-	std::cout << z  << std::endl;
+	std::cout << fileNameID +  " Iteration number: " <<  z << std::endl;
 
 	Population pop_test(NUMBER_OF_MUTATIONS,NUMBER_OF_CELLS, 1, 0.1);
 	Rates rates_test(pop_test.Get_Population(),r,u);
@@ -137,7 +137,7 @@ while(z < iterations){
 //t = clock();
  
 		if ( pop_test.Fixation_Test() ) {
-			std::cout << "Fixation Time: " <<  averageArray.at(avgCounter).at(0)  << std::endl;
+			//std::cout << "Fixation Time: " <<  averageArray.at(avgCounter).at(0)  << std::endl;
 			fixationTimeFile <<  averageArray.at(avgCounter).at(0)  << std::endl;
 			fixxed = pop_test.Fixation_Test();
 			
@@ -146,7 +146,7 @@ t = clock();
 				averageArray.at(avgCounter).at(NUMBER_OF_MUTATIONS) = averageArray.at(avgCounter).at(NUMBER_OF_MUTATIONS) +  NUMBER_OF_CELLS;
 				avgCounter ++ ;
 			}
-std::cout << "Filling average array " << (float)(clock() - t)/ CLOCKS_PER_SEC << std::endl;
+//std::cout << "Filling average array " << (float)(clock() - t)/ CLOCKS_PER_SEC << std::endl;
 			break;
 		}
 		
@@ -232,11 +232,6 @@ for(int row = 0; row < averageArray.size(); row++){
 Do_Statistics(averageArray, fileNameID);
 
 
-
-
-
-
-
 std::cout << "\a" ;
 
 return 0;
@@ -245,7 +240,7 @@ return 0;
 
 
 void Do_Statistics( std::vector < std::vector <double>> data, std::string statisticFileName) {
-	std::cout << "Doing Stats" << std::endl;
+	std::cout << statisticFileName +  " Doing Stats" << std::endl;
 
 	std::ofstream statisticsOutputFile;
 	statisticsOutputFile.open(statisticFileName + "_StatisticOutput.txt");
