@@ -11,6 +11,10 @@ T^{j\rightarrow i} = \left(u_i r_{i-1} \frac{n_{i-1}}{N} + \left(1 - u_{i+1} \ri
 
 When setting up the system, $u_0 = 0$ and $u_{N+1} = 0$ must be defined in order to stop cells mutating past the maximum number of mutations. 
 
+$\frac{n_j}{\bar{r}}$ is selected to die.
+$u_i r_{i-1} \frac{n_{i-1}}{N}$ is selected to mutate and gain a mutation. I.e. a cell with one less mutation is birthed with a mutation. 
+$\left(1 - u_{i+1} \right) r_i \frac{n_i}{N}$ A $n_i$ cell is born and doesn't obtain a mutation.
+
 \subsection{Diffusion with Drift Derivation}
 
 Taking the large $N$ limit. 
@@ -77,6 +81,38 @@ From this we can see that the general solution for $\rho _i$;
 \begin{equation}
 \rho _i = \frac{t ^i}{i!} e ^{-t} 
 \end{equation}
+
+\section{Tobias' Model}
+
+Go from state $n$ to $n+1$ with rate $a+b$. 
+Go from state $n$ to $n-1$ with rate $a$. 
+
+\begin{align*}
+\dot{p_i} & = -a p_i - (a+b ) p_i + (a+b) p_{i-1} + a p_{i+1} \\
+& = - (2a + b) p_i +(a+b) p_{i-1} + a p_{i+1} \\
+\end{align*}
+
+Lets start with a generating function: 
+
+\begin{align*}
+\Phi & = \sum _{n = 0} ^\infty z^n p_n (t) \\
+\dot{\Phi} & = \sum _{n=0} ^\infty z^n \dot{p} _n \\
+& = \sum _{n = 0} ^\infty z^n \left( (a+b) p_{n-1} - (2a+b) p_n + a p_{n+1} \right) \\
+& = - (2a+b) \Phi + a \sum _{n=0} ^\infty z ^n p_{n+1} + (a+b) \sum _{n=0} ^\infty z ^n p_{n-1} \\
+& = - (2a + b) \Phi + \frac{a}{z} \Phi + (a+b) z \Phi \\
+\end{align*}
+
+Need to get a differential out of this equation though? 
+
+\section{Our Cancer Model Version 2}
+
+\begin{align*}
+\dot{x}_i & = \left(u_i r_{i-1} \frac{n_{i-1}}{N} + \left(1 - u_{i+1} \right) r_i \frac{n_i}{N} \right) \frac{n_j}{\bar{r}} - \left(u_j r_{j-1} \frac{n_{j-1}}{N} + \left(1 - u_{j+1} \right) r_j \frac{n_j}{N} \right) \frac{n_i}{\bar{r}} \\
+\bar{r} \dot{x}_i & = \left(u_i r_{i-1} x_{i-1} + \left(1 - u_{i+1} \right) r_i x_i \right) x_j - \left(u_j r_{j-1} x_{j-1} + \left(1 - u_{j+1} \right) r_j x_j \right) x_i \\
+\\
+\bar{r} \dot{x}_0 & = \left( \left(1 - u_{1} \right) r_0 x_0 \right) x_j - \left(u_j r_{j-1} x_{j-1} + \left(1 - u_{j+1} \right) r_j x_j \right) x_0 \\
+\\
+\end{align*}
 
 
 

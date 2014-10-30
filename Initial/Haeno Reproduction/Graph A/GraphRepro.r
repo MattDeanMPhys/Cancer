@@ -21,7 +21,7 @@ a = ggplot(df, aes(x=r1, y=prob, colour=u1, group = u1))+geom_line() + theme_bw(
 a = a + theme(panel.border = element_rect(colour="black"))
 a = a + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 a = a + theme(axis.ticks.length = unit(-0.25, "cm"), axis.ticks.margin = unit(0.5, "cm"))
-a = a + scale_x_continuous(expand = c(0,0)) + scale_y_continuous(expand = c(0,0))
+a = a + scale_x_continuous(limits = c(0,3.1), expand=c(0,0)) + scale_y_continuous(limits = c(0,1.1), expand=c(0,0))
 
 tikz(file="test.tex")
 print(a)
