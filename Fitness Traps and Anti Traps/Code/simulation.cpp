@@ -19,7 +19,7 @@ int main(){
 int NUMBER_OF_CELLS = 1000;
 int NUMBER_OF_MUTATIONS = 10;
 
-int iterations = 5 ;
+int iterations = 25 ;
 
 double rFlat = 1;
 double uFlat = 0.1; 
