@@ -1,0 +1,26 @@
+source('~/Documents/Cancer/Initial/DeanGeneralMutation/GenData.r', chdir = TRUE)
+source('~/Documents/GenData.r', chdir = TRUE)
+source('~/Documents/Cancer/Initial/DeanGeneralMutation/GenData.r', chdir = TRUE)
+source('~/Documents/GenData.r', chdir = TRUE)
+source('~/Documents/Gen.r', chdir = TRUE)
+source('~/Documents/GenData.r', chdir = TRUE)
+ls
+ls()
+a
+head a
+head(a)
+plot(a[1])
+wd
+getwd()
+changewd()
+data = read.csv('Combofile_1000.000000_100.000000_3_input_three.txt.txt', sep = '\t' , header=T)
+head(dat)
+head(data)
+tail(data)
+graphDisplacement = ggplot(data, aes(Time, Displacement), col=Label) + geom_line()
+library(ggplot2)
+graphDisplacement = ggplot(data, aes(Time, Displacement), col=Label) + geom_line()
+grphD = ggplotGrob(graphDisplacement)
+grid.draw(grphD)
+grphD
+ggplot(data, aes(Time, Displacement), col=Label) + geom_line()
