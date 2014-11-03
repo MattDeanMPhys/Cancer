@@ -7,31 +7,32 @@ IDs = sub("_Populations.txt", "", IDs)
 IDs = sub("_StatisticOutput.txt", "", IDs)
 IDs = sub("_Parameters.txt", "", IDs)
 uIDs = unique(IDs)
-
 statfileList = list.files()[grep("Stat", list.files())]
 paramfileList =  list.files()[grep("Param", list.files())]
 
 shinyUI(fluidPage(
 
-	titlePanel("Hello World"),
+	titlePanel("Cancer Visulisations"),
 
 	sidebarLayout(
 
 	sidebarPanel( 
-		selectInput("dataSet", label = "Choose data set", choices = uIDs, width = '400px'),
+		selectInput("dataSet", label = "Choose data set", choices = uIDs, width = '250px'),
 
-		tableOutput('Parameters')	
+		tableOutput('Parameters'),
+
+		width = 3 	
 	
 	),
 
 	mainPanel(
-		tabsetPanel(
-			tabPanel("Displacement", plotOutput("Displacement")),
-			tabPanel("TEST", plotOutput("Displacement"))
-			
+			plotOutput("Displacement", height = 200, width = 600), 
+			plotOutput("Velocity", height = 200, width = 600),
+			plotOutput("Variance", height = 200, width = 600),	
+			plotOutput("Populations", height = 200, width = 600)	
 		)
 
 	)
 
 	)
-))
+)
