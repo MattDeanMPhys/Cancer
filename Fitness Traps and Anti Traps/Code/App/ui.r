@@ -20,13 +20,16 @@ shinyUI(fluidPage(
 	sidebarPanel( 
 		selectInput("dataSet", label = "Choose data set", choices = uIDs, width = '400px'),
 
-		dataTableOutput('Parameters')	
+		tableOutput('Parameters')	
 	
 	),
 
 	mainPanel(
-
-		plotOutput("Displacement")
+		tabsetPanel(
+			tabPanel("Displacement", plotOutput("Displacement")),
+			tabPanel("TEST", plotOutput("Displacement"))
+			
+		)
 
 	)
 

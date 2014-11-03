@@ -17,18 +17,18 @@ int main(){
 //########## Parameters to set ########## 
 
 int NUMBER_OF_CELLS = 1000;
-int NUMBER_OF_MUTATIONS = 10;
+int NUMBER_OF_MUTATIONS = 50;
 
 int iterations = 25 ;
 
 double rFlat = 1;
 double uFlat = 0.1; 
 
-std::string rLandscape = "FLAT";
+std::string rLandscape = "TRAP";
 
-double rTrap = 0.5;
-int rTrapStart = 3;
-int rTrapEnd = 5;
+double rTrap = 1.01;
+int rTrapStart = 25;
+int rTrapEnd = 35;
 
 std::string uLandscape = "FLAT";
 
