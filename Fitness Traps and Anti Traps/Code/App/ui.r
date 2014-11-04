@@ -10,6 +10,8 @@ uIDs = unique(IDs)
 statfileList = list.files()[grep("Stat", list.files())]
 paramfileList =  list.files()[grep("Param", list.files())]
 
+p
+
 shinyUI(fluidPage(
 
 	titlePanel("Cancer Visulisations"),
@@ -21,7 +23,11 @@ shinyUI(fluidPage(
 
 		tableOutput('Parameters'),
 
-		width = 3 	
+		width = 3,
+
+#		sliderInput("integer", "Time", min = 1, max = 3000, value = 1, animate = animationOptions( interval =300)) 	
+
+		numericInput("integer", "Time", min = 1, max = 100, value = 1, step = 1)
 	
 	),
 
