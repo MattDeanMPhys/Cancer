@@ -32,9 +32,9 @@ shinyUI(fluidPage(
 	),
 
 	mainPanel(
-			plotOutput("Displacement", height = 200, width = 600), 
-			plotOutput("Velocity", height = 200, width = 600),
-			plotOutput("Variance", height = 200, width = 600),	
+			plotOutput("Displacement", height = 140, width = 600), 
+			plotOutput("Velocity", height = 140, width = 600),
+			plotOutput("Variance", height = 140, width = 600),	
 			plotOutput("Populations", height = 200, width = 600)	
 		)
 

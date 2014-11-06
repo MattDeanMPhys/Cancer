@@ -114,7 +114,65 @@ Need to get a differential out of this equation though?
 \\
 \end{align*}
 
+\section{Diffusion equation attempt}
 
+\begin{align*}
+\bar{r} \dot{x} _i & = \sum _{j \neq i} \left(u_i r_{i-1} x_{i-1} + \left(1 - u_{i+1} \right) r_i x_i \right) x_j - \left(u_j r_{j-1} x_{j-1} + \left(1 - u_{j+1} \right) r_j x_j \right) x_i
+\end{align*}
+
+Following this explicitly can reproduce the equations in the Ashcroft paper. 
+
+Now attempt to simplify it: 
+
+\begin{align*}
+\bar{r} \dot{x} _i & = \sum _{j \neq i} \left(u_i r_{i-1} x_{i-1} + \left(1 - u_{i+1} \right) r_i x_i \right) x_j - \left(u_j r_{j-1} x_{j-1} + \left(1 - u_{j+1} \right) r_j x_j \right) x_i \\
+& = \left(u_i r_{i-1} x_{i-1} + \left(1 - u_{i+1} \right) r_i x_i \right) \sum _{j \neq i} x_j - x_i \sum _{j \neq i} \left(u_j r_{j-1} x_{j-1} + \left(1 - u_{j+1} \right) r_j x_j \right) \\
+& = \left(u_i r_{i-1} x_{i-1} + \left(1 - u_{i+1} \right) r_i x_i \right) ( 1- x_i) - x_i \left( \sum _{j \neq i} u _j r_{j-1} x_{j-1} + \sum _{j \neq i} (1 - u_{j+1} ) r_j x_j  \right) \\
+& = \left(u_i r_{i-1} x_{i-1} + \left(1 - u_{i+1} \right) r_i x_i \right) ( 1- x_i) - x_i \left( \sum _{j \neq i} u _j r_{j-1} x_{j-1} + \sum _{j \neq i} r_j x_j  - \sum _{j \neq i} r_j x_j u_{j+1}  \right) \\
+& = \left(u_i r_{i-1} x_{i-1} + \left(1 - u_{i+1} \right) r_i x_i \right) ( 1- x_i) - x_i \left( \sum _{j \neq i} u _j r_{j-1} x_{j-1} + (\bar{r} - r_i x_i )  - \sum _{j \neq i} r_j x_j u_{j+1}  \right) \\
+\end{align*}
+
+\begin{align*}
+\bar{u} & = \sum _{i=1} ^{N} u_i r_{i-1} x_{i-1} \\
+\mathbf{u} & = (0, u_1, ..., u_{N-1}, 0 ) \\
+\sum _{j \neq i} u _j r_{j-1} x_{j-1} - \sum _{j \neq i} u_{j+1}r_j x_j & = ( \bar{u} - u_i r_{i-1} x_{i-1} ) - \sum _{m \neq i +1} u_{m}r_{j-1} x_{j-1} \\
+& = ( \bar{u} - u_i r_{i-1} x_{i-1} ) - ( \bar{u} - u_{i+1} r_{i} x_{i}) \\
+& = u_{i+1} r_{i} x_{i} - u_i r_{i-1} x_{i-1}
+\end{align*}
+
+\begin{align*}
+\bar{r} \dot{x} _i & = \left(u_i r_{i-1} x_{i-1} + \left(1 - u_{i+1} \right) r_i x_i \right) ( 1- x_i) - x_i \left( u_{i+1} r_{i} x_{i} - u_i r_{i-1} x_{i-1} + ( \bar{r} - r_i x_i ) \right) \\
+& =  \left(u_i r_{i-1} x_{i-1} ( 1- x_i) + \left(1 - u_{i+1} \right) ( 1- x_i)  r_i x_i \right)  -  \left( u_{i+1} r_{i} x ^2_{i} - u_i r_{i-1} x_{i-1} x_i + x_i ( \bar{r} - r_i x_i ) \right) \\
+& = \left(u_i r_{i-1} x_{i-1} ( 1- x_i) + \left(1 - u_{i+1} \right) ( 1- x_i)  r_i x_i \right)  -  u_{i+1} r_{i} x ^2_{i} + u_i r_{i-1} x_{i-1} x_i - x_i ( \bar{r} - r_i x_i ) \\
+& = \left(u_i r_{i-1} x_{i-1} ( 1- x_i) + \left(1 - u_{i+1} \right) ( 1- x_i)  r_i x_i \right)  -  u_{i+1} r_{i} x ^2_{i} + u_i r_{i-1} x_{i-1} x_i - x_i  \bar{r} + r_i x_i ^2 \\
+& = \left(u_i r_{i-1} x_{i-1} - u_i r_{i-1} x_{i-1} x_i + \left(1 - u_{i+1} \right) ( 1- x_i)  r_i x_i \right)  -  u_{i+1} r_{i} x ^2_{i} + u_i r_{i-1} x_{i-1} x_i - x_i  \bar{r} + r_i x_i ^2 \\
+& = \left(u_i r_{i-1} x_{i-1} - u_i r_{i-1} x_{i-1} x_i + \left( 1 - u_{i+1} - x_i + u_{i+1} x_i \right)  r_i x_i \right)  -  u_{i+1} r_{i} x ^2_{i} + u_i r_{i-1} x_{i-1} x_i - x_i  \bar{r} + r_i x_i ^2 \\
+& = u_i r_{i-1} x_{i-1} - u_i r_{i-1} x_{i-1} x_i +  r_i x_i - r_i x_i u_{i+1} - r_i x^2_i + r_i x ^2_i u_{i+1}  -  u_{i+1} r_{i} x ^2_{i} + u_i r_{i-1} x_{i-1} x_i - x_i  \bar{r} + r_i x_i ^2 \\
+& = u_i r_{i-1} x_{i-1} - u_i r_{i-1} x_{i-1} x_i +  r_i x_i - r_i x_i u_{i+1} - r_i x^2_i  + u_i r_{i-1} x_{i-1} x_i - x_i  \bar{r} + r_i x_i ^2 \\
+& = u_i r_{i-1} x_{i-1} - u_i r_{i-1} x_{i-1} x_i +  r_i x_i - r_i x_i u_{i+1} + u_i r_{i-1} x_{i-1} x_i - x_i  \bar{r} \\
+& = u_i r_{i-1} x_{i-1}  +  r_i x_i - r_i x_i u_{i+1}  - x_i  \bar{r} \\
+& = u_i r_{i-1} x_{i-1} + x_i \left( r_i  \left( 1- u_{i+1} \right) - \bar{r} \right) \\ 
+\end{align*}
+
+\begin{equation}
+\bar{r} \dot{x} _i = u_i r_{i-1} x_{i-1} + x_i \left( r_i  \left( 1- u_{i+1} \right) - \bar{r} \right)
+\end{equation}
+
+This reproduces the Ashcroft results as expected. So we can proceed. 
+
+\begin{align}
+\bar{r} \dot{x} _0 & = x_0 \left( r_0  \left( 1- u_{1} \right) - \bar{r} \right) \\
+\bar{r} \dot{x} _i & = u_i r_{i-1} x_{i-1} + x_i \left( r_i  \left( 1- u_{i+1} \right) - \bar{r} \right) \\
+\bar{r} \dot{x} _N & = u_i r_{N-1} x_{N-1} + x_N \left( r_N   - \bar{r} \right)
+\end{align}
+
+Assume a constant $r$ and $u$ landscape and just sticking with the middle equation:
+
+\begin{align*}
+r \dot{\rho} _i & = u r \rho _{i-1} + \rho _i ( r(1- u) - r) \\
+\dot{\rho} _i & = u \rho _{i-1} + \rho _i ( 1-u) - \rho _{i} \\
+& = u  ( \rho _{i-1} -  \rho _{i} ) \\
+\end{align*}
 
 
 \end{document}
