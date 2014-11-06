@@ -174,5 +174,15 @@ r \dot{\rho} _i & = u r \rho _{i-1} + \rho _i ( r(1- u) - r) \\
 & = u  ( \rho _{i-1} -  \rho _{i} ) \\
 \end{align*}
 
+We then make the change of variables $\rho _i \rightarrow \rho(t, x) $. 
+
+\begin{align*}
+\dot{\rho} (t,x ) & = u \left( \rho (t, x - \Delta x) - \rho (t , x) \right) \\
+& = u \left( \rho(t,x) - \Delta x \frac{\partial \rho}{\partial x} + \frac{\Delta x ^2}{2} \frac{\partial ^2 \rho}{\partial x ^2}   - \rho (t , x) \right) \\
+& = \frac{u \Delta x ^2}{2} \frac{\partial ^2 \rho}{\partial x ^2} - u \Delta x \frac{\partial \rho}{\partial x}
+\end{align*}
+
+This resembles the Fokker Plank Equation. 
+
 
 \end{document}

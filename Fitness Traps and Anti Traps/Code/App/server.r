@@ -1,5 +1,6 @@
 library(ggplot2)
 library(reshape2)
+source("TrapDrawer.r")
 
 
 theme_set(theme_bw())
@@ -7,6 +8,7 @@ theme_set(theme_bw())
 themeBase = theme_bw() + theme(axis.text.y = element_blank(), axis.ticks = element_blank())
 
 shinyServer(function(input, output){
+
 
 	output$Displacement <- renderPlot({
 		
@@ -52,23 +54,31 @@ shinyServer(function(input, output){
 	output$Populations <- renderPlot({
 		
 		populationsFileName = paste(input$dataSet, "_Populations.txt", sep="")
-		parametersFileName =  paste(input$dataSet, "_Parameters.txt", sep="")
-		
-		params = read.csv(parametersFileName, sep = "\t")
-		muts = params[2,]
-		
 		data = read.csv(populationsFileName, sep = "\t", head = F)
-			
+
 		importantPoint = input$integer
 		rowData = data[importantPoint,]
 		rowData = rowData[-1]
 		rowData = rowData[-ncol(rowData)]
 		rowData = rowData 
 		rowData = melt(rowData)
-	
-		graphPopulations = ggplot(rowData, aes(variable, value, group = 1)) + geom_point() + geom_line()+ themeBase
+		colnames(rowData) = c("CellType", "Population")		
+		graphPopulations = ggplot(rowData, aes(CellType, Population, group = 1)) + geom_point() + geom_line()+ themeBase
 		graphPopulations = graphPopulations + theme(axis.text.x = element_blank())
 		graphPopulations
+
+	})
+
+	output$FitnessLandscape <- renderPlot({
+
+		parametersFileName = paste(input$dataSet, "_Parameters.txt", sep="")
+		data = read.csv(parametersFileName, sep = "\t", head = F, stringsAsFactors = F, strip.white = T)
+
+		landscapeCombo = TrapDrawer(data)
+
+		graphLandscape = ggplot(landscapeCombo, aes(CellType, Value, col=Landscape)) + themeBase + geom_line()
+		graphLandscape = graphLandscape + theme(legend.position = c(0.8,0.4))
+		graphLandscape
 
 	})
 
