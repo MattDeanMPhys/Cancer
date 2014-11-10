@@ -1,0 +1,74 @@
+ls()
+install.package("network")
+install.packages("network")
+library(network)
+a = c(2,0,4)
+b = c(1,3,2)
+c = c(0,0,6)
+dat = data.frame(a,b,c)
+dat
+net <- network(dat)
+plot(net)
+net
+as.network(dat)
+as.network(dat, edgelist)
+as.network(dat, matrix.type = edgelist)
+as.network(dat, matrix.type = "edgelist")
+as.network(dat, loops=T)
+net = network(dat, loops=T)
+plot(net)
+test.matrix = matrix(0, ncol = 3, nrow = 3)
+test
+test.matrix
+test = matrix(0, ncol = 3, nrow = 3)
+test
+test[1,1] = 2
+test[3,1] = 4
+test[2,1] = 1
+test[2,2] = 3
+test[2,3] = 2
+test[3,3] = 6
+test
+test[3,2] = 2
+test
+test[2,1] = 0
+test
+test[1,2] = 1
+test[2,3] = 0
+test
+colnames(test) = c(0,1,2)
+rownames(test) = c(0,1,2)
+test
+network(test)
+plot(network(test))
+plot(network(test, matrix.type="edgelist"))
+plot(network(test, matrix.type="adjacency"))
+plot(network(test, matrix.type="incidence"))
+test
+ntest = network(test)
+ntest
+install.packages("igraph")
+library(igraph)
+graph.adjacency(test)
+test
+plot(graph.adjacency(test))
+plot(graph.adjacency(test, mode="undirected", weighted=TRUE))
+plot(graph.adjacency(test, weighted=TRUE))
+list.files()
+data = read.csv(list.files()[4], sep = "\t")
+data
+head(data)
+plot(data$Time, data$Variance)
+plot(data$Time, data$Variance, type = "l")
+diff(data$Variance)
+matplot(data$Time, diff(data$Variance), type = "l", add=T)
+matplot(data$Time[-1], diff(data$Variance), type = "l", add=T)
+diff(1:10, 2)
+diff(1:10, 2, 2)
+diff(1:10)
+1:10
+diff(1:10, 3)
+plot(data$Time[-1], diff(data$Variance), type = "l")
+plot(data$Time[-1], data$Variance, type = "l")
+plot(data$Time, data$Variance, type = "l")
+plot(data$Time, data$Velocity, type = "l")

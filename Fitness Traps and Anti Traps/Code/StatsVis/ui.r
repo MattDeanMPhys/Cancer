@@ -33,8 +33,10 @@ titlePanel("Cancer Visulisation"),
 			plotOutput("Variance", height = 150, width = 300)
 		 ),
 		 column(3, offset =1,	
-			plotOutput("Populations", height = 300, width = 500),
-			plotOutput("FitnessLandscape", height = 150, width = 500)	
+			plotOutput("Populations", height = 250, width = 500),
+			plotOutput("FitnessLandscape", height = 100, width = 500),
+			plotOutput("MutationLandscape", height = 100, width = 500)	
+	
 		 )
 	 )
 	)

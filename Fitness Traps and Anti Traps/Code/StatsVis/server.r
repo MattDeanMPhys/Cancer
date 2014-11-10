@@ -74,14 +74,26 @@ shinyServer(function(input, output){
 		parametersFileName = paste(input$dataSet, "_Parameters.txt", sep="")
 		data = read.csv(parametersFileName, sep = "\t", head = F, stringsAsFactors = F, strip.white = T)
 
-		landscapeCombo = TrapDrawer(data)
+		landscapeFit = TrapDrawer(data, "F")
 
-		graphLandscape = ggplot(landscapeCombo, aes(CellType, Value, col=Landscape)) + themeBase + geom_line()
-		graphLandscape = graphLandscape + theme(legend.position = c(0.8,0.4))
+		graphLandscape = ggplot(landscapeFit, aes(CellType, Value)) + themeBase + geom_line()
+		graphLandscape = graphLandscape + ylab("Fitness") 	
 		graphLandscape
 
 	})
 
+	output$MutationLandscape <- renderPlot({
+
+		parametersFileName = paste(input$dataSet, "_Parameters.txt", sep="")
+		data = read.csv(parametersFileName, sep = "\t", head = F, stringsAsFactors = F, strip.white = T)
+
+		landscapeMut = TrapDrawer(data, "M")
+
+		graphLandscape = ggplot(landscapeMut, aes(CellType, Value)) + themeBase + geom_line()
+		graphLandscape = graphLandscape + ylab("Mutation") 	
+		graphLandscape
+
+	})
 
 output$Parameters <- renderTable( {
 

@@ -1,4 +1,4 @@
-TrapDrawer <- function(data) {
+TrapDrawer <- function(data, L) {
 
 	params = data
 	#params = read.csv("471194581834725_Parameters.txt", sep = "\t", head= F, stringsAsFactors=FALSE, strip.white = TRUE)
@@ -40,5 +40,12 @@ TrapDrawer <- function(data) {
 
 	landscapeCombo = rbind(landscapes_fit, landscape_mut)
 	
-	return(landscapeCombo)
+	
+	if(L == "F"){
+		return(landscapes_fit)
+	}
+	if(L == "M"){
+		return(landscape_mut)
+	}
+
 }
