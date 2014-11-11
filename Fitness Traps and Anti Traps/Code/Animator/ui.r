@@ -13,7 +13,7 @@ paramfileList =  list.files()[grep("Param", list.files())]
 p
 
 shinyUI(fluidPage( 
-titlePanel("Cancer Visulisation"),
+titlePanel("Cancer Populations Animator"),
 	  sidebarLayout(
 	   sidebarPanel( 
 		selectInput("dataSet", label = "Choose data set", choices = uIDs, width = '250px'),

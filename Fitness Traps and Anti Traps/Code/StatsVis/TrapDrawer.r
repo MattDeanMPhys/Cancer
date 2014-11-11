@@ -32,8 +32,8 @@ TrapDrawer <- function(data, L) {
 	fitnessLandscape = fitnessLandscape / max(fitnessLandscape)
 	mutationLandscape = mutationLandscape / max(mutationLandscape)
 
-	landscapes_fit = data.frame( c(1:lengthOfTrap), fitnessLandscape, rep.int("Fitness", lengthOfTrap))
-	landscape_mut =  data.frame( c(1:lengthOfTrap), mutationLandscape, rep.int("Mutation", lengthOfTrap))
+	landscapes_fit = data.frame( c(0:(lengthOfTrap-1)), fitnessLandscape, rep.int("Fitness", lengthOfTrap))
+	landscape_mut =  data.frame( c(0:(lengthOfTrap-1)), mutationLandscape, rep.int("Mutation", lengthOfTrap))
 
 	names(landscapes_fit) = c("CellType", "Value", "Landscape")
 	names(landscape_mut) = c("CellType", "Value", "Landscape")

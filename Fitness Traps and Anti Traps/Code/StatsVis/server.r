@@ -63,8 +63,10 @@ shinyServer(function(input, output){
 		rowData = rowData 
 		rowData = melt(rowData)
 		colnames(rowData) = c("CellType", "Population")		
-		graphPopulations = ggplot(rowData, aes(CellType, Population, group = 1)) + geom_point() + geom_line()+ themeBase
-		graphPopulations = graphPopulations + theme(axis.text.x = element_blank())
+
+		graphPopulations = ggplot(rowData, aes(CellType, Population, group = 1)) + geom_point() + geom_line() + geom_area() + themeBase 
+		graphPopulations = graphPopulations + theme(axis.text.x = element_blank()) + scale_x_discrete(expand=c(0,0)) + theme(panel.grid.major= element_blank(), panel.grid.minor=element_blank()) 
+
 		graphPopulations
 
 	})
@@ -74,11 +76,23 @@ shinyServer(function(input, output){
 		parametersFileName = paste(input$dataSet, "_Parameters.txt", sep="")
 		data = read.csv(parametersFileName, sep = "\t", head = F, stringsAsFactors = F, strip.white = T)
 
+		statsFileName = paste(input$dataSet, "_StatisticOutput.txt", sep="")
+		dataStats = read.csv(statsFileName, sep = "\t")
+
+
+
+
 		landscapeFit = TrapDrawer(data, "F")
 
-		graphLandscape = ggplot(landscapeFit, aes(CellType, Value)) + themeBase + geom_line()
-		graphLandscape = graphLandscape + ylab("Fitness") 	
+		CoM = dataStats$Displacement[input$integer]
+		CoM_Y = which(round(CoM)==landscapeFit$CellType)
+
+		pointExtract = data.frame(x =  CoM, y = landscapeFit$Value[CoM_Y])
+
+		graphLandscape = ggplot(landscapeFit, aes(CellType, Value)) + themeBase + theme(panel.grid.major= element_blank(), panel.grid.minor=element_blank()) + geom_line()
+		graphLandscape = graphLandscape + ylab("Fitness") + geom_point(data = pointExtract, aes(x,y), colour='red') + scale_x_continuous(expand=c(0,0))
 		graphLandscape
+
 
 	})
 
@@ -89,8 +103,8 @@ shinyServer(function(input, output){
 
 		landscapeMut = TrapDrawer(data, "M")
 
-		graphLandscape = ggplot(landscapeMut, aes(CellType, Value)) + themeBase + geom_line()
-		graphLandscape = graphLandscape + ylab("Mutation") 	
+		graphLandscape = ggplot(landscapeMut, aes(CellType, Value)) + themeBase + geom_line() + theme(panel.grid.major= element_blank(), panel.grid.minor=element_blank()) 
+		graphLandscape = graphLandscape + ylab("Mutation") + scale_x_continuous(expand=c(0,0))
 		graphLandscape
 
 	})

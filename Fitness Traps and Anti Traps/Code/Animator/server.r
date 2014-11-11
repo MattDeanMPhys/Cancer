@@ -5,7 +5,7 @@ source("TrapDrawer.r")
 
 theme_set(theme_bw())
 
-themeBase = theme_bw() + theme(axis.text.y = element_blank(), axis.ticks = element_blank())
+themeBase = theme_bw() + theme(axis.text.y = element_blank(), axis.ticks = element_blank(), axis.text.x = element_blank())
 
 shinyServer(function(input, output){
 
@@ -15,15 +15,21 @@ shinyServer(function(input, output){
 		populationsFileName = paste(input$dataSet, "_Populations.txt", sep="")
 		data = read.csv(populationsFileName, sep = "\t", head = F)
 
+		yMax = data$V2[1]
+		xMax = ncol(data)-2	
+
+
 		importantPoint = input$integer
 		rowData = data[importantPoint,]
 		rowData = rowData[-1]
 		rowData = rowData[-ncol(rowData)]
 		rowData = rowData 
 		rowData = melt(rowData)
+		
+
 		colnames(rowData) = c("CellType", "Population")		
 		graphPopulations = ggplot(rowData, aes(CellType, Population, group = 1)) + geom_point() + geom_line()+ themeBase
-		graphPopulations = graphPopulations + theme(axis.text.x = element_blank()) + scale_y_continuous(limits=c(0,1000))
+		graphPopulations = graphPopulations + scale_y_continuous(limits=c(0,yMax)) +  geom_area() + scale_x_discrete(expand=c(0,0))
 		graphPopulations
 
 	})
@@ -34,9 +40,10 @@ shinyServer(function(input, output){
 		data = read.csv(parametersFileName, sep = "\t", head = F, stringsAsFactors = F, strip.white = T)
 
 		landscapeFit = TrapDrawer(data, "F")
+		xMax = as.numeric(data[2,2])-1		
 
 		graphLandscape = ggplot(landscapeFit, aes(CellType, Value)) + themeBase + geom_line()
-		graphLandscape = graphLandscape + ylab("Fitness") + scale_x_continuous(limits=c(0,50), expand=c(0,0))
+		graphLandscape = graphLandscape + ylab("Fitness") + scale_x_continuous(limits=c(0,xMax), expand=c(0,0))
 		graphLandscape
 
 	})
@@ -46,10 +53,12 @@ shinyServer(function(input, output){
 		parametersFileName = paste(input$dataSet, "_Parameters.txt", sep="")
 		data = read.csv(parametersFileName, sep = "\t", head = F, stringsAsFactors = F, strip.white = T)
 
+		xMax = as.numeric(data[2,2])-1	
+
 		landscapeMut = TrapDrawer(data, "M")
 
 		graphLandscape = ggplot(landscapeMut, aes(CellType, Value)) + themeBase + geom_line()
-		graphLandscape = graphLandscape + ylab("Mutation") + scale_x_continuous(limits=c(0,50), expand=c(0,0))
+		graphLandscape = graphLandscape + ylab("Mutation") + scale_x_continuous(limits=c(0,xMax), expand=c(0,0))
 		graphLandscape
 
 	})
