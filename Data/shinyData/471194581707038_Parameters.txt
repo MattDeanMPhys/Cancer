@@ -1,0 +1,10 @@
+Number of cells: 	 1000
+Number of mutations: 	 50
+Number of iteration: 	 25
+Fitness Landscape: 	 ANTITRAP
+Mutation Landscape: 	 FLAT
+Fitness Flat Value: 	 1
+Mutation Flat Value: 	 0.1
+Fitness Trap Value: 	 0.5
+Fitness Trap Start: 	 25
+Fitness Trap End: 	 35

@@ -25,3 +25,8 @@ To Do
 * Change fitness landscapes (Dean).
 * Derive the PDE. (Thursday)
 
+##11/11/14
+
+*Solve our Fokker Planck with Fourier transform. 
+*Check the master equation Poissoinian. 
+*Plot the Fourier solution for different Delta x's. 
