@@ -163,7 +163,7 @@ This reproduces the Ashcroft results as expected. So we can proceed.
 \begin{align}
 \bar{r} \dot{x} _0 & = x_0 \left( r_0  \left( 1- u_{1} \right) - \bar{r} \right) \\
 \bar{r} \dot{x} _i & = u_i r_{i-1} x_{i-1} + x_i \left( r_i  \left( 1- u_{i+1} \right) - \bar{r} \right) \\
-\bar{r} \dot{x} _N & = u_i r_{N-1} x_{N-1} + x_N \left( r_N   - \bar{r} \right)
+\bar{r} \dot{x} _N & = u_N r_{N-1} x_{N-1} + x_N \left( r_N   - \bar{r} \right)
 \end{align}
 
 Assume a constant $r$ and $u$ landscape and just sticking with the middle equation:
@@ -184,5 +184,76 @@ We then make the change of variables $\rho _i \rightarrow \rho(t, x) $.
 
 This resembles the Fokker Plank Equation. 
 
+\section{Solution of Master Equation with Poissonian}
+
+\begin{align*}
+\dot{\rho}_0 & = - u \rho _0 \\
+\rho _0 & = A e^{-u t} \\
+A & = 1 \\
+\end{align*}
+
+Then solve for $\rho _1$
+
+\begin{align*}
+\dot{\rho} _1 & = u ( \rho _0 - \rho _1 ) \\
+& = u \left( e^{-ut} - \rho _1 \right) \\
+\dot{\rho}_1 + u \rho _1 & = u e^{-ut} \\
+\frac{d}{dt} \left( e ^{ut} \rho \right) & = u \\
+\rho _1 & = (ut) e^{-ut} \\
+\end{align*}
+
+Doing a proof by induction and we arrive at the standard Poissonian; 
+
+\begin{align*}
+\rho _n & = \frac{(ut) ^n}{n!} e^{-ut}
+\end{align*}
+
+\section*{Solution with Fourier}
+
+\begin{align*}
+\dot{\rho} & = \frac{\tilde{u} \Delta x}{2} \frac{\partial ^2}{\partial x^2} \rho - \tilde{u} \frac{\partial}{\partial x}\rho \\
+\tilde{u} & = u \Delta x \\
+\end{align*}
+
+\begin{align*}
+\tilde{\rho} & = \int _{-\infty} ^{\infty} \rho e ^{-ikx} dx \\
+\tilde{\rho} _x & = \int _{-\infty} ^{\infty} \left( \frac{\partial}{\partial x} \rho \right) e ^{-ikx} dx \\
+\tilde{\rho} _{xx} & = \int _{-\infty} ^{\infty} \left( \frac{\partial ^2}{\partial x ^2} \rho \right) e ^{-ikx} dx \\
+\end{align*}
+
+Proof of the differentials Fourier transformed; 
+
+\begin{align*}
+\tilde{\rho} _x & = \int _{-\infty} ^{\infty} \left( \frac{\partial}{\partial x} \rho \right) e ^{-ikx} dx \\
+& = \left[ \rho e ^{-ikx} \right] _{- \infty } ^{\infty} + ik \tilde{\rho} \\
+\\
+\tilde{\rho} _{xx} & = \int _{-\infty} ^{\infty} \left( \frac{\partial ^2}{\partial x ^2} \rho \right) e ^{-ikx} dx \\
+& = \left[ \rho _x e^{-ikx} \right] _{-\infty} ^{\infty} + ik \int e ^{-ikx} \rho _x dx \\
+& = \left[ \rho _x e^{-ikx} \right] _{-\infty} ^{\infty} + ik \left( 
+\left[ \rho e ^{-ikx} \right] _{- \infty } ^{\infty} + ik \tilde{\rho} \right) \\
+& = \left[ \rho _x e^{-ikx} \right] _{-\infty} ^{\infty} + ik \left[ \rho e ^{-ikx} \right] _{- \infty } ^{\infty} - k^2 \tilde{\rho}
+\end{align*}
+
+\begin{align*}
+\dot{\tilde{\rho}} & = - \frac{\tilde{u} \Delta x k^2}{2} \tilde{\rho} - ik \tilde{u} \tilde{\rho} \\
+\tilde{\rho} & = A \exp \left( - \tilde{u} k \left( \frac{k \Delta x}{2} + i \right) t \right) \\
+\tilde{\rho} (k, 0) & = A \\
+\tilde{\rho} (k, 0) & = \int _{- \infty} ^{\infty} \rho (x, 0) e^{-ikx} dx \\
+& = \int _{- \infty} ^{\infty} \delta (x - x_0)  e^{-ikx} dx \\
+& = e^{-ik x_0} 
+\end{align*}
+
+\begin{equation}
+\tilde{\rho}  = e^{-ik x_0} \exp \left( - \tilde{u} k \left( \frac{k \Delta x}{2} + i \right) t \right) \\
+\end{equation}
+
+Need to do the inverse Fourier transform to get back to concentration space. 
+
+\begin{align*}
+\rho & = \int _{- \infty } ^{\infty} \exp \left( - \tilde{u} k \left( \frac{k \Delta x}{2} + i \right) t -ikx_0 \right) e^{ikx} dk \\
+& = \sqrt{\frac{2 \pi}{\Delta x \tilde{u} t}} \exp \left( - \frac{(\tilde{u} t - x + x_0 )^2}{2 \Delta x \tilde{u} t} \right)
+\end{align*}
+
+This is the solution, which gives a Gaussian shape propagating. 
 
 \end{document}

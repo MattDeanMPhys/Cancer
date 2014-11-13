@@ -21,7 +21,10 @@ a = ggplot(df, aes(x=r1, y=prob, colour=u1, group = u1))+geom_line() + theme_bw(
 a = a + theme(panel.border = element_rect(colour="black"))
 a = a + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 a = a + theme(axis.ticks.length = unit(-0.25, "cm"), axis.ticks.margin = unit(0.5, "cm"))
-a = a + scale_x_continuous(limits = c(0,3.1), expand=c(0,0)) + scale_y_continuous(limits = c(0,1.1), expand=c(0,0))
+a = a + scale_x_continuous(limits = c(0,3.1), expand=c(0,0)) + scale_y_continuous(limits = c(0,1.1), expand=c(0,0)) + xlab("Fitness of type-1 cells, $r_1$.") + ylab("Probability of fixation after 100 time steps.")
+
+a = a + theme(axis.title.y=element_text(vjust=1.5)) + theme(axis.title.y=element_text(vjust=1.5)) + ggtitle("Fixation Probability for 3 mututations and 10 cells.")
+a = a + theme(legend.position = c(1,1))
 
 tikz(file="test.tex")
 print(a)
