@@ -247,7 +247,8 @@ Proof of the differentials Fourier transformed;
 \tilde{\rho}  = e^{-ik x_0} \exp \left( - \tilde{u} k \left( \frac{k \Delta x}{2} + i \right) t \right) \\
 \end{equation}
 
-Need to do the inverse Fourier transform to get back to concentration space. 
+Need to do the inverse Fourier transform to get back to concentration space.
+ 
 
 \begin{align*}
 \rho & = \int _{- \infty } ^{\infty} \exp \left( - \tilde{u} k \left( \frac{k \Delta x}{2} + i \right) t -ikx_0 \right) e^{ikx} dk \\
@@ -255,5 +256,42 @@ Need to do the inverse Fourier transform to get back to concentration space.
 \end{align*}
 
 This is the solution, which gives a Gaussian shape propagating. 
+
+\subsection{Sanity check with differentiation}
+
+\begin{align*}
+\rho & = \sqrt{\frac{2 \pi}{\Delta x \tilde{u} t}} \exp \left( - \frac{(\tilde{u} t - x + x_0 )^2}{2 \Delta x \tilde{u} t} \right) \\
+& = \frac{C}{\sqrt{t}} \exp \left( - \frac{(\tilde{u} t - x + x_0 )^2}{Bt} \right) \\
+& = \frac{C}{\sqrt{t}} \exp \left( - \frac{(\tilde{u} t)^2 + (x_0 - x)^2 + 2 \tilde{u}t (x_0 - x)}{Bt} \right) \\
+& = \frac{C}{\sqrt{t}} \exp \left( - \left[ \frac{\tilde{u} ^2 t}{B} + \frac{(x_0 - x)^2}{Bt} + \frac{2 \tilde{u} (x_0 - x)}{B} \right] \right) \\
+& = \frac{C}{\sqrt{t}} e^{- \alpha} e^{- \beta} e^{- \gamma} \\
+\end{align*}
+
+\begin{align*}
+\partial _t \rho & = \rho \left( - \frac{1}{2t} - \frac{\tilde{u} ^2}{B} + \frac{(x_0 - x)^2}{Bt^2} \right) \\
+\partial _x \rho & = \rho \left( \frac{2(x_0 -x )}{Bt} + \frac{2 \tilde{u}}{Bt} \right) \\
+\partial_{xx} \rho & = \rho \left( \left[ \frac{2(x_0 -x )}{Bt} + \frac{2 \tilde{u}}{Bt} \right] ^2 - \frac{2}{Bt} \right)
+\end{align*}
+
+\begin{align*}
+\dot{\rho} & = \frac{\tilde{u} \Delta x}{2} \partial _{xx} \rho - \tilde{u} \partial _x \rho \\
+\end{align*}
+
+\begin{align*}
+\left( - \frac{1}{2t} - \frac{\tilde{u} ^2}{B} + \frac{(x_0 - x)^2}{Bt^2} \right) & = \frac{\tilde{u} \Delta x}{2} \left( \frac{2(x_0 -x )}{Bt} + \frac{2 \tilde{u}}{Bt} \right) - \tilde{u} \left( \left[ \frac{2(x_0 -x )}{Bt} + \frac{2 \tilde{u}}{Bt} \right] ^2 - \frac{2}{Bt} \right) \\
+\left( - \frac{1}{2t} - \frac{\tilde{u} ^2}{B} + \frac{(\tilde{x})^2}{Bt^2} \right) & = \frac{B}{4} \left( \frac{2(\tilde{x})}{Bt} + \frac{2 \tilde{u}}{Bt} \right) - \tilde{u} \left( \left[ \frac{2(\tilde{x} )}{Bt} + \frac{2 \tilde{u}}{Bt} \right] ^2 - \frac{2}{Bt} \right) \\
+\left( - \frac{1}{2t} - \frac{\tilde{u} ^2}{B} + \frac{(\tilde{x})^2}{Bt^2} \right) & = \frac{1}{2t} (\tilde{x} + \tilde{u} ) - \tilde{u} \left( \frac{4}{B^2 t^2}( \tilde{x} ^2 + \tilde{u}^2 + 2 \tilde{u} \tilde{x} ) - \frac{2}{Bt} \right)
+\end{align*}
+
+It doesn't work! something has gone wrong somewhere. 
+
+\section*{Including a fitness component}
+
+Constant mutation rate. 
+
+\begin{align*}
+\bar{r} x_i & = u r_{i-1} x_{i-1} + x_i ( r_i ( 1 - u ) - \bar{r} ) \\
+x_i & =  
+\end{align*}
 
 \end{document}
