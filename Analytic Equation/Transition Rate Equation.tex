@@ -285,13 +285,39 @@ This is the solution, which gives a Gaussian shape propagating.
 
 It doesn't work! something has gone wrong somewhere. 
 
-\section*{Including a fitness component}
+\subsection*{Constraints on the Solution}
 
-Constant mutation rate. 
+From the differentiation not working, can imply that this imposes some constraints on the constants. 
+
+The concentration must also also be conserved; 
+
+\begin{equation}
+\int _0 ^\infty \rho (x,t ) dx = 1 \quad \forall t
+\end{equation}
 
 \begin{align*}
-\bar{r} x_i & = u r_{i-1} x_{i-1} + x_i ( r_i ( 1 - u ) - \bar{r} ) \\
-x_i & =  
+\dot{\rho} & = \frac{\tilde{u} \Delta x}{2} \frac{\partial ^2}{\partial x ^2} \rho - \tilde{u} \frac{\partial}{\partial x} \rho \\
 \end{align*}
+
+From the Fourier analysis we assume a solution; 
+
+\begin{equation}
+\rho = \frac{C}{\sqrt{t}} \exp \left( - \frac{(At - (x-x_0)^2}{Bt} \right)
+\end{equation}
+
+Doing the integral thing 
+
+\begin{align*}
+\frac{1}{2} C \sqrt{\pi B} \left( \text{Erf} \left( \frac{x_0 + At}{\sqrt{B} \sqrt{t}} \right) + 1 \right) & = 1 \\ 
+x_0 & = 0 \\
+C \sqrt{\pi B} \left( \text{Erf} \left( \frac{A \sqrt{t}}{\sqrt{B}} \right) + 1 \right) & = 2
+\end{align*}
+
+The error function tends to 1 quickly, so even after a small amount of time, its reasonable to replace it with 1. 
+
+\begin{equation}
+C \sqrt{B} = \frac{1}{\sqrt{\pi}}
+\end{equation}
+
 
 \end{document}
