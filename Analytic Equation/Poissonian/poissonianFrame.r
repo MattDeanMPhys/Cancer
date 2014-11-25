@@ -11,20 +11,20 @@ poissonianFrame <- function(N, T, U) {
 
 	}
 
-	pois_last = function(n,t,u){
+	pois_last = function(Nfinal,t,u){
 
-		exp_sum = 0
-		k = 0
-
-		while(k < n){
-
-			exp_sum = exp_sum + ( t^k / factorial(k) )		
-			k = k + 1
+		sum = 0		
+		n=0
+		while(n < Nfinal){
+			
+			sum = sum + pois(n,t,u)
+			n = n + 1
 		}
 
 		return(
-			(u^n) * (t^n) * ( 1 - (exp(-t) * exp_sum))
+			1 - sum
 		)
+
 	}
 
 
@@ -53,7 +53,6 @@ poissonianFrame <- function(N, T, U) {
 
 	df = rbind(df,  lastDF)
 	return(df)
-
 }
 
 rm(list=setdiff(ls(), "poissonianFrame"))
