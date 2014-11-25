@@ -1,16 +1,16 @@
 generalwave <- function(C, alpha, beta, gamma, T){
 
-	x = seq(0,100,0.1)
+	x = seq(0,10,0.1)
 	
-	t = 1 
+	t = T 
 
-	while(t < T){
+	#while(t < T){
 
 
 		y = (C / sqrt(t) ) * exp(- ((alpha *t - beta*x)^2)/ (gamma * t))
 		plot(x,y, type="l", ylim=c(0,5)) 
 		t = t + 1 
-	}
+	#}
 }
 
 T = 250
@@ -31,12 +31,12 @@ simData = simData[c("V2", "V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10", "V11"
 
 cellTypes = c(0:9)
 
-T = 1
+T = 10
 #while(T < 1000){
-	#pops = unlist(simData[T,]/1000)
+	pops = unlist(simData[T,]/1000)
 	
-	#generalwave(c,alph,1,gam, T)
-	#matplot(cellTypes, pops, type="l",lty=2, add=T, ylim=c(0,10))
+	generalwave(c,alph,1,gam, T)
+	matplot(cellTypes, pops, type="l",lty=2, add=T, ylim=c(0,10))
 
 	#T = T + 1
 

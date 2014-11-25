@@ -285,6 +285,8 @@ This is the solution, which gives a Gaussian shape propagating.
 
 It doesn't work! something has gone wrong somewhere. 
 
+Turns out it did work, something went wrong in the algebra. 
+
 \subsection*{Constraints on the Solution}
 
 From the differentiation not working, can imply that this imposes some constraints on the constants. 
@@ -321,6 +323,29 @@ C \sqrt{B} = \frac{1}{\sqrt{\pi}}
 
 This gives us our first constraint. 
 
+\subsection{Numerically Solving the PDE}
 
+\begin{align*}
+\dot{\rho} & = \frac{\tilde{u} \Delta x}{2} \frac{\partial ^2 \rho}{\partial x^2} - \tilde{u} \frac{\partial \rho}{\partial x} \\
+\tilde{u} & = u \Delta	x \\
+\end{align*}
+
+Need to discretise the system. 
+
+\begin{align*}
+x_i & =  ih \\
+t_j & = jk \\
+\dot{\rho} & = \frac{ \rho _{i j+1} - \rho_{ij} }{k} \\
+\frac{\partial \rho}{\partial x} & = \frac{\rho _{i+1 j} - \rho _{ij}}{h} \\
+\frac{\partial ^2 \rho}{\partial x ^2} & = \frac{\rho _{i+1 j} - 2 \rho _{ij} + \rho_{i-1 j}}{h^2} \\
+\end{align*}
+
+\begin{align*}
+\frac{ \rho _{i j+1} - \rho_{ij} }{k} & = \frac{\tilde{u} \Delta x}{2} \left( \frac{\rho _{i+1 j} - 2 \rho _{ij} + \rho_{i-1 j}}{h^2} \right) - \tilde{u} \left( \frac{\rho _{i+1 j} - \rho _{ij}}{h} \right)
+\rho _{i j+1} \\
+\rho_{ij+1}& =  \rho _{ij} + \frac{k \tilde{u} \Delta x}{2 h^2} \rho _{i +1 j} - \frac{k \tilde{u} \Delta x}{2 h^2} \rho _{ij} + \frac{k \tilde{u \Delta x}}{2 h^2} \rho _{i-1 j} - \frac{\tilde{u} k}{h} \rho _{i+1 j} + \frac{\tilde{u} k}{h} \rho_{ij} \\
+& = \left( 1 + \frac{\tilde{u} k }{h} - \frac{k \tilde{u} \Delta x}{2 h^2} \right) \rho _{ij} + \left( \frac{k \tilde{u} \Delta x}{2 h^2} - \frac{\tilde{u} k}{h} \right) \rho _{i+1 j} + \frac{k \tilde{u} \Delta x}{2 h^2} \rho _{i-1 j} \\
+& = \left( 1 + \alpha - \beta \right) \rho _{ij} + \left( \beta - \alpha \right) \rho _{i+1 j} + \beta \rho _{i-1 j} \\
+\end{align*}
 
 \end{document}
