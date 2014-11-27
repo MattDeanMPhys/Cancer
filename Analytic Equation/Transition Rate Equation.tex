@@ -348,4 +348,29 @@ t_j & = jk \\
 & = \left( 1 + \alpha - \beta \right) \rho _{ij} + \left( \beta - \alpha \right) \rho _{i+1 j} + \beta \rho _{i-1 j} \\
 \end{align*}
 
+\subsection*{Adding the boundary condition to the PDE solution}
+
+From the Poissonian solution, we know how the edge condition should look. 
+
+\begin{align*}
+\rho _0 & = e^{-ut} \\
+\end{align*}
+
+So lets add this into the general solution. 
+
+\begin{align*}
+\rho & = C \sqrt{\frac{2 \pi}{\Delta x \tilde{u} t}} \exp \left( - \frac{(\tilde{u} t + x - x_0 )^2}{2 \Delta \tilde{u} t } \right) \\
+x_0 & = 0 \\
+\rho (0, t) & = e^{-ut} \\
+e^{- ut} & = C \sqrt{\frac{2 \pi}{\Delta x \tilde{u} t}} \exp \left( - \frac{(\tilde{u} t)^2}{2 \Delta \tilde{u} t } \right) \\
+& = C \sqrt{\frac{2 \pi}{\Delta x \tilde{u} t}}  \exp \left( - \frac{ut}{2} \right) \\
+C & = \sqrt{\frac{\Delta x \tilde{u} t}{2 \pi}} e^{-0.5}
+\end{align*}
+
+Inserting this back into the original solution
+
+\begin{equation}
+\rho = \exp \left(- \frac{(\tilde{u} t + x - x_0 )^2}{2 \Delta x \tilde{u} t} - \frac{1}{2} \right)
+\end{equation}
+
 \end{document}
