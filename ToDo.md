@@ -30,3 +30,8 @@ To Do
 *Solve our Fokker Planck with Fourier transform. 
 *Check the master equation Poissoinian. 
 *Plot the Fourier solution for different Delta x's. 
+
+##25/11/14
+
+* Work out why the Fourier solution and simulation don't line up. Possible scaling of axis  
+* Discretize Fourier transform solve equation. 

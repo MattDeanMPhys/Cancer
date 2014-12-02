@@ -1,0 +1,98 @@
+source('~/Documents/Cancer/Initial/DeanGeneralMutation/GenData.r', chdir = TRUE)
+source('~/Documents/GenData.r', chdir = TRUE)
+source('~/Documents/Cancer/Initial/DeanGeneralMutation/GenData.r', chdir = TRUE)
+source('~/Documents/GenData.r', chdir = TRUE)
+source('~/Documents/Gen.r', chdir = TRUE)
+source('~/Documents/GenData.r', chdir = TRUE)
+ls
+ls()
+a
+head a
+head(a)
+plot(a[1])
+wd
+getwd()
+changewd()
+library(shine)
+library(shiny)
+install.packages("devtools")
+a = read.csv("temp.bin", sep="", header=F)
+head(a)
+b = which(a$V1 > 1000 )
+b
+plot(a$V1, a$V50)
+plot(a$V1, a$V100)
+plot(a$V1, a$V101)
+a = read.csv("temp.bin", sep="", header=F)
+plot(a$V1, a$V101)
+plot(a$V1)
+plot(a$V1, a$V50)
+head(a0)
+head(a)
+a = a[-1]
+head(a)
+a = a[ncol(a)-1]
+head(a)
+a = read.csv("temp.bin", sep="", header=F)
+a = a[-1]
+a = a[-(ncol(a)-1)]
+head(a)
+a = read.csv("temp.bin", sep="", header=F)
+a = a[-1]
+head(a)
+a = a[-ncol(a)]
+head(a)
+source('wave.r')
+head(a)
+a = read.csv("temp.bin", sep="", header=F)
+Tpop = which(simData$V1 > T)
+Tpop
+T = 100
+Tpop = which(simData$V1 > T)
+Tpop
+Tpop = which(a$V1 > T)
+Tpop
+Tpop[1]
+Tpop = which(a$V1 > T)
+head(a$V1)
+tail(a$V1)
+T = 100
+Tpop = which(a$V1 > T)
+length(a)
+a = a[-1]
+a = a[-ncol(a)]
+head(a)
+pops = unlist(a[Tpop[1]-1,])
+head(pops)
+tail(pops)
+celltypes = c(0:99)
+head(celltypes)
+plot(celltypes, pops, type='l')
+head(pops)
+length(pops)
+a = read.csv("temp.bin", sep="", header=F)
+a = a[-1]
+pops = unlist(a[Tpop[1]-1,])
+plot(celltypes, pops, type='l')
+T = 50
+a
+a = read.csv("temp.bin", sep="", header=F)
+Tpop = which(simdata$V1 > T)
+Tpop = which(a$V1 > 50)
+head(a)
+a = a[-1]
+head(a)
+length(a)
+head(celltypes)
+pops = unlist(a[Tpop[1]-1,])
+tail(pops)
+head(pops)
+plot(celltypes, pops, type='l')
+source('wave.r')
+source('wave.r')
+png('plot.png')
+dev.off()
+dev.copy(png,'myplot.png')
+dev.off()
+dev.copy(png,'myplot.png')
+dev.off()
