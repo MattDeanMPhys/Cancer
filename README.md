@@ -11,14 +11,14 @@ How to compile:
 
 ggplot graphing parameters:
 '
-theme_bw()
-theme(  panel.border = element_rect(colour = "black"), 
-	panel.grid.major = element_blank(), 
-	panel.grid.minor = element_blank(),
-	axis.ticks.length = unit(-0.25, "cm")
-	axis.ticks.margin = unit(-0.25, "cm")
+	theme_bw()
+	theme(  panel.border = element_rect(colour = "black"), 
+		panel.grid.major = element_blank(), 
+		panel.grid.minor = element_blank(),
+		axis.ticks.length = unit(-0.25, "cm")
+		axis.ticks.margin = unit(-0.25, "cm")
 	
- )
+ 	)
 '
 
 
