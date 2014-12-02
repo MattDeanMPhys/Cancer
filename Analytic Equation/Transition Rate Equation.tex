@@ -251,8 +251,9 @@ Need to do the inverse Fourier transform to get back to concentration space.
  
 
 \begin{align*}
-\rho & = \int _{- \infty } ^{\infty} \exp \left( - \tilde{u} k \left( \frac{k \Delta x}{2} + i \right) t -ikx_0 \right) e^{ikx} dk \\
-& = \sqrt{\frac{2 \pi}{\Delta x \tilde{u} t}} \exp \left( - \frac{(\tilde{u} t - x + x_0 )^2}{2 \Delta x \tilde{u} t} \right)
+\rho & = \frac{1}{2 \pi} \int _{- \infty } ^{\infty} \exp \left( - \tilde{u} k \left( \frac{k \Delta x}{2} + i \right) t -ikx_0 \right) e^{ikx} dk \\
+& = \frac{1}{2 \pi} \sqrt{\frac{2 \pi}{\Delta x \tilde{u} t}} \exp \left( - \frac{(\tilde{u} t - x + x_0 )^2}{2 \Delta x \tilde{u} t} \right) \\
+& = \sqrt{\frac{1}{2 \pi \Delta x \tilde{u} t}} \exp \left( - \frac{(\tilde{u} t - x + x_0 )^2}{2 \Delta x \tilde{u} t} \right)
 \end{align*}
 
 This is the solution, which gives a Gaussian shape propagating. 
@@ -372,5 +373,7 @@ Inserting this back into the original solution
 \begin{equation}
 \rho = \exp \left(- \frac{(\tilde{u} t + x - x_0 )^2}{2 \Delta x \tilde{u} t} - \frac{1}{2} \right)
 \end{equation}
+
+This is aload of bollocks, can't define a constant $C$ and give it a time dependence, it stops it being a solution of the PDE. 
 
 \end{document}

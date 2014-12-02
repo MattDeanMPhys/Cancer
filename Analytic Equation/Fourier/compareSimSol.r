@@ -7,14 +7,14 @@ fourierSolution <- function(x, t, u, deltaX){
 
 	utilde = u * deltaX
 
-	y = ( sqrt(2*pi/ (t*utilde*deltaX) ) * exp(- ( utilde*t - muts)^2 /(2*deltaX*utilde*t)))
+	y = (1/(2*pi))* ( sqrt(2*pi/ (t*utilde*deltaX) ) * exp(- ( utilde*t - muts)^2 /(2*deltaX*utilde*t)))
 
 
 	return(y)
 
 }
 NEWfourierSolution <- function(x, t, u, deltaX){
-
+#THIS IS WRONG PROVEN THAT DOESN"T SOLVE THE PDE
 	muts = c(0:x) 
 
 	utilde = u * deltaX
@@ -25,6 +25,23 @@ NEWfourierSolution <- function(x, t, u, deltaX){
 	return(y)
 
 }
+
+NEW2fourierSolution <- function(I, t, u, deltaX){
+
+
+	xMax = I*deltaX
+
+	muts = seq(0, I*deltaX, deltaX)
+
+	utilde = u * deltaX
+
+	y =  (1/(2*pi))*( sqrt(2*pi/ (t*utilde*deltaX) ) * exp(- ( utilde*t - muts)^2 /(2*deltaX*utilde*t)))
+
+
+	return(y)
+
+}
+
 
 
 X = ncol(ef_data) - 2
@@ -45,7 +62,7 @@ i = 2
 efMaxes = 0
 anMaxes = 0 
 newanMaxes = 0
-quartz()
+
 while(i < length(time)){
 
 #	bins = c(0:X)
@@ -61,8 +78,15 @@ while(i < length(time)){
 #	graph = graph + annotate("text", x =90, y =0.1, label = paste("T = ", time[i]))
 
 
-	plot(c(0:X), fourierSolution(X, time[i], 1, deltaX), col = "red", type="l", ylim=c(0,1))
-	matplot(c(0:X), NEWfourierSolution(X, time[i], 1, deltaX), col = "blue", type="l", add = T)
+	#plot(c(0:X), fourierSolution(X, time[i], 1, deltaX), col = "red", type="l", ylim=c(0,1))
+	#matplot(c(0:X), NEWfourierSolution(X, time[i], 1, deltaX), col = "blue", type="l", add = T)
+	#matplot(c(0:X), unlist(ef_data_trimmed[i,]),pch=1, type="o", add=T)
+	#matplot(c(0:X), NEW2fourierSolution(100, time[i], 1,deltaX), type="l", col="black", add=T)
+
+	plot(c(0:X), NEW2fourierSolution(100, time[i], 1, deltaX), type = "l" )
+	#matplot(c(0:X), NEW2fourierSolution(100, time[i], 1, deltaX/10),col = "blue", type = "l", add=T)
+	#matplot(c(0:X), NEW2fourierSolution(100, time[i], 1, deltaX*6), col = "red", type = "l", add=T)
+	#matplot(c(0:X), NEW2fourierSolution(100, time[i], 1, deltaX/1000), col = "green", type = "l", add=T)
 	matplot(c(0:X), unlist(ef_data_trimmed[i,]),pch=1, type="o", add=T)
 
 	efMaxes = c(efMaxes, max( unlist(ef_data_trimmed[i,]), na.rm=T))
@@ -70,7 +94,7 @@ while(i < length(time)){
 	newanMaxes = c(newanMaxes, max(NEWfourierSolution(X, time[i], 1, deltaX), na.rm=T))
 
 
-	i = i + 1
+	i = i + 10
 }
 
 
