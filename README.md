@@ -10,7 +10,7 @@ How to compile:
 
 
 ggplot graphing parameters:
-'
+
 	theme_bw()
 	theme(  panel.border = element_rect(colour = "black"), 
 		panel.grid.major = element_blank(), 
@@ -19,6 +19,6 @@ ggplot graphing parameters:
 		axis.ticks.margin = unit(-0.25, "cm")
 	
  	)
-'
+
 
 
