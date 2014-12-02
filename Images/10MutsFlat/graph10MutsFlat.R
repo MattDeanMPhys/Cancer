@@ -1,4 +1,6 @@
 library(ggplot2)
+library(tikzDevice)
+library(grid)
 rm(list=ls())
 
 
@@ -10,11 +12,27 @@ time = unlist(data$V1)
 data = data[-1]
 data = data[-ncol(data)]
 
-i = 10
+i = 1
 
 	x = c(0:9)
 	y = unlist(data[i, ])
 	
 	data = data.frame(x,y)
 
-	graph = ggplot(data, aes(x, y)) + geom_line()
+	graph = ggplot(data, aes(x, y)) + geom_line() + geom_point()
+
+	graph = graph + theme_bw(base_size=10) + theme(  panel.border = element_rect(colour = "black"), panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
+	graph = graph + theme(axis.ticks.length = unit(-0.25, "cm"),  axis.ticks.margin = unit(0.5, "cm"))	
+	graph = graph + theme(axis.title.y = element_text(vjust = 1.0))
+	graph = graph + scale_x_discrete("Cell Type", c(0:9), expand = c(0,-1))
+	graph = graph + scale_y_continuous(limits = c(0,1000), "Population Number", expand = c(0,0))
+	graph = graph + ggtitle("10 Cell Type, 9 Mutations" )	
+
+	graph = graph + annotate("text", x  = 7, y = 900, label = paste("$t = $ ", time[i], sep="" ) ) 
+
+	fileName = paste("10MutsFLAT", time[i], ".tex", sep="")
+
+	tikz(file=fileName, width = 3, height = 3)
+	print(graph)
+	dev.off()
+
