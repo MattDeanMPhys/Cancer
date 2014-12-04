@@ -30,9 +30,9 @@ i = 1
 
 	graph = graph + annotate("text", x  = 7, y = 900, label = paste("$t = $ ", time[i], sep="" ) ) 
 
-	fileName = paste("10MutsFLAT", time[i], ".tex", sep="")
+	#fileName = paste("10MutsFLAT", time[i], ".tex", sep="")
 
-	tikz(file=fileName, width = 3, height = 3)
-	print(graph)
-	dev.off()
+	#tikz(file=fileName, width = 3, height = 3)
+	#print(graph)
+	#dev.off()
 
