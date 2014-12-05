@@ -5,9 +5,9 @@ library(ggplot2)
 
 
 
-vals1 = read.csv("GraphA_01.txt", header = F, sep="\t")
-vals2 = read.csv("GraphA_001.txt", header = F, sep="\t")
-vals3 = read.csv("GraphA_0001.txt", header = F, sep="\t")
+vals1 = read.csv("test_01.txt", header = F, sep="\t")
+vals2 = read.csv("test_001.txt", header = F, sep="\t")
+vals3 = read.csv("test_0001.txt", header = F, sep="\t")
 
 r1 = c(vals1$V1, vals2$V1,vals3$V1)
 prob = c(vals1$V2, vals2$V2,vals3$V2)
