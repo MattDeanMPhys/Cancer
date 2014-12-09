@@ -41,10 +41,13 @@ i=9500
 	graph = graph + theme_bw(base_size=10) + theme(panel.border = element_rect(colour = "black"), panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
 	graph = graph + theme(axis.ticks.length = unit(0.15, "cm"),  axis.ticks.margin = unit(0.15, "cm"))	
 	graph = graph + theme(axis.title.y = element_text(vjust = 1.0))
-	graph = graph + scale_x_continuous("Cell Type")
+	graph = graph + scale_x_continuous("Cell Type", expand= c(0,0))
 	graph = graph + scale_y_continuous(limits = c(0,0.045), "Population Number")
 	graph = graph + ggtitle("Analytic and Euler")	
+	graph = graph + theme(legend.title = element_blank(), legend.position = c(0.77,0.85))
+
 	fileName = "analytic_fourier_and_euler.tex"
+
 	tikz(file=fileName, width = 3, height = 3)
 	print(graph)
 	dev.off()
