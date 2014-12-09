@@ -33,20 +33,20 @@ i=9500
 
 	concentrations = c(efConcentrations ,analyticConcentrations  )
 	
-	lab = c( rep.int("EulerForward", 200), rep.int("Analytic", 201))
+	Label = c( rep.int("EulerForward", 200), rep.int("Analytic", 201))
 
-	data = data.frame(xAxis, concentrations, lab)
+	data = data.frame(xAxis, concentrations, Label)
 
-	graph = ggplot(data, aes(xAxis, concentrations, col = lab)) + geom_line() 
+	graph = ggplot(data, aes(xAxis, concentrations, shape = Label, colour = Label, group = Label)) + geom_point() + scale_fill_manual(values=c("gray53", "black")) + scale_colour_manual(values=c("gray53", "black"))
 	graph = graph + theme_bw(base_size=10) + theme(panel.border = element_rect(colour = "black"), panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
 	graph = graph + theme(axis.ticks.length = unit(0.15, "cm"),  axis.ticks.margin = unit(0.15, "cm"))	
 	graph = graph + theme(axis.title.y = element_text(vjust = 1.0))
-	graph = graph + scale_x_continuous("Bins", expand = c(0,0))
-	graph = graph + scale_y_continuous(limits = c(0,0.045), "Population Number", expand = c(0,0))
-	graph = graph + ggtitle("Fourier Analytic and Euler")	
-	#fileName = "test.tex"
-	#tikz(file=fileName, width = 3, height = 3)
+	graph = graph + scale_x_continuous("Cell Type")
+	graph = graph + scale_y_continuous(limits = c(0,0.045), "Population Number")
+	graph = graph + ggtitle("Analytic and Euler")	
+	fileName = "analytic_fourier_and_euler.tex"
+	tikz(file=fileName, width = 3, height = 3)
 	print(graph)
-	#dev.off()
+	dev.off()
 
 

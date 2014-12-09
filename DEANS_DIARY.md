@@ -47,7 +47,7 @@ Adding the variacne into the statistics function for the population calculations
 23/10/14
 ---
 
-Begining the analytic euqation stuff
+Beginning the analytic equation stuff
 
 
 28/10/14
@@ -97,15 +97,21 @@ More fourier.
 
 More Fourier. 
 
-28/11/14
+27/11/14
 ---
 
 Added in the initial condition of the Fourier to see if that got us closer to the correct result. 
 Now have to solutions, one more general and one using the fact that the first bin decays exponentially. 
 
-Calculated the ratios of the of Euler forward and Fourier solution. The old result is converging to a constant factor out. The new version is diverging away. So more info is needed. 
+Calculated the ratios of the of Euler forward and Fourier solution. The old result is converging to a constant factor of out. The new version is diverging away. So more info is needed. 
 
+02/12/14
+---
+Fixed the Fourier normalisation (added a 1/2pi to our solution. This fixed the discrepancy of roughly 6 observed between the Euler solution and the Fourier analytic equation. In addition we have started to reformat graphs we have produced, ready for the report. 
 
+04/12/14
+—s
+Another day spent tidying up graphs for the report. Additionally, we tried to see if the Fourier analytic solution could be averaged to get the same results as Euler average. 
 
 
 
