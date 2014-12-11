@@ -228,7 +228,7 @@ int main(int argc, char** argv) {
 				binfiles << xe[j][k] << "\t";
 			}
 			binfiles << "\n";
-			variance = Ex2 - pow(Ex,2);
+			variance = pow(Ex2 - pow(Ex,2), 0.5);
 			myfile << timeStep*j << "\t" << displacement << "\t" << r[round(displacement)] << "\t" << u[round(displacement)] << "\t" << velocity << "\t" << acceleration << "\t" << variance << "\t" << "e"+filenameAppendage << "\n"; 
 		}
 		myfile.close();
