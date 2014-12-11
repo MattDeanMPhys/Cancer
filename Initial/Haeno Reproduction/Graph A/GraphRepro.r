@@ -16,17 +16,18 @@ u1 = c(rep.int("0.1", nrow(vals1)), rep.int("0.01", nrow(vals1)),rep.int("0.001"
 df = data.frame(r1, prob, u1)
 
 
-a = ggplot(df, aes(x=r1, y=prob, colour=u1, group = u1))+geom_line() + theme_bw(base_size=10)
+a = ggplot(df, aes(x=r1, y=prob, shape=u1, group = u1))+geom_point() + theme_bw(base_size=10)
 
 a = a + theme(panel.border = element_rect(colour="black"))
 a = a + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-a = a + theme(axis.ticks.length = unit(-0.25, "cm"), axis.ticks.margin = unit(0.5, "cm"))
+a = a + theme(axis.ticks.length = unit(0.15, "cm"), axis.ticks.margin = unit(0.15, "cm"))
 a = a + scale_x_continuous(limits = c(0,3.1), expand=c(0,0)) + scale_y_continuous(limits = c(0,1.1), expand=c(0,0)) + xlab("Fitness of type-1 cells, $r_1$.") + ylab("Probability of fixation \n  after 100 time steps.")
 
 a = a + theme(axis.title.y=element_text(vjust=1.5)) + theme(axis.title.y=element_text(vjust=1.5)) + ggtitle("Fixation Probability")
 a = a + theme(legend.position = c(0.79,0.79))
 
-tikz(file="test.tex", width = 3, height = 3 )
+
+tikz(file="GraphA.tex", width = 3, height = 3 )
 print(a)
 
 dev.off()
