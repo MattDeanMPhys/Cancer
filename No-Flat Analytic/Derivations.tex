@@ -1,0 +1,94 @@
+\documentclass[a4paper]{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\section{Non-Flat Mutation Rates}
+
+\begin{align*}
+\bar{r} \dot{x}_i & = u_{i} r_{i-1} x_{i-1} + x_{i} ( r_I ( 1- u_{i+1} ) - \bar{r} ) \\
+r & = \text{const.} \\
+\dot{\rho _i} & = u_i \rho _{i-1} - \rho _{i} u_{i+1} \\
+\dot{\rho} (x, t) & = u(x) \rho (x - \Delta x, t) - \rho (x,t) u(x + \Delta x , t) \\
+& = u(x) \left( \rho (x) - \Delta x \frac{\partial \rho}{\partial x} + \Delta x ^2 \frac{\partial ^2 \rho}{\partial x ^ 2} \right) - \rho (x, t) \left( u(x) + \Delta x \frac{\partial u}{\partial x} + \Delta x ^2 \frac{\partial ^2 u }{\partial x ^2} \right) \\
+\Delta x & = 1 \\
+\dot{\rho} (x, t) & = - u \frac{\partial \rho}{\partial x} + u \frac{\partial ^2 \rho}{\partial x ^2} - \rho \left( \frac{\partial u}{\partial x} + \frac{\partial ^2 u}{\partial x ^2} \right) \\
+\end{align*}
+
+Collecting up some terms. 
+
+\begin{align*}
+\dot{\rho} & = - \frac{\partial}{\partial x} ( \rho u ) + u \frac{\partial ^2 \rho}{\partial x ^2} - \rho \frac{\partial ^2 u}{\partial x ^2}
+\end{align*}
+
+Fourier transform convention 
+
+\begin{equation}
+\tilde{\rho} = \int _{- \infty} ^{\infty} \rho e ^{-ikx } dx 
+\end{equation}
+
+\begin{align*}
+\dot{\tilde{\rho}} & = - \int \frac{\partial}{\partial x} (\rho u) e^{-ikx} dx + \int u \frac{\partial ^2 \rho}{\partial x^2} e^{-ikx} dx - \int \rho \frac{\partial ^2 u}{\partial x ^2 } e^{-ikx} dx
+\end{align*}
+
+\begin{align*}
+\int \frac{\partial}{\partial x} (\rho u) e^{-ikx} dx & = \left[ e^{-ikx} \rho u \right] _{-\infty} ^{\infty} - \int (-ik) \rho u e^{-ikx} dx \\
+& = ik \int \rho u e^{-ikx} dx
+\end{align*}
+
+Applying the convolution theorem:
+
+\begin{align*}
+F(f \cdot g ) & = F(f) * F(g) \\
+f*g & = \frac{1}{\sqrt{2 \pi}} \int _{- \infty} ^ {\infty} g(y) f(x-y) dy \\
+\end{align*}
+
+Need to prove these. 
+
+Applying this to the new differential equation. 
+
+\begin{align*}
+\dot{\tilde{\rho}} & = - ik ( \mathcal{F} (\rho ) * \mathcal{F} ( u) ) + ( \mathcal{F} (u) * \mathcal{F} ( \frac{\partial ^2 \rho}{\partial x ^2} ) ) - ( \mathcal{F} ( \rho ) * \mathcal{F} ( \frac{\partial ^2 u}{\partial x ^2} ) )
+\end{align*}
+
+Using what we know for the differentials and Fourier bits. 
+
+\begin{align*}
+\dot{\tilde{\rho}} & = -ik \left( \tilde{\rho} * \tilde{u} \right) + \left( \tilde{u} * (-k ^2 ) \tilde{\rho} \right) - \left( \tilde{\rho} * (-k ^2 ) \tilde{u} \right)
+\end{align*}
+
+We can take out the factors of $k^2$. 
+
+\begin{align*}
+\dot{\tilde{\rho}} & = -ik ( \tilde{\rho} * \tilde{u} ) -k ^2 \left( ( \tilde{u} * \tilde{\rho} ) + ( \tilde{\rho} * \tilde{u} ) \right) \\
+& = ( -ik  - 2 k^2 ) ( \tilde{\rho} * \tilde{u} )
+\end{align*}
+
+Convolution is commutative. 
+
+Chose a simple $u = \cos(\frac{\pi}{2 M} x ) $. 
+
+\begin{align*}
+\tilde{u} & = \int \cos(\frac{\pi}{2 M} x ) e^{-ikx} dx \\
+& = \frac{1}{2} \int ( e^{\frac{i \pi}{2 M} x} + e^{ - \frac{i \pi}{2 M} x} ) e^{-ikx} ) dx \\
+& = \frac{1}{2} \left( \delta ( k - \frac{\pi}{2 M} ) + \delta ( k + \frac{\pi}{2 M} \right)
+\end{align*}
+
+Convolution of a delta function just returns the same function with the varaible shifted. 
+
+\begin{equation}
+f(x) * \delta (x \pm a)  = f(x \pm a)  
+\end{equation}
+
+\begin{align*}
+\tilde{\rho} * \tilde{u} & = \tilde{\rho} * \frac{1}{2} \left( \delta ( k - \frac{\pi}{2 M} ) + \delta ( k + \frac{\pi}{2 M} \right) \\
+& = \frac{1}{2} \left( \tilde{\rho} ( k - \frac{\pi}{2 M} ) + \tilde{\rho} ( k + \frac{\pi}{2 M} ) \right)
+\end{align*}
+
+Combining everything in one. 
+
+\begin{align*}
+\dot{\tilde{\rho}} & = - \frac{(ik + k ^2 )}{2}  \left( \tilde{\rho} ( k - \frac{\pi}{2 M} ) + \tilde{\rho} ( k + \frac{\pi}{2 M} ) \right) 
+\end{align*}
+
+\end{document}
