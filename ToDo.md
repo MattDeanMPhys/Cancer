@@ -35,3 +35,11 @@ To Do
 
 * Work out why the Fourier solution and simulation don't line up. Possible scaling of axis  
 * Discretize Fourier transform solve equation. 
+* 
+##04/02/15
+
+* Sort out the delta x's
+* Numerically solve our new PDE
+* Simulate for simple cases of u(x) (Means adding in functions with simulation). 
+* Analyse what the potential should be looking like and physical reasons.
+* Look up non constant coeffcient PDE's somewhere. 
