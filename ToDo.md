@@ -35,7 +35,8 @@ To Do
 
 * Work out why the Fourier solution and simulation don't line up. Possible scaling of axis  
 * Discretize Fourier transform solve equation. 
-* 
+
+
 ##04/02/15
 
 * Sort out the delta x's
