@@ -111,6 +111,11 @@ std::vector<double> Population::Get_FitnessLandscape(){
 	return fitness;
 }
 
+void Population::Manual_MutationLandscape(std::vector<double> u){
+
+	mutation = u; 
+}
+
 
 
 

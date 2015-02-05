@@ -30,6 +30,7 @@ class Population {
 		std::vector<double> Get_MutationLandscape();
 		std::vector<double> Get_FitnessLandscape();
 
+		void Manual_MutationLandscape(std::vector<double>);
 };
 
 

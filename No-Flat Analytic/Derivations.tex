@@ -3,7 +3,7 @@
 
 \begin{document}
 
-\section{Non-Flat Mutation Rates}
+\section{Non-Flat Mutation Rates INITIAL}
 
 \begin{align*}
 \bar{r} \dot{x}_i & = u_{i} r_{i-1} x_{i-1} + x_{i} ( r_I ( 1- u_{i+1} ) - \bar{r} ) \\
@@ -90,5 +90,92 @@ Combining everything in one.
 \begin{align*}
 \dot{\tilde{\rho}} & = - \frac{(ik + k ^2 )}{2}  \left( \tilde{\rho} ( k - \frac{\pi}{2 M} ) + \tilde{\rho} ( k + \frac{\pi}{2 M} ) \right) 
 \end{align*}
+
+\newpage
+
+\subsection*{Improved}
+
+\begin{align*}
+\dot{\rho} & = u \rho(x - \Delta x) - \rho u(x + \Delta x) \\
+& = u \left( \rho (x) - \Delta x \frac{\partial \rho}{\partial x} + \frac{\Delta x ^2}{2} \frac{\partial ^2 \rho}{\partial x^2} \right) - \rho \left( u(x) + \Delta x \frac{\partial u }{\partial x} + \frac{\Delta x ^2}{2} \frac{\partial ^2 u}{\partial x ^2} \right) \\ 
+& = - u \frac{\partial \rho}{\partial x} \Delta x + u \frac{\Delta x ^2}{2} \frac{\partial ^2 \rho}{\partial x ^2} - \Delta x \rho \frac{\partial u}{\partial x} - \frac{\Delta x ^2}{2} \rho \frac{\partial ^2 u}{\partial x ^2}
+\end{align*}
+Introduce a new scaled variable $\hat{u} = u(x) \cdot \Delta x$. 
+
+\begin{align*}
+\dot{\rho} & = - \hat{u} \frac{\partial \rho}{\partial x} + \frac{\Delta x}{2} \hat{u} \frac{\partial ^2 \rho}{\partial x ^2} - \rho \frac{\partial \hat{u}}{\partial x} - \frac{\Delta x }{2} \rho \frac{\partial ^2 \hat{u}}{\partial x ^2}
+\end{align*}
+
+This collapses down into our old equation with an additional term. 
+
+\begin{align*}
+\dot{\rho} & = - \hat{u} \frac{\partial \rho}{\partial x} + \frac{\Delta x}{2} \hat{u} \frac{\partial ^2 \rho}{\partial x ^2} - \rho \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x }{2} \frac{\partial ^2 \hat{u}}{\partial x^2} \right) 
+\end{align*}
+
+In the limit $\Delta x \rightarrow 0$ we get the normal advection equation 
+
+\begin{equation}
+\lim _{\Delta x \rightarrow 0} \dot{\rho}  = - \frac{\partial (\rho \hat{u} )}{\partial x}
+\end{equation}
+
+\newpage
+
+\section{Numerically Solving the PDE}
+
+Start with the PDE and initial condition. 
+
+\begin{equation}
+\dot{\rho} = - \hat{u} \frac{\partial \rho}{\partial x} + \frac{\Delta x}{2} \hat{u} \frac{\partial ^2 \rho}{\partial x ^2} - \rho \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x }{2} \frac{\partial ^2 \hat{u}}{\partial x^2} \right) 
+\end{equation}
+
+\begin{equation}
+\rho ( x, 0) = \delta (x - x _0 ) 
+\end{equation}
+
+We discretise with $x_i = i h $ and $t_j = jk$. 
+
+\begin{align*}
+\frac{\partial \rho}{\partial t} & = \frac{\rho ( x_i , t_{j+1}) - \rho (x _i , t_j )}{k} \\
+\frac{\partial \rho}{\partial x} & = \frac{\rho ( x_{i + 1} , t_{}) - \rho (x _i , t_j )}{h} \\
+\frac{\partial ^2 \rho}{\partial x ^2} & = \frac{\rho (x_{i+1} , t_j ) - 2 \rho ( x _i, t _j ) + \rho (x_{i-1} , t_j ) }{h ^2} \\
+\end{align*}
+
+Inserting these into the PDE
+
+\begin{align*}
+\frac{\rho ( x_i , t_{j+1}) - \rho (x _i , t_j )}{k} & = - \hat{u} \left(  \frac{\rho ( x_{i + 1} , t_{j}) - \rho (x _i , t_j )}{h} \right) + \frac{\hat{u} \Delta x}{2} \left( \frac{\rho (x_{i+1} , t_j ) - 2 \rho ( x _i, t _j ) + \rho (x_{i-1} , t_j ) }{h ^2} \right)  \\
+& - \rho ( x _i , t_j ) f( \hat{u} ' , \hat{u} '' , \Delta x ) \\
+f( \hat{u} ' , \hat{u} '' , \Delta x ) & = \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x }{2} \frac{\partial ^2 \hat{u}}{\partial x^2} \right) 
+\end{align*}
+
+\begin{align*}
+\rho ( x_i , t_{j+1}) & = \rho - \frac{\hat{u} k }{h} \left( \rho (x_{i+1} , t_j ) - \rho \right) + \frac{\hat{u} \Delta x k }{2 h ^2} \left( \rho ( x_{i + 1 }, t_j ) - 2 \rho + \rho ( x_{i-1} , t_j ) \right) - k \rho f \\
+& = \rho \left( 1 + \frac{\hat{u } k }{h} - \frac{\hat{u} \Delta x k }{h^2} - kf \right) + \frac{\hat{u} \Delta x k }{2 h ^2} \rho ( x_{i-1} , t_j )  + \rho ( x_{i+1} , t_j ) \left( \frac{\hat{u} \Delta x k}{ 2 h ^2} - \frac{\hat{u} k}{h} \right) \\
+& = \rho \left(1 + \frac{\hat{u} k }{h} \left(1 - \frac{\Delta x}{h} \right) - k \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x }{2} \frac{\partial ^2 \hat{u}}{\partial x^2} \right)  \right) + \frac{\hat{u} \Delta x k }{2 h ^2} \rho ( x_{i-1} , t_j ) + \rho ( x_{i+1} , t_j ) \left( \frac{\Delta x }{2h} - 1 \right) \frac{\hat{u} k }{h}
+\end{align*}
+
+Can then solve this the normal computational way.
+
+\newpage
+
+\section{PDE Analysis}
+
+\begin{equation}
+\dot{\rho} = - \hat{u} \frac{\partial \rho}{\partial x} + \frac{\Delta x}{2} \hat{u} \frac{\partial ^2 \rho}{\partial x ^2} - \rho \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x }{2} \frac{\partial ^2 \hat{u}}{\partial x^2} \right) 
+\end{equation}
+
+Re-arrange this to the stardard form. 
+
+\begin{align*}
+\frac{\Delta x \hat{u}}{2} \frac{\partial ^2 \rho }{\partial x ^2} - \hat{u} \frac{\partial \rho}{\partial x} - \frac{\partial \rho}{\partial t} - \rho \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x }{2} \frac{\partial ^2 \hat{u}}{\partial x^2} \right) & = 0 
+\end{align*}
+
+Classification of this PDE is based on the coeffeicents of the double derivatives. 
+
+\begin{align*}
+\Delta (x , y) & = 0 ^2 - 0^ 2 = 0
+\end{align*}
+
+As there are know terms with the cross derivative and no terms with the second differential of $t$, the determinate is zero and the equation is parabolic. 
 
 \end{document}
