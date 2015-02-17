@@ -17,12 +17,12 @@ i = 2
 while(i < nrow(dat) ){
 
 	plot(c(0:199), unlist(dat[i,]), type="l", lty=3)
-	matplot(c(0:200), FourierSolution(200, time[i], 0.1, 1), add = T, type = "l")
+	matplot(c(0:200), FourierSolution(200, time[i], 0.1, 0.01), add = T, type = "l", col="red")
 
 
 	xAxis = c(c(0:199), c(0:200))
 
-	analyticConcentrations = FourierSolution(200, time[i], 0.1, 1)
+	analyticConcentrations = FourierSolution(200, time[i], 0.1, 0.01)
 	efConcentrations = unlist(dat[i,])
 
 	concentrationError = efConcentrations - analyticConcentrations

@@ -295,4 +295,74 @@ In the limit of $\Delta x \rightarrow 0$ this is correct.
 & = - \frac{B \Delta x}{2} e^{\frac{-2 x}{\Delta x} } + \int \left( \frac{2 x^2}{2 x + \Delta x} \right)
 \end{align*}
 
+\newpage
+
+\subsection{FKKP Methods}
+
+"Wave of Advance of Advantageous Genes" Ronald Fisher. 
+
+\begin{align*}
+\dot{\rho} & = - \hat{u} \frac{\partial \rho}{\partial x} + \frac{\Delta x \hat{u}}{2} \frac{\partial ^2 \rho}{\partial x ^2} - \rho \left(\frac{\partial u}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 u}{\partial x ^2} \right) \\
+\end{align*}
+
+We want a wave solution, travelling at speed $v$, therefore $ \frac{\partial \rho}{\partial t}  = - v \frac{\partial \rho}{\partial x}$ 
+
+\begin{equation}
+\frac{\Delta x \hat{u}}{2} \rho ^{''} + ( v - \hat{u} ) \rho ^{'} - \rho \left( u^{'} + \frac{\Delta x}{2} u^{''} \right) = 0 
+\end{equation} 
+
+There is no explicit $x$ dependence in the equation, therefore we can write the concentration as the derivative of another function. 
+
+\begin{align*}
+g & = - \frac{d \rho}{d x} \\
+\frac{\partial g}{\partial x} & = - \frac{\partial ^2 \rho}{\partial x ^2 } \\
+\frac{\partial ^2 \rho}{\partial x^2} &= g \frac{\partial g}{\partial \rho} \\
+\end{align*}
+
+\begin{equation}
+\frac{\Delta x \hat{u}}{2} g \frac{\partial g}{\partial \rho} + ( v - \hat{u} ) (-g) - \rho \left( \frac{\partial u}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 u}{\partial x ^2 } \right)  = 0 
+\end{equation}
+
+$$\lim _{\rho \rightarrow 0} \frac{g}{\rho} = \omega $$
+$$ \frac{\partial g}{\partial \rho} = \omega $$
+
+\begin{equation}
+\frac{\hat{u} \Delta x }{2} \omega ^2 + ( v - \hat{u} ) ( - \omega ) - \left( \hat{u} ' + \frac{\Delta x}{2} \hat{u}'' \right) = 0 
+\end{equation}
+
+By examining the determinant of this quadratic equation we can arrive at an equation for $v$. 
+
+\begin{align*}
+(v - \hat{u} )^2 - 4 \frac{\hat{u} \Delta x}{2} \left( - \left( \hat{u} ' + \frac{\Delta x}{2} \hat{u}'' \right) \right) & \geq 0 \\
+v ^2   - 2 v \hat{u} + \hat{u} ^2 + 2 \hat{u} \Delta x \left( \hat{u} ' + \frac{\Delta x}{2} \hat{u} '' \right) & \geq 0 \\
+v ^2   - 2 v \hat{u} + \hat{u} ^2 + 2 \hat{u} \Delta x \left( \hat{u} ' + \frac{\Delta x}{2} \hat{u} '' \right) & = C \\
+C &  \geq 0 \\
+\end{align*}
+
+\begin{align*}
+v ^2   - 2 v \hat{u} + \hat{u} ^2 + 2 \hat{u} \Delta x \left( \hat{u} ' + \frac{\Delta x}{2} \hat{u} '' \right) - C & = 0 \\
+v & = 2 \hat{u} \pm \sqrt{4 \hat{u} ^ 2 - 4 \left( \hat{u} ^2 + 2 \hat{u} \Delta x \left( \hat{u} ' + \frac{\Delta x}{2} \hat{u} '' \right) - C \right) }\\
+&= 2 \hat{u} \pm \sqrt{-8 \hat{u} \Delta x \left( \hat{u} ' + \frac{\Delta x \hat{u} ''}{2 } \right) + 4 C}
+\end{align*}
+
+As the velocity is a physical quantity, this gives us some constraints on the function inside the square brackets. 
+
+
+\begin{equation}
+C - 2 \hat{u} \Delta x \left( \hat{u} ' + \frac{\Delta x}{2} \hat{u} '' \right)  \geq 0 
+\end{equation}
+
+This gives us an ODE for $\hat{u}$: 
+
+\begin{align*}
+\hat{u} \Delta x \left( \hat{u} ' + \frac{\Delta x }{2} \hat{u} '' \right) + D & = 0
+\end{align*}
+
+Where $D$ is just the redefining of the constant. 
+
+This is very non linear and doesn't have an analytic solution. 
+
+NEED TO SOLVE IT NUMERICALLY.
+
+
 \end{document}

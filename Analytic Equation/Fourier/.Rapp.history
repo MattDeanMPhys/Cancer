@@ -1,250 +1,65 @@
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-rTrapGraph
-uTraphGraph
-uTrapGraph
-uTrapGraph
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-rTrapGraph
-uTraphGraph
-uTrapGraph
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-uTrapGraph
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("Landscape.R")
-source("pois.r")
-grph
-rm(list=ls())
-source("pois.r")
-source("pois.r")
-grph
-source("pois.r")
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-graph
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-gprh
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-gprh
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-grph
-source("pois.r")
-source("pois.r")
-grph
-source("pois.r")
-source("pois.r")
-source("pois.r")
-source("pois.r")
-source("pois.r")
-source("pois.r")
 ls()
-head(simData)
-length(simData)
-nrow(simData)
-source("pois.r")
-source("pois.r")
-TESTsimData
-nrom(simData)
-nrow(simData)
-nrow(TESTsimData)
-head(TESTsimData)
-source("pois.r")
-source("pois.r")
-head(simData)
-source("pois.r")
-source("pois.r")
-head(simDataCut)
-source("pois.r")
-source("pois.r")
-source("pois.r")
-source("pois.r")
-source("pois.r")
-source("pois.r")
-source("pois.r")
-source("pois.r")
-source("pois.r")
-source("pois.r")
-source("pois.r")
-source("pois.r")
-source("pois.r")
-source("pois.r")
-source("pois.r")
-source("pois.r")
-list.files()
-source("pois.r")
-list.files()
-source("graph10MutsFlat.R")
+install.package("network")
+install.packages("network")
+library(network)
+a = c(2,0,4)
+b = c(1,3,2)
+c = c(0,0,6)
+dat = data.frame(a,b,c)
+dat
+net <- network(dat)
+plot(net)
+net
+as.network(dat)
+as.network(dat, edgelist)
+as.network(dat, matrix.type = edgelist)
+as.network(dat, matrix.type = "edgelist")
+as.network(dat, loops=T)
+net = network(dat, loops=T)
+plot(net)
+test.matrix = matrix(0, ncol = 3, nrow = 3)
+test
+test.matrix
+test = matrix(0, ncol = 3, nrow = 3)
+test
+test[1,1] = 2
+test[3,1] = 4
+test[2,1] = 1
+test[2,2] = 3
+test[2,3] = 2
+test[3,3] = 6
+test
+test[3,2] = 2
+test
+test[2,1] = 0
+test
+test[1,2] = 1
+test[2,3] = 0
+test
+colnames(test) = c(0,1,2)
+rownames(test) = c(0,1,2)
+test
+network(test)
+plot(network(test))
+plot(network(test, matrix.type="edgelist"))
+plot(network(test, matrix.type="adjacency"))
+plot(network(test, matrix.type="incidence"))
+test
+ntest = network(test)
+ntest
+install.packages("igraph")
+library(igraph)
+graph.adjacency(test)
+test
+plot(graph.adjacency(test))
+plot(graph.adjacency(test, mode="undirected", weighted=TRUE))
+plot(graph.adjacency(test, weighted=TRUE))
+source("FullFourierCompare.R")
+source("FullFourierCompare.R")
+source("FullFourierCompare.R")
+source("FullFourierCompare.R")
 graph
-source("graph10MutsFlat.R")
-graph
-source("graph10MutsFlat.R")
-source("graph10MutsFlat.R")
-source("statsGraph10MutsFlat.R")
-source("statsGraph10MutsFlat.R")
-source("statsGraph10MutsFlat.R")
-source("graph10MutsFlat.R")
-source("graph10MutsFlat.R")
-source("graph10MutsFlat.R")
-source("graph10MutsFlat.R")
-source("statsGraph10MutsFlat.R")
-rm(list=ls())
-source("GraphRepro.r")
-a
-source("GraphRepro.r")
-a
-source("GraphRepro.r")
-a
-source("GraphRepro.r")
-a
-source("GraphRepro.r")
-a
-source("GraphRepro.r")
-a
-source("GraphRepro.r")
-a
-source("GraphRepro.r")
-a
-source("GraphRepro.r")
-a
-source("GraphRepro.r")
-a
-a
-source("GraphRepro.r")
-a
-source("GraphRepro.r")
-head(df)
-head(vals1)
-source("GraphRepro.r")
-source("GraphRepro.r")
-source("GraphRepro.r")
-source("GraphRepro.r")
-a
-source("GraphRepro.r")
-a
-source("GraphRepro.r")
-a
-source("GraphRepro.r")
-a
-source("GraphRepro.r")
-a
-source("GraphRepro.r")
-source("GraphRepro.r")
-a
-read.table("data.pgn")
-scan("data.pgn")
-scan("data.pgn", double())
-scan("data.pgn",char())
-source("FourierPlot.R")
-source("FourierPlot.R")
-graph
-source("FourierPlot.R")
-source("FourierPlot.R")
-source("FourierPlot.R")
-source("FourierPlot.R")
-source("FourierPlot.R")
-source("FourierPlot.R")
-source("FourierPlot.R")
-source("FourierPlot.R")
-source("FourierPlot.R")
-source("FourierPlot.R")
-source("FourierPlot.R")
-source("FourierPlot.R")
-source("FourierPlot.R")
+source("FullFourierCompare.R")
+source("FullFourierCompare.R")
+source("FullFourierCompare.R")
+source("FullFourierCompare.R")
