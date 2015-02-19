@@ -1,13 +1,20 @@
 using MyModule
 using ASCIIPlots
 
-T = 800.0  #Maximum time value
-M = 50.0  #Number of mutations
-h = 1.0 #x spacing
-k = 1.0 #t spacing
+#Set h equal to k. deltaX greater thna h (2h usually). Match uhat to the proper mutation rate. 
 
-a = int(T/k)
-b = int(M/h)
+
+T = 05.0  #Maximum time value
+k = 0.01 #t spacing
+
+deltaX = 0.02
+M = 1/deltaX  #Number of mutations
+
+h = 0.01 #x spacing
+x = [0:h:1]
+
+a = int(T/k) #Time span
+b = int(1/h) #x span
 
 println(a)
 println(b)
@@ -17,13 +24,11 @@ mesh[1,1] = 1
 
 #Create three arrays for the mutation landscape
 
-x = [0:h:M]
-
 u = MyModule.u(x, M)*deltaX
 du = MyModule.du(x, M)*deltaX
 du2 = MyModule.d2u(x, M)*deltaX
 
-f = MyModule.f(u, du, du2, k, h)
+f = MyModule.f(u, du, du2, k, h, deltaX)
 
 writedlm("f.txt", f)
 
@@ -32,13 +37,13 @@ for i = 1:(a-1)
 	for j = 1:b 
 		
 		if j == 1
-			mesh[i+1,j] = (k/h)*u[j] * ( (mesh[i, j+1] * (deltaX/(2*h) - 1)) ) + MyModule.f(u[j], du[j], du2[j], k, h) * mesh[i,j]
+			mesh[i+1,j] = (k/h)*u[j] * ( (mesh[i, j+1] * (deltaX/(2*h) - 1)) ) + MyModule.f(u[j], du[j], du2[j], k, h, deltaX) * mesh[i,j]
 
 		elseif j == b
-			mesh[i+1,j] = deltaX*(k/h)*u[j] * ( (mesh[i, j-1] / (2*h)) ) + MyModule.f(u[j], du[j], du2[j], k, h) * mesh[i,j]
+			mesh[i+1,j] = deltaX*(k/h)*u[j] * ( (mesh[i, j-1] / (2*h)) ) + MyModule.f(u[j], du[j], du2[j], k, h, deltaX) * mesh[i,j]
 
 		else	
-			mesh[i+1,j] = (k/h)*u[j] * ( (mesh[i, j+1] * (deltaX/(2*h) - 1)) + ((mesh[i, j-1]*deltaX) / (2*h)) ) + MyModule.f(u[j], du[j], du2[j], k, h) * mesh[i,j]
+			mesh[i+1,j] = (k/h)*u[j] * ( (mesh[i, j+1] * (deltaX/(2*h) - 1)) + ((mesh[i, j-1]*deltaX) / (2*h)) ) + MyModule.f(u[j], du[j], du2[j], k, h, deltaX) * mesh[i,j]
 		end
 	end
 end

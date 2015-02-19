@@ -19,12 +19,11 @@ matplot(simData[,13], type="l", add = T)
 matplot(simData[,23], type="l", add = T)
 matplot(simData[,33], type="l", add = T)
 matplot(simData[,43], type="l", add = T)
-matplot(mesh[,42]*1000, type="l", add = T, col = "red")
-matplot(mesh[,32]*1000, type="l", add = T, col = "red")
-matplot(mesh[,22]*1000, type="l", add = T, col = "red")
-matplot(mesh[,12]*1000, type="l", add = T, col = "red")
+matplot(mesh[,1,]*1000, type = "l", add=T, col="red")
 matplot(mesh[,2]*1000, type="l", add = T, col = "red")
-matplot(mesh[,1]*1000, type="l", add = T, col = "red")
+matplot(mesh[,12]*1000, type="l", add = T, col = "red")
+matplot(mesh[,22]*1000, type="l", add = T, col = "red")
+matplot(mesh[,32]*1000, type="l", add = T, col = "red")
 
 
 

@@ -7,7 +7,7 @@ end
 	
 function u(x, M)
 
-	0*(x.^3)/(M^3) + 0.1
+	0*(x.^3)/(M^3) + 5
 end
 
 function du(x, M)
