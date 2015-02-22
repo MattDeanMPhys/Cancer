@@ -8,7 +8,7 @@ T = 05.0  #Maximum time value
 k = 0.01 #t spacing
 
 deltaX = 0.02
-M = 1/deltaX  #Number of mutations
+M = 1  #Number of mutations
 
 h = 0.01 #x spacing
 x = [0:h:1]
@@ -24,9 +24,9 @@ mesh[1,1] = 1
 
 #Create three arrays for the mutation landscape
 
-u = MyModule.u(x, M)*deltaX
-du = MyModule.du(x, M)*deltaX
-du2 = MyModule.d2u(x, M)*deltaX
+u = MyModule.u(x, M)*1
+du = MyModule.du(x, M)*1
+du2 = MyModule.d2u(x, M)*1
 
 f = MyModule.f(u, du, du2, k, h, deltaX)
 
@@ -48,7 +48,7 @@ for i = 1:(a-1)
 	end
 end
 
-writedlm("mesh.txt", mesh)
-writedlm("mut.txt", u)
-writedlm("mutD.txt", du)
-writedlm("mutD2.txt", du2)
+writedlm("meshCos.txt", mesh)
+writedlm("mutCos.txt", u)
+writedlm("mutDCos.txt", du)
+writedlm("mutD2Cos.txt", du2)

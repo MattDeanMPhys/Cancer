@@ -7,17 +7,17 @@ end
 	
 function u(x, M)
 
-	0*(x.^3)/(M^3) + 5
+	(0.9 * (cos(2 * pi * x /1)).^2 + 0.1 )
 end
 
 function du(x, M)
 
-	0*(3/M^3)*x.^2
+	- (2*pi)/M * 0.9 * sin((4*pi*x)/M)
 end
 
 function d2u(x, M)
 	
-	0*6*x/M^3
+	- 8 * pi^2 /M^2 * 0.9* ( 1- 2 * (sin((2*pi*x/M))).^2)
 end
 
 
