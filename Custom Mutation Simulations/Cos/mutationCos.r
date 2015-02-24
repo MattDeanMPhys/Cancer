@@ -33,3 +33,7 @@ j =  150
 	#plot(statsData$Variance, type = "l")
 		
 #}
+
+
+
+
