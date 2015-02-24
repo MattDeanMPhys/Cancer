@@ -1,23 +1,34 @@
 using MyModule
 using ASCIIPlots
 
-#Read in a deltaX value
+#Set h equal to k. deltaX greater thna h (2h usually). Match uhat to the proper mutation rate. 
 
-keyboardInput = readline(STDIN)
-deltaX = float(chomp(keyboardInput))
+time = 
+numberMutations = 
 
-<<<<<<< HEAD
+hx = 0.01
+ht = 0.01
+deltaX = 0.1
 
-#Set h equal to k. deltaX greater than h (2h usually). Match uhat to the proper mutation rate. 
+u = MyModule.u(x, M)
+du = MyModule.du(x, M)
+du2 = MyModule.d2u(x, M)
+
+r = MyModule.r(x, M)
+dr = MyModule.dr(x, M)
+dr2 = MyModule.d2r(x, M)
+
+mesh = zeros(a, b) 
+mesh[1,1] = 1
+
+a = int(T/ht)
+b = int(1/hx) 
 
 
-T = 15.0  #Maximum time value
-=======
 T = 5.0  #Maximum time value
->>>>>>> origin/VariableMutationPDESolve
 k = 0.01 #t spacing
 
-#deltaX = 0.1
+deltaX = 0.02
 M = 1  #Number of mutations
 
 h = 0.01 #x spacing
@@ -58,6 +69,7 @@ for i = 1:(a-1)
 	end
 end
 
-outputString = join(["mesh", deltaX, "_", "deltaX", ".txt"])
-
-writedlm(outputString, mesh)
+writedlm("meshCos.txt", mesh)
+writedlm("mutCos.txt", u)
+writedlm("mutDCos.txt", du)
+writedlm("mutD2Cos.txt", du2)

@@ -6,7 +6,7 @@
 \section{Non-Flat Mutation Rates INITIAL}
 
 \begin{align*}
-\bar{r} \dot{x}_i & = u_{i} r_{i-1} x_{i-1} + x_{i} ( r_I ( 1- u_{i+1} ) - \bar{r} ) \\
+\bar{r} \dot{x}_i & = u_{i} r_{i-1} x_{i-1} + x_{i}  r_I ( 1- u_{i+1} ) - \bar{r} ) \\
 r & = \text{const.} \\
 \dot{\rho _i} & = u_i \rho _{i-1} - \rho _{i} u_{i+1} \\
 \dot{\rho} (x, t) & = u(x) \rho (x - \Delta x, t) - \rho (x,t) u(x + \Delta x , t) \\
@@ -364,5 +364,23 @@ This is very non linear and doesn't have an analytic solution.
 
 NEED TO SOLVE IT NUMERICALLY.
 
-
+\section{Varying u(x) and r(x)}
+Starting from 
+\begin{align}
+\bar{r} \dot{x}_i &= u_i r_{i-1} x_{i-1} + x_i (r_i (1 - u_{i+1}) - \bar{r})) \\
+&= u_i r_{i-1} x_{i-1} + x_i r_i - x_i r_i u_{i+1} - x_i \bar{r} \\ 
+\end{align}
+taking this in the continuous limit we get 
+\begin{equation}
+\bar{r} \dot{\rho(x,t)} = u(x) r(x-\Delta x) \rho(x-\Delta x, t)+ \rho(x,t) r(x) - \rho(x,t) r(x) u (x+\Delta x)
+\end{equation}
+which leads to (after taylor expansion)
+\begin{align*}
+\bar{r} \dot{\rho}(x,t) &= u(x) [r(x) - \Delta x \frac{\partial r}{\partial x} + \frac{(\Delta x)^2}{2} \frac{\partial^2 r}{\partial ^2 x}][\rho(x,t) - \Delta x \frac{\partial \rho}{\partial x} + \frac{(\Delta x)^2}{2} \frac{\partial^2 \rho}{\partial ^2 x}]+ \rho(x,t) r(x) \\ 
+&- \rho(x,t) r(x) [u(x) + \partial_x u(x) + \frac{(\Delta x)^2}{2} \partial_x^2 u(x)] - \rho (x,t) \bar{r} \\ 
+&= u(x) [r(x) \rho(x,t) - \rho (x,t) \Delta x \partial_x r + \frac{(\Delta x)^2}{2} \rho \partial_x^2 r - r(x) \Delta \partial_x \rho + (\Delta x)^2 \partial_x r \partial_x \rho + r(x) \frac{(\Delta x)^2}{2} \partial_x^2 \rho] \\ 
+& + \rho(x,t) r(x) - \rho(x,t) u(x) r(x) - \Delta x \rho(x,t) r(x) \partial_x u(x) - \frac{(\Delta x)^2}{2} \rho(x,t) r(x) \partial_x^2 u(x) - \rho(x,t) \bar{r} \\ 
+\bar{r} \dot{\rho} &= -u \rho \Delta x \partial_x r - u r \Delta x \partial)x \rho - \Delta x \rho r \partial_x u + \frac{(\Delta x)^2}{2} (u \rho \partial^2_x r + u r \partial_x^2 \rho - \rho r \partial_x^2 u + 2u \partial_x r \partial_x \rho) + \rho(r-\bar{r}) \\ 
+&= - \Delta x \partial_x (u r \rho) + \rho (r - \bar{r}) + \frac{(\Delta x)^2}{2} \partial_x^2 (u r \rho) - 2 r \rho \partial_x^2 u - 2 \rho \partial_x u \partial_x r - 2 r \partial_x u \partial_x \rho
+\end{align*}
 \end{document}
