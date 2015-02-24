@@ -3,6 +3,27 @@ using ASCIIPlots
 
 #Set h equal to k. deltaX greater thna h (2h usually). Match uhat to the proper mutation rate. 
 
+time = 
+numberMutations = 
+
+hx = 0.01
+ht = 0.01
+deltaX = 0.1
+
+u = MyModule.u(x, M)
+du = MyModule.du(x, M)
+du2 = MyModule.d2u(x, M)
+
+r = MyModule.r(x, M)
+dr = MyModule.dr(x, M)
+dr2 = MyModule.d2r(x, M)
+
+mesh = zeros(a, b) 
+mesh[1,1] = 1
+
+a = int(T/ht)
+b = int(1/hx) 
+
 
 T = 5.0  #Maximum time value
 k = 0.01 #t spacing
