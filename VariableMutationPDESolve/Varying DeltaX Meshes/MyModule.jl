@@ -1,8 +1,8 @@
 module MyModule
 
-function f(u, du, d2u, k, h, deltaX)
+function f(uhat, duhat, d2uhat, k, h, deltaX)
 	
-	1 - k*( du + deltaX*d2u/2 ) + (u*k/h) - (u*k*deltaX/h^2)
+	1 - k*( duhat + deltaX*d2uhat/2 ) + (uhat*k/h) - (uhat*k*deltaX/h^2)
 end
 	
 function u(x, M)

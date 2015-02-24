@@ -1,13 +1,19 @@
 using MyModule
 using ASCIIPlots
 
-#Set h equal to k. deltaX greater thna h (2h usually). Match uhat to the proper mutation rate. 
+#Read in a deltaX value
+
+keyboardInput = readline(STDIN)
+deltaX = float(chomp(keyboardInput))
 
 
-T = 05.0  #Maximum time value
+#Set h equal to k. deltaX greater than h (2h usually). Match uhat to the proper mutation rate. 
+
+
+T = 15.0  #Maximum time value
 k = 0.01 #t spacing
 
-deltaX = 0.02
+#deltaX = 0.1
 M = 1  #Number of mutations
 
 h = 0.01 #x spacing
@@ -48,7 +54,6 @@ for i = 1:(a-1)
 	end
 end
 
-writedlm("meshCos.txt", mesh)
-writedlm("mutCos.txt", u)
-writedlm("mutDCos.txt", du)
-writedlm("mutD2Cos.txt", du2)
+outputString = join(["mesh", deltaX, "_", "deltaX", ".txt"])
+
+writedlm(outputString, mesh)

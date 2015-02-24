@@ -44,3 +44,10 @@ To Do
 * Simulate for simple cases of u(x) (Means adding in functions with simulation). 
 * Analyse what the potential should be looking like and physical reasons.
 * Look up non constant coeffcient PDE's somewhere. 
+
+##24/02/15
+
+* Vary deltaX and look at the accuracy change. 
+* Derive a new equation with non-constant r. 
+* Fisher waves and burgers reaserch. 
+
