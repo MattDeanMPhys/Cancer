@@ -13,20 +13,30 @@ j = 1
 dataFrame = data.frame(seq(0, 200, length.out=length(baseData[,j])), baseData[,j], rep.int(strsplit(meshes[1], "[_]")[[1]][[1]], length(baseData[,j])))
 names(dataFrame) = c("Time", "Values", "Label")
 
-
-for( i in c(2:length(meshes))){
-
+i = 3
+while(i < 12){
 	data = read.csv(meshes[i], sep = "\t", head = F)
 	frame = data.frame(seq(0, 200, length.out=length(data[,j])), data[,j], rep.int(strsplit(meshes[i], "[_]")[[1]][[1]], length(data[,j])))
- 	names(frame) = c("Time", "Values", "Label")
+ 	
+	names(frame) = c("Time", "Values", "Label")
 	
 	dataFrame = rbind(dataFrame, frame)
 
-} 
-
-x = simData$V1[1:200]
-y = simData[1:200,j+1]/1000
-simFrame = data.frame(x,y)
+	i = i + 2
+}
 
 
-graph = ggplot(dataFrame, aes(Time, Values, colour=Label)) + geom_line() + geom_line(data=simFrame, aes(x=x,y=y), color='black')
+
+
+#x = simData$V1[1:200]
+#y = simData[1:200,j+1]/1000
+#simFrame = data.frame(x,y)
+
+
+graph = ggplot(dataFrame, aes(Time, Values, colour=Label)) + geom_line() + scale_x_continuous(limits=c(0, 50)) + scale_y_continuous(limits=c(-0.25, 1)) #+geom_line(data=simFrame, aes(x=x,y=y), color='black')
+graph = graph + theme_bw() + ggtitle("0 Mutation Bin")
+ggsave("hVary0bin.png", graph)
+
+
+
+
