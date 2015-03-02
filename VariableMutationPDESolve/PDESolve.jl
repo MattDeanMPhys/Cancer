@@ -3,24 +3,18 @@ using ASCIIPlots
 
 #Read in a deltaX value
 
-keyboardInput = readline(STDIN)
-deltaX = float(chomp(keyboardInput))
-
-<<<<<<< HEAD
+#keyboardInput = readline(STDIN)
+#deltaX = float(chomp(keyboardInput))
 
 #Set h equal to k. deltaX greater than h (2h usually). Match uhat to the proper mutation rate. 
 
-
-T = 15.0  #Maximum time value
-=======
-T = 5.0  #Maximum time value
->>>>>>> origin/VariableMutationPDESolve
+T = 200.0  #Maximum time value
 k = 0.01 #t spacing
 
-#deltaX = 0.1
+deltaX = 0.1
 M = 1  #Number of mutations
 
-h = 0.01 #x spacing
+h = 0.010 #x spacing
 x = [0:h:1]
 
 a = int(T/k) #Time span
@@ -34,30 +28,27 @@ mesh[1,1] = 1
 
 #Create three arrays for the mutation landscape
 
-u = MyModule.u(x, M)*1
-du = MyModule.du(x, M)*1
-du2 = MyModule.d2u(x, M)*1
+uHat = MyModule.u(x, M)*deltaX
+duHat = MyModule.du(x, M)*deltaX
+du2Hat = MyModule.d2u(x, M)*deltaX
 
-f = MyModule.f(u, du, du2, k, h, deltaX)
-
-writedlm("f.txt", f)
-
+alpha = uHat *(k/h)
 
 for i = 1:(a-1)
 	for j = 1:b 
-		
 		if j == 1
-			mesh[i+1,j] = (k/h)*u[j] * ( (mesh[i, j+1] * (deltaX/(2*h) - 1)) ) + MyModule.f(u[j], du[j], du2[j], k, h, deltaX) * mesh[i,j]
+			mesh[i+1,j] = mesh[i,j] * ( 1 + alpha[j] * ( 1 - (deltaX/h) ) -	k*(duHat[j] + (deltaX/2) * du2Hat[j] ) ) +  mesh[i, j+1] * alpha[j] * ( deltaX/(2 *h) - 1 )
 
 		elseif j == b
-			mesh[i+1,j] = deltaX*(k/h)*u[j] * ( (mesh[i, j-1] / (2*h)) ) + MyModule.f(u[j], du[j], du2[j], k, h, deltaX) * mesh[i,j]
-
+			mesh[i+1,j] = mesh[i,j] * ( 1 + alpha[j] * ( 1 - (deltaX/h) ) -	k*(duHat[j] + (deltaX/2) * du2Hat[j] ) ) + mesh[i, j-1] *( (alpha[j] * deltaX) / (2 * h) ) 
 		else	
-			mesh[i+1,j] = (k/h)*u[j] * ( (mesh[i, j+1] * (deltaX/(2*h) - 1)) + ((mesh[i, j-1]*deltaX) / (2*h)) ) + MyModule.f(u[j], du[j], du2[j], k, h, deltaX) * mesh[i,j]
+
+			mesh[i+1,j] = mesh[i,j] * ( 1 + alpha[j] * ( 1 - (deltaX/h) ) -	k*(duHat[j] + (deltaX/2) * du2Hat[j] ) ) + mesh[i, j-1] *( (alpha[j] * deltaX) / (2 * h) ) + mesh[i, j+1] * alpha[j] * ( deltaX/(2 *h) - 1 )
+
 		end
 	end
 end
 
-outputString = join(["mesh", deltaX, "_", "deltaX", ".txt"])
+outputString = join([h, "_", "hTEST","mesh", deltaX, "_", "deltaX", ".txt"])
 
 writedlm(outputString, mesh)

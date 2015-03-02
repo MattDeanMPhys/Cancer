@@ -155,6 +155,12 @@ f( \hat{u} ' , \hat{u} '' , \Delta x ) & = \left( \frac{\partial \hat{u}}{\parti
 \end{align*}
 
 Can then solve this the normal computational way.
+$ \alpha = \frac{\hat{u} k}{h}$
+\begin{align*}
+\rho ( x_i, t_{j+1} ) & = \rho \left( 1 + \alpha \left( 1 - \frac{\Delta x}{h} \right) - k \left( \hat{u} ' + \frac{\Delta x}{2} \hat{u} '' \right) \right) \\
+& + \frac{\Delta x}{2h} \alpha \rho(x_{i-1}, t_j) \\
+& + \alpha \left( \frac{\Delta x}{2h} - 1 \right) \rho (x_{i+1} , t_j )
+\end{align*}
 
 \newpage
 
