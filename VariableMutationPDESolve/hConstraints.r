@@ -53,7 +53,7 @@ graph = ggplot(data, aes(x=h, y=y, colour=label)) + geom_line() + scale_y_contin
 graph = graph + theme_bw() + theme(  panel.border = element_rect(colour = "black"), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 graph = graph + ggtitle("The Relationship Between $Delta x$ and $h$") + scale_x_continuous("Discretisation Parameter, h", expand=c(0,0), limits = c(0, 0.5)) 
 
-
+ggsave("hConstraints.png", graph)
 
 
 
