@@ -6,7 +6,7 @@
 \section{Non-Flat Mutation Rates INITIAL}
 
 \begin{align*}
-\bar{r} \dot{x}_i & = u_{i} r_{i-1} x_{i-1} + x_{i}  r_I ( 1- u_{i+1} ) - \bar{r} ) \\
+\bar{r} \dot{x}_i & = u_{i} r_{i-1} x_{i-1} + x_{i}  r_i ( 1- u_{i+1} ) - \bar{r} ) \\
 r & = \text{const.} \\
 \dot{\rho _i} & = u_i \rho _{i-1} - \rho _{i} u_{i+1} \\
 \dot{\rho} (x, t) & = u(x) \rho (x - \Delta x, t) - \rho (x,t) u(x + \Delta x , t) \\
@@ -389,4 +389,32 @@ which leads to (after taylor expansion)
 \bar{r} \dot{\rho} &= -u \rho \Delta x \partial_x r - u r \Delta x \partial)x \rho - \Delta x \rho r \partial_x u + \frac{(\Delta x)^2}{2} (u \rho \partial^2_x r + u r \partial_x^2 \rho - \rho r \partial_x^2 u + 2u \partial_x r \partial_x \rho) + \rho(r-\bar{r}) \\ 
 &= - \Delta x \partial_x (u r \rho) + \rho (r - \bar{r}) + \frac{(\Delta x)^2}{2} \partial_x^2 (u r \rho) - 2 r \rho \partial_x^2 u - 2 \rho \partial_x u \partial_x r - 2 r \partial_x u \partial_x \rho
 \end{align*}
+
+Again, using the previous notation of $\hat{u} = u(x) \Delta x$. 
+
+\begin{align*}
+\overline{r} \dot{\rho} & = \rho \left(r - \bar{r} -  \frac{\partial}{\partial x} ( \hat{u} r) + \frac{\Delta x }{2} ( \hat{u} \frac{\partial ^2 r}{\partial x^2} - r \frac{\partial ^2 \hat{u}}{\partial x^2} ) \right) + \frac{\partial \rho}{\partial x} \left(- \hat{u} r + \frac{\Delta x}{2} \hat{u} \frac{\partial r}{\partial x} \right) + \frac{\Delta x}{2} \hat{u}r \frac{\partial ^2 \rho}{\partial ^2 x} \\
+\end{align*}
+
+This collapse into the flat case for constant $u$  and $r$. 
+
+
+Taking the small $\Delta x$ limit without forming the $\hat{u}$. 
+
+\begin{align*}
+\overline{r} \dot{\rho} & = \rho \left(r - \bar{r} - \Delta x \frac{\partial}{\partial x} (ur) + \frac{\Delta x ^2}{2} ( u \frac{\partial ^2 r}{\partial x^2} - r \frac{\partial ^2 u}{\partial x^2} ) \right) + \frac{\partial \rho}{\partial x} \left(- \Delta x u r + \frac{\Delta x^2}{2} u \frac{\partial r}{\partial x} \right) + \frac{\Delta x^2}{2} ur \frac{\partial ^2 \rho}{\partial ^2 x} \\
+ \bar{r} \dot{\rho} & = \rho \left(r - \bar{r} \right) \\
+ \bar{r} & = \int \rho(x, t = t_i) r(x) dx  
+\end{align*}
+
+Want to remove this integral, is this achieved by differentiating? 
+
+\begin{align*}
+\bar{r} \left( \dot{\rho} + \rho \right) & = \rho r \\
+\bar{r} & = \frac{\rho r}{(\dot{\rho} + \rho )} \\
+\int r(x) \rho(x , t) \mathrm{d} x & = \frac{\rho r}{(\dot{\rho} + \rho )} \\
+r \rho & =\frac{\partial}{\partial x} \left( \frac{\rho r}{\dot{\rho} + \rho} \right) \\
+& = \frac{1}{\dot{\rho} + \rho} \left( \frac{\partial \rho}{\partial x} r + \frac{\partial r}{\partial x} \rho \right) - \rho r \left( \frac{1}{(\dot{\rho} + \rho ) ^2} \right) \left( \frac{\partial ^2 \rho}{\partial x \partial t} + \frac{\partial \rho}{\partial	 x} \right)
+\end{align*}
+
 \end{document}
