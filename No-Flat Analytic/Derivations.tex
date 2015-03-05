@@ -417,4 +417,87 @@ r \rho & =\frac{\partial}{\partial x} \left( \frac{\rho r}{\dot{\rho} + \rho} \r
 & = \frac{1}{\dot{\rho} + \rho} \left( \frac{\partial \rho}{\partial x} r + \frac{\partial r}{\partial x} \rho \right) - \rho r \left( \frac{1}{(\dot{\rho} + \rho ) ^2} \right) \left( \frac{\partial ^2 \rho}{\partial x \partial t} + \frac{\partial \rho}{\partial	 x} \right)
 \end{align*}
 
+\newpage
+
+\section*{Our equation stability analysis}
+
+From our equation with varying $u$ and $r$ we will do some stability analysis of the fixed points. The coeffecients are just place holders at the minute. 
+
+\begin{align*}
+\dot{\rho} & = a \rho + b \frac{\partial \rho}{\partial x} +c \frac{\partial ^2 \rho}{\partial x ^2} \\
+\rho (z) & \equiv U(x-vt) \\
+\dot{\rho} & = - v \frac{dU}{dz} \\
+\frac{\partial \rho}{\partial x} & = \frac{d U}{d z} \\
+\frac{\partial ^2 \rho}{\partial x ^2} & = \frac{d ^2 U}{d z^2} \\
+\\
+- v U ' & = a U + b U' + c U'' \\
+c U '' & = - (b + v) U' - a U \\
+\end{align*}
+
+Now introduce a new variable to change this from a second order to two coupled first order equations. 
+
+\begin{align*}
+V & \equiv U' \\
+V ' & = - \frac{(b+v)}{c} V - \frac{a}{c} U
+\end{align*}
+
+This is a matrix equation 
+
+\begin{equation}
+\begin{pmatrix}
+U ' \\
+V '
+\end{pmatrix}  = 
+\begin{pmatrix}
+0 & 1 \\
+- \frac{a}{c} & - \frac{(b+v)}{c}
+\end{pmatrix}
+\begin{pmatrix}
+U \\ 
+V
+\end{pmatrix}
+\end{equation}
+
+This shows that there is only one fixed point. $(0,0)$. To calculate it's stability we need to evaluate the eigenvalues of this matrix. 
+
+\begin{align*}
+- \lambda \left( - \frac{(b+v)}{c} - \lambda \right) + \frac{a}{c} & = 0 \\
+& = \lambda ^2 + \frac{(b+v)}{c} + \frac{a}{c} \\
+\end{align*}
+
+\begin{align*}
+\lambda & = - \frac{(b+v)}{c} \pm \sqrt{\frac{(b+v)^2}{c^2} - \frac{4a}{c}} \\
+& = - \frac{(b+v)}{c} \left( 1 \mp \sqrt{1 - \frac{4ac}{(b+v)^2}} \right)
+\end{align*}
+
+From the Fisher wave analysis we know that the $(0,0)$ fixed point needs to be a  stable node. 
+
+\begin{align*}
+1 - \frac{4ac}{(b+v)^2} \geq 0 \\
+(b+v)^2 \geq 4ac \\
+v \geq \pm 2 \sqrt{ac} - b \\
+\end{align*}
+
+Can ignore the minus solution if the positive is satisfied so is the minus. 
+
+\begin{equation}
+v \geq 2 \sqrt{ac} - b
+\end{equation}
+
+Also, for the node to be stable: 
+
+\begin{equation}
+1 - \sqrt{1 - \frac{4ac}{(b+v)^2}} > 0 \\
+\end{equation}
+
+\begin{align*}
+1 - \sqrt{1 - \frac{4ac}{(b+v)^2}} & > 0 \\
+\sqrt{1 - \frac{4ac}{(b+v)^2}} < 1  \\
+1 - \frac{4ac}{(b+v)^2} < 1 \\
+\end{align*}
+
+This is satisfied by the wave speed constraints, therefore so long as the wave speed constraint above is satisfied then the node will be stable. 
+
+Fisher waves are the connection between two points though, without the two fixed points implicit in the equation its not brilliant. 
+
 \end{document}

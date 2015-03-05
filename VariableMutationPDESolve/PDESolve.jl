@@ -9,7 +9,7 @@ using ASCIIPlots
 #Set h equal to k. deltaX greater than h (2h usually). Match uhat to the proper mutation rate. 
 
 T = 200.0  #Maximum time value
-k = 0.01 #t spacing
+k = 0.0001 #t spacing
 
 deltaX = 0.1
 M = 1  #Number of mutations
@@ -49,6 +49,8 @@ for i = 1:(a-1)
 	end
 end
 
-outputString = join([h, "_", "hTEST","mesh", deltaX, "_", "deltaX", ".txt"])
+#outputString = join([h, "_", "hTEST","mesh", deltaX, "_", "deltaX", ".txt"])
+
+outputString = "MATTMESHTEST.txt"
 
 writedlm(outputString, mesh)
