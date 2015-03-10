@@ -548,6 +548,26 @@ v \geq & 2 \sqrt{- \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{
 
 Find a family of solutions for this spectrum of mutation rates and see if there is a change in the way it behaves. 
 
+\subsubsection*{Variable $r$, variable $u$}
 
+\begin{align*}
+a & =\left( r-  \bar{r} - \Delta x \frac{\partial (ur)}{\partial x} + \frac{\Delta x ^2}{2} \left( u \frac{\partial ^2 r}{\partial x^2} - r \frac{\partial ^2 u}{\partial x^2} \right) \right) \frac{1}{\bar{r}} \\
+b & = \left( \frac{\Delta x^2}{2} u \frac{\partial r}{\partial x} - \Delta x ur \right) \frac{1}{\bar{r}} \\
+c & = \frac{\Delta x^2}{2 \bar{r}} ur
+\end{align*}
+
+\subsubsection*{Phase Portrait of Our System}
+
+\begin{equation}
+\dot{\rho} = a \rho + b \frac{\partial \rho}{\partial x} + c \frac{\partial ^2 \rho}{\partial x ^2}
+\end{equation}
+
+\begin{align*}
+- v U' & = a U + b U ' + c U '' \\
+0 & = a U + (b+v) U' +c U '' \\
+\\
+V & = U' \\
+V ' & = - \frac{(b+v)}{c} V - \frac{a}{c} U 
+\end{align*}
 
 \end{document}
