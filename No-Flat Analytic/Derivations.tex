@@ -466,8 +466,8 @@ This shows that there is only one fixed point. $(0,0)$. To calculate it's stabil
 \end{align*}
 
 \begin{align*}
-\lambda & = - \frac{(b+v)}{c} \pm \sqrt{\frac{(b+v)^2}{c^2} - \frac{4a}{c}} \\
-& = - \frac{(b+v)}{c} \left( 1 \mp \sqrt{1 - \frac{4ac}{(b+v)^2}} \right)
+\lambda & = - \frac{(b+v)}{2c} \pm \frac{1}{2} \sqrt{\frac{(b+v)^2}{c^2} - \frac{4a}{c}} \\
+& = - \frac{(b+v)}{2c} \left( 1 \mp \sqrt{1 - \frac{4ac}{(b+v)^2}} \right)
 \end{align*}
 
 From the Fisher wave analysis we know that the $(0,0)$ fixed point needs to be a  stable node. 
@@ -499,5 +499,55 @@ Also, for the node to be stable:
 This is satisfied by the wave speed constraints, therefore so long as the wave speed constraint above is satisfied then the node will be stable. 
 
 Fisher waves are the connection between two points though, without the two fixed points implicit in the equation its not brilliant. 
+
+\subsubsection*{Wave Solution following Fisher}
+
+\begin{align*}
+\dot{\rho} & = a \rho + b \frac{\partial \rho}{\partial x} + c \frac{\partial ^2 \rho}{\partial x^2} \\
+\dot{\rho} & = - v \frac{\partial \rho}{\partial x} \\
+a \rho + (b+v) \frac{\partial \rho }{\partial x} + c \frac{\partial ^2 \rho }{\partial x ^2} & = 0 \\
+g & = - \frac{\partial \rho}{\partial x} \\
+a \rho - (b+v) g + c g \frac{\partial g}{\partial \rho} & = 0 \\
+\lim _{\rho \rightarrow 0 } \frac{g}{\rho} & = u \\
+a - (b + v) u + c u^2 & = 0 
+\end{align*}
+
+Quadratic equation with solutions: 
+
+\begin{align*}
+u &  = \frac{(b + v) \pm \sqrt{(b+v)^2 - 4ac}}{2a} \\
+(b+v ) ^2 & \geq  4ac \\
+v \geq & 2 \sqrt{ac} -b 
+\end{align*}
+
+Which is the same result as the stability analysis. 
+
+\subsubsection*{Flat $r$ and Flat $u$}
+
+\begin{align*}
+a & = 0 \\
+b & = - \tilde{u} \\
+\end{align*}
+
+This shows that there is a wave solution so long as the velocity is greater than the mutation probability. 
+
+\subsubsection*{Flat $r$, variable $u$}
+
+\begin{align*}
+a & = - \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{ \partial x ^2} \right) \\
+b & = - \hat{u} \\
+c & = \frac{\Delta x}{2} \hat{u}
+\end{align*}
+
+\begin{align*}
+v \geq & 2 \sqrt{- \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{ \partial x ^2} \right)\frac{\Delta x}{2} \hat{u} } + \hat{u} \\
+\end{align*}
+\begin{align*}
+\left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{ \partial x ^2} \right) & \leq 0 
+\end{align*}
+
+Find a family of solutions for this spectrum of mutation rates and see if there is a change in the way it behaves. 
+
+
 
 \end{document}
