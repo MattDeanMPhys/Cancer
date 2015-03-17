@@ -1,0 +1,17 @@
+Number of cells: 	 100
+Number of mutations: 	 10
+Number of iteration: 	 100
+Fitness Landscape: 	 FLAT
+Mutation Landscape: 	 MANUAL
+Fitness Flat Value: 	 1
+Mutation Flat Value: 	 0.5
+Mutation Manual Value: 	 0.01
+Mutation Manual Value: 	 0.11
+Mutation Manual Value: 	 0.21
+Mutation Manual Value: 	 0.31
+Mutation Manual Value: 	 0.41
+Mutation Manual Value: 	 0.51
+Mutation Manual Value: 	 0.61
+Mutation Manual Value: 	 0.71
+Mutation Manual Value: 	 0.81
+Mutation Manual Value: 	 0.91

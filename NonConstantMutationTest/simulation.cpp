@@ -82,6 +82,31 @@ if( uLandscape.compare("FLAT") != 0 ){
 	parameterOutputFile << "Mutation Trap End: \t " << uTrapEnd << std::endl;
 }
 
+
+//##### CUSTOM MUTATION LANDSCAPE ######
+
+bool customMutation = 0;
+
+if(customMutation){
+
+	std::vector<double> uManual;
+
+	for(int x = 0 ; x<NUMBER_OF_MUTATIONS; x++){
+
+		//Here is where you specfiy the function that the mutation landscape needs to follow. 
+		auto f = [](int x){return x ; };
+
+		uManual.at(x) = f(x);
+
+	}
+	
+	pop_test.Manual_MutationLandscape(uManual);
+
+}
+
+
+
+
 parameterOutputFile.close();
 
 std::vector<double> r = pop_test.Get_FitnessLandscape();
@@ -141,7 +166,7 @@ while(z < iterations){
 			fixationTimeFile <<  averageArray.at(avgCounter).at(0)  << std::endl;
 			fixxed = pop_test.Fixation_Test();
 			
-t = clock();
+//t = clock();
 			while(avgCounter < averageArray.size()){
 				averageArray.at(avgCounter).at(NUMBER_OF_MUTATIONS) = averageArray.at(avgCounter).at(NUMBER_OF_MUTATIONS) +  NUMBER_OF_CELLS;
 				avgCounter ++ ;

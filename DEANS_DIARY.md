@@ -110,10 +110,13 @@ Calculated the ratios of the of Euler forward and Fourier solution. The old resu
 Fixed the Fourier normalisation (added a 1/2pi to our solution. This fixed the discrepancy of roughly 6 observed between the Euler solution and the Fourier analytic equation. In addition we have started to reformat graphs we have produced, ready for the report. 
 
 04/12/14
-—s
+--—
 Another day spent tidying up graphs for the report. Additionally, we tried to see if the Fourier analytic solution could be averaged to get the same results as Euler average. 
 
+05/02/14
+---
 
+Succcesfully written a programme that numerically solves the PDE in the flat mutation case. Need to verify behaviour with simulations at non flat cases. Started modifiying simulation for non flat case. 
 
 
 

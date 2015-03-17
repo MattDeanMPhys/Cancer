@@ -3,10 +3,10 @@
 
 \begin{document}
 
-\section{Non-Flat Mutation Rates}
+\section{Non-Flat Mutation Rates INITIAL}
 
 \begin{align*}
-\bar{r} \dot{x}_i & = u_{i} r_{i-1} x_{i-1} + x_{i} ( r_I ( 1- u_{i+1} ) - \bar{r} ) \\
+\bar{r} \dot{x}_i & = u_{i} r_{i-1} x_{i-1} + x_{i}  r_i ( 1- u_{i+1} ) - \bar{r} ) \\
 r & = \text{const.} \\
 \dot{\rho _i} & = u_i \rho _{i-1} - \rho _{i} u_{i+1} \\
 \dot{\rho} (x, t) & = u(x) \rho (x - \Delta x, t) - \rho (x,t) u(x + \Delta x , t) \\
@@ -89,6 +89,485 @@ Combining everything in one.
 
 \begin{align*}
 \dot{\tilde{\rho}} & = - \frac{(ik + k ^2 )}{2}  \left( \tilde{\rho} ( k - \frac{\pi}{2 M} ) + \tilde{\rho} ( k + \frac{\pi}{2 M} ) \right) 
+\end{align*}
+
+\newpage
+
+\subsection*{Improved}
+
+\begin{align*}
+\dot{\rho} & = u \rho(x - \Delta x) - \rho u(x + \Delta x) \\
+& = u \left( \rho (x) - \Delta x \frac{\partial \rho}{\partial x} + \frac{\Delta x ^2}{2} \frac{\partial ^2 \rho}{\partial x^2} \right) - \rho \left( u(x) + \Delta x \frac{\partial u }{\partial x} + \frac{\Delta x ^2}{2} \frac{\partial ^2 u}{\partial x ^2} \right) \\ 
+& = - u \frac{\partial \rho}{\partial x} \Delta x + u \frac{\Delta x ^2}{2} \frac{\partial ^2 \rho}{\partial x ^2} - \Delta x \rho \frac{\partial u}{\partial x} - \frac{\Delta x ^2}{2} \rho \frac{\partial ^2 u}{\partial x ^2}
+\end{align*}
+Introduce a new scaled variable $\hat{u} = u(x) \cdot \Delta x$. 
+
+\begin{align*}
+\dot{\rho} & = - \hat{u} \frac{\partial \rho}{\partial x} + \frac{\Delta x}{2} \hat{u} \frac{\partial ^2 \rho}{\partial x ^2} - \rho \frac{\partial \hat{u}}{\partial x} - \frac{\Delta x }{2} \rho \frac{\partial ^2 \hat{u}}{\partial x ^2}
+\end{align*}
+
+This collapses down into our old equation with an additional term. 
+
+\begin{align*}
+\dot{\rho} & = - \hat{u} \frac{\partial \rho}{\partial x} + \frac{\Delta x}{2} \hat{u} \frac{\partial ^2 \rho}{\partial x ^2} - \rho \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x }{2} \frac{\partial ^2 \hat{u}}{\partial x^2} \right) 
+\end{align*}
+
+In the limit $\Delta x \rightarrow 0$ we get the normal advection equation 
+
+\begin{equation}
+\lim _{\Delta x \rightarrow 0} \dot{\rho}  = - \frac{\partial (\rho \hat{u} )}{\partial x}
+\end{equation}
+
+\newpage
+
+\section{Numerically Solving the PDE}
+
+Start with the PDE and initial condition. 
+
+\begin{equation}
+\dot{\rho} = - \hat{u} \frac{\partial \rho}{\partial x} + \frac{\Delta x}{2} \hat{u} \frac{\partial ^2 \rho}{\partial x ^2} - \rho \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x }{2} \frac{\partial ^2 \hat{u}}{\partial x^2} \right) 
+\end{equation}
+
+\begin{equation}
+\rho ( x, 0) = \delta (x - x _0 ) 
+\end{equation}
+
+We discretise with $x_i = i h $ and $t_j = jk$. 
+
+\begin{align*}
+\frac{\partial \rho}{\partial t} & = \frac{\rho ( x_i , t_{j+1}) - \rho (x _i , t_j )}{k} \\
+\frac{\partial \rho}{\partial x} & = \frac{\rho ( x_{i + 1} , t_{}) - \rho (x _i , t_j )}{h} \\
+\frac{\partial ^2 \rho}{\partial x ^2} & = \frac{\rho (x_{i+1} , t_j ) - 2 \rho ( x _i, t _j ) + \rho (x_{i-1} , t_j ) }{h ^2} \\
+\end{align*}
+
+Inserting these into the PDE
+
+\begin{align*}
+\frac{\rho ( x_i , t_{j+1}) - \rho (x _i , t_j )}{k} & = - \hat{u} \left(  \frac{\rho ( x_{i + 1} , t_{j}) - \rho (x _i , t_j )}{h} \right) + \frac{\hat{u} \Delta x}{2} \left( \frac{\rho (x_{i+1} , t_j ) - 2 \rho ( x _i, t _j ) + \rho (x_{i-1} , t_j ) }{h ^2} \right)  \\
+& - \rho ( x _i , t_j ) f( \hat{u} ' , \hat{u} '' , \Delta x ) \\
+f( \hat{u} ' , \hat{u} '' , \Delta x ) & = \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x }{2} \frac{\partial ^2 \hat{u}}{\partial x^2} \right) 
+\end{align*}
+
+\begin{align*}
+\rho ( x_i , t_{j+1}) & = \rho - \frac{\hat{u} k }{h} \left( \rho (x_{i+1} , t_j ) - \rho \right) + \frac{\hat{u} \Delta x k }{2 h ^2} \left( \rho ( x_{i + 1 }, t_j ) - 2 \rho + \rho ( x_{i-1} , t_j ) \right) - k \rho f \\
+& = \rho \left( 1 + \frac{\hat{u } k }{h} - \frac{\hat{u} \Delta x k }{h^2} - kf \right) + \frac{\hat{u} \Delta x k }{2 h ^2} \rho ( x_{i-1} , t_j )  + \rho ( x_{i+1} , t_j ) \left( \frac{\hat{u} \Delta x k}{ 2 h ^2} - \frac{\hat{u} k}{h} \right) \\
+& = \rho \left(1 + \frac{\hat{u} k }{h} \left(1 - \frac{\Delta x}{h} \right) - k \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x }{2} \frac{\partial ^2 \hat{u}}{\partial x^2} \right)  \right) + \frac{\hat{u} \Delta x k }{2 h ^2} \rho ( x_{i-1} , t_j ) + \rho ( x_{i+1} , t_j ) \left( \frac{\Delta x }{2h} - 1 \right) \frac{\hat{u} k }{h}
+\end{align*}
+
+Can then solve this the normal computational way.
+$ \alpha = \frac{\hat{u} k}{h}$
+\begin{align*}
+\rho ( x_i, t_{j+1} ) & = \rho \left( 1 + \alpha \left( 1 - \frac{\Delta x}{h} \right) - k \left( \hat{u} ' + \frac{\Delta x}{2} \hat{u} '' \right) \right) \\
+& + \frac{\Delta x}{2h} \alpha \rho(x_{i-1}, t_j) \\
+& + \alpha \left( \frac{\Delta x}{2h} - 1 \right) \rho (x_{i+1} , t_j )
+\end{align*}
+
+\newpage
+
+\section{PDE Analysis}
+
+\begin{equation}
+\dot{\rho} = - \hat{u} \frac{\partial \rho}{\partial x} + \frac{\Delta x}{2} \hat{u} \frac{\partial ^2 \rho}{\partial x ^2} - \rho \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x }{2} \frac{\partial ^2 \hat{u}}{\partial x^2} \right) 
+\end{equation}
+
+Re-arrange this to the stardard form. 
+
+\begin{align*}
+\frac{\Delta x \hat{u}}{2} \frac{\partial ^2 \rho }{\partial x ^2} - \hat{u} \frac{\partial \rho}{\partial x} - \frac{\partial \rho}{\partial t} - \rho \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x }{2} \frac{\partial ^2 \hat{u}}{\partial x^2} \right) & = 0 
+\end{align*}
+
+Classification of this PDE is based on the coeffeicents of the double derivatives. 
+
+\begin{align*}
+\Delta (x , y) & = 0 ^2 - 0^ 2 = 0
+\end{align*}
+
+As there are know terms with the cross derivative and no terms with the second differential of $t$, the determinate is zero and the equation is parabolic. 
+ 
+\newpage 
+ 
+\section{Mutation Function analysis}
+
+We are free to chose a function for the mutation rate. 
+
+\begin{equation}
+\dot{\rho} = - \hat{u} \frac{\partial \rho}{\partial x} + \frac{\Delta x}{2} \hat{u} \frac{\partial ^2 \rho}{\partial x ^2} - \rho \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x }{2} \frac{\partial ^2 \hat{u}}{\partial x^2} \right) 
+\end{equation}
+
+The degree of freedom comes in the last term, so we define a function for ease of notation. 
+
+\begin{equation}
+\mathcal{U} (x, \hat{u}, \hat{u} ^{(n)} ) = \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{\partial x^2}
+\end{equation}
+
+\subsection{$\mathcal{U} = \hat{u}$}
+
+By setting the function equal to the mutation function then it can be taken as a common factor from all the terms in the PDE. 
+
+\begin{align*}
+ \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{\partial x^2} & = \hat{u} \\ 
+\end{align*}
+
+$\hat{u}$ is just a function of $x$, therefore this is a linear, second order differential equation with auxillary equation; 
+
+\begin{align*}
+\lambda & = \frac{- 1 \pm \sqrt{1 + 2 \Delta x}}{\Delta x},
+\end{align*}
+
+therefore, is has solutions 
+
+\begin{align*}
+\hat{u} & = A \exp \left( \left( - \frac{1}{\Delta x} + \frac{\sqrt{1 + 2 \Delta x}}{\Delta x} \right) x \right) + B \exp \left( - \left( \frac{1}{\Delta x} + \frac{\sqrt{1 + 2 \Delta x}}{\Delta x} \right) x \right)
+\end{align*}
+
+$A$ and $B$ are constants that determine the scale of mutation probabilities. 
+
+\subsection{$\mathcal{U} = \text{polynomial}$ }
+
+\begin{align*}
+ \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{\partial x^2} & = \sum _{- \infty} ^{\infty} c_n x^n \\ 
+\end{align*}
+
+\begin{align*}
+v & = \frac{\partial \hat{u}}{\partial x} \\
+v + \frac{\Delta x }{2} \frac{\partial v}{\partial x} & =  \sum _{- \infty} ^{\infty} c_n x^n
+\end{align*}
+
+This has complimentary function (correct phrase?) 
+
+\begin{align*}
+v & = B e^{- \frac{2}{\Delta x} x}
+\end{align*}
+
+Trial form for the particular integral;
+
+\begin{align*}
+v(x) & = B e^{- \frac{2}{\Delta x} x} + \sum c_{\alpha } x^{\alpha } \\
+v ' & = \frac{-2 B}{\Delta x} e^{- \frac{2}{\Delta x} x} + \sum \alpha c_{\alpha} x^{\alpha - 1} \\
+\end{align*}
+\begin{align*}
+B e^{- \frac{2}{\Delta x} x} + \sum c_{\alpha } x^{\alpha } + \frac{\Delta x}{2} \left( \frac{-2 B}{\Delta x} e^{- \frac{2}{\Delta x} x} + \sum \alpha c_{\alpha} x^{\alpha - 1} \right) & = \sum _{- \infty} ^{\infty} c_n x^n \\
+\sum c_{\alpha } x^{\alpha } + \frac{\Delta x}{2} \sum  \alpha c_{\alpha } x^{\alpha -1 } & = \sum _{- \infty} ^{\infty} c_n x^n \\
+\sum c_{\alpha } x^{\alpha } + \frac{\Delta x}{2} \sum ( \alpha + 1 ) c_{\alpha + 1} x ^{\alpha } & = \sum _{- \infty} ^{\infty} c_n x^n
+\end{align*}
+
+From orthogonality of the powers
+
+\begin{align*}
+c_{\alpha } + \frac{\Delta x}{2} ( \alpha + 1 ) c_{\alpha + 1 } & = c _n
+\end{align*}
+
+OR 
+
+\begin{align*}
+c _\alpha + \frac{\Delta x }{2} \frac{\alpha c_\alpha }{x} & = c_n \\
+c_\alpha & = \frac{c_n}{1 + \frac{\Delta x \alpha }{2x}}
+\end{align*}
+
+So the full solution is 
+
+\begin{align*}
+v ( x) & = B e^{\frac{-2 x}{\Delta x} } + \sum \frac{c_n x ^n }{1 + \frac{\Delta x n}{2 x}} 
+\end{align*}
+
+Unwinding the substitution 
+
+\begin{align*}
+\frac{\partial \hat{u}}{\partial x } & = B e^{\frac{-2 x}{\Delta x} } + \sum \frac{c_n x ^n }{1 + \frac{\Delta x n}{2 x}} \\
+\hat{u} & =  - \frac{B \Delta x}{2} e^{\frac{-2 x}{\Delta x} } + \int \sum	 \frac{2 c_n x^{n+1}}{2x + \Delta x n } \mathrm{d} x
+\end{align*}
+
+\subsubsection*{Testing by differentiation and subbing back in. }
+
+\begin{align*}
+\hat{u} & =  - \frac{B \Delta x}{2} e^{\frac{-2 x}{\Delta x} } + \int \sum	 \frac{2 c_n x^{n+1}}{2x + \Delta x n } \mathrm{d} x \\
+\hat{u} ' & = B e ^{- \frac{2x}{\Delta x }} + \sum	 \frac{2 c_n x^{n+1}}{2x + \Delta x n } \\
+\hat{u} '' & = \frac{- 2 B }{\Delta x} e ^{- \frac{2x}{\Delta x }} + \sum \left( \frac{2 c_n (n+1) x^n}{(2x + \Delta x n)} - \frac{4 c_n x^{n+1}}{(2 x + \Delta x n )^2}  \right) \\
+\hat{u} ' + \frac{\Delta x}{2} \hat{u} '' & = \sum	 \frac{2 c_n x^{n+1}}{2x + \Delta x n } + \frac{\Delta x}{2} \left( \sum \left( \frac{2 c_n (n+1) x^n}{(2x + \Delta x n)} - \frac{4 c_n x^{n+1}}{(2 x + \Delta x n )^2}  \right) \right) \\
+\end{align*}
+
+In the limit of $\Delta x \rightarrow 0$ this is correct. 
+
+\subsubsection*{Example}
+
+\begin{align*}
+ \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{\partial x^2} & = \sum _{- \infty} ^{\infty} c_n x^n \\ 
+ \sum _{- \infty} ^{\infty} c_n x^n & = x \\
+ c_n & =  \begin{cases}
+1 & n = 1 \\
+0 & n \neq 1		
+\end{cases} \\
+\hat{u} & =  - \frac{B \Delta x}{2} e^{\frac{-2 x}{\Delta x} } + \int \sum	 \frac{2 c_n x^{n+1}}{2x + \Delta x n } \mathrm{d} x \\
+& = - \frac{B \Delta x}{2} e^{\frac{-2 x}{\Delta x} } + \int \left( \frac{2 x^2}{2 x + \Delta x} \right)
+\end{align*}
+
+\newpage
+
+\subsection{FKKP Methods}
+
+"Wave of Advance of Advantageous Genes" Ronald Fisher. 
+
+\begin{align*}
+\dot{\rho} & = - \hat{u} \frac{\partial \rho}{\partial x} + \frac{\Delta x \hat{u}}{2} \frac{\partial ^2 \rho}{\partial x ^2} - \rho \left(\frac{\partial u}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 u}{\partial x ^2} \right) \\
+\end{align*}
+
+We want a wave solution, travelling at speed $v$, therefore $ \frac{\partial \rho}{\partial t}  = - v \frac{\partial \rho}{\partial x}$ 
+
+\begin{equation}
+\frac{\Delta x \hat{u}}{2} \rho ^{''} + ( v - \hat{u} ) \rho ^{'} - \rho \left( u^{'} + \frac{\Delta x}{2} u^{''} \right) = 0 
+\end{equation} 
+
+There is no explicit $x$ dependence in the equation, therefore we can write the concentration as the derivative of another function. 
+
+\begin{align*}
+g & = - \frac{d \rho}{d x} \\
+\frac{\partial g}{\partial x} & = - \frac{\partial ^2 \rho}{\partial x ^2 } \\
+\frac{\partial ^2 \rho}{\partial x^2} &= g \frac{\partial g}{\partial \rho} \\
+\end{align*}
+
+\begin{equation}
+\frac{\Delta x \hat{u}}{2} g \frac{\partial g}{\partial \rho} + ( v - \hat{u} ) (-g) - \rho \left( \frac{\partial u}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 u}{\partial x ^2 } \right)  = 0 
+\end{equation}
+
+$$\lim _{\rho \rightarrow 0} \frac{g}{\rho} = \omega $$
+$$ \frac{\partial g}{\partial \rho} = \omega $$
+
+\begin{equation}
+\frac{\hat{u} \Delta x }{2} \omega ^2 + ( v - \hat{u} ) ( - \omega ) - \left( \hat{u} ' + \frac{\Delta x}{2} \hat{u}'' \right) = 0 
+\end{equation}
+
+By examining the determinant of this quadratic equation we can arrive at an equation for $v$. 
+
+\begin{align*}
+(v - \hat{u} )^2 - 4 \frac{\hat{u} \Delta x}{2} \left( - \left( \hat{u} ' + \frac{\Delta x}{2} \hat{u}'' \right) \right) & \geq 0 \\
+v ^2   - 2 v \hat{u} + \hat{u} ^2 + 2 \hat{u} \Delta x \left( \hat{u} ' + \frac{\Delta x}{2} \hat{u} '' \right) & \geq 0 \\
+v ^2   - 2 v \hat{u} + \hat{u} ^2 + 2 \hat{u} \Delta x \left( \hat{u} ' + \frac{\Delta x}{2} \hat{u} '' \right) & = C \\
+C &  \geq 0 \\
+\end{align*}
+
+\begin{align*}
+v ^2   - 2 v \hat{u} + \hat{u} ^2 + 2 \hat{u} \Delta x \left( \hat{u} ' + \frac{\Delta x}{2} \hat{u} '' \right) - C & = 0 \\
+v & = 2 \hat{u} \pm \sqrt{4 \hat{u} ^ 2 - 4 \left( \hat{u} ^2 + 2 \hat{u} \Delta x \left( \hat{u} ' + \frac{\Delta x}{2} \hat{u} '' \right) - C \right) }\\
+&= 2 \hat{u} \pm \sqrt{-8 \hat{u} \Delta x \left( \hat{u} ' + \frac{\Delta x \hat{u} ''}{2 } \right) + 4 C}
+\end{align*}
+
+As the velocity is a physical quantity, this gives us some constraints on the function inside the square brackets. 
+
+
+\begin{equation}
+C - 2 \hat{u} \Delta x \left( \hat{u} ' + \frac{\Delta x}{2} \hat{u} '' \right)  \geq 0 
+\end{equation}
+
+This gives us an ODE for $\hat{u}$: 
+
+\begin{align*}
+\hat{u} \Delta x \left( \hat{u} ' + \frac{\Delta x }{2} \hat{u} '' \right) + D & = 0
+\end{align*}
+
+Where $D$ is just the redefining of the constant. 
+
+This is very non linear and doesn't have an analytic solution. 
+
+NEED TO SOLVE IT NUMERICALLY.
+
+\section{Varying u(x) and r(x)}
+Starting from 
+\begin{align}
+\bar{r} \dot{x}_i &= u_i r_{i-1} x_{i-1} + x_i (r_i (1 - u_{i+1}) - \bar{r})) \\
+&= u_i r_{i-1} x_{i-1} + x_i r_i - x_i r_i u_{i+1} - x_i \bar{r} \\ 
+\end{align}
+taking this in the continuous limit we get 
+\begin{equation}
+\bar{r} \dot{\rho(x,t)} = u(x) r(x-\Delta x) \rho(x-\Delta x, t)+ \rho(x,t) r(x) - \rho(x,t) r(x) u (x+\Delta x)
+\end{equation}
+which leads to (after taylor expansion)
+\begin{align*}
+\bar{r} \dot{\rho}(x,t) &= u(x) [r(x) - \Delta x \frac{\partial r}{\partial x} + \frac{(\Delta x)^2}{2} \frac{\partial^2 r}{\partial ^2 x}][\rho(x,t) - \Delta x \frac{\partial \rho}{\partial x} + \frac{(\Delta x)^2}{2} \frac{\partial^2 \rho}{\partial ^2 x}]+ \rho(x,t) r(x) \\ 
+&- \rho(x,t) r(x) [u(x) + \partial_x u(x) + \frac{(\Delta x)^2}{2} \partial_x^2 u(x)] - \rho (x,t) \bar{r} \\ 
+&= u(x) [r(x) \rho(x,t) - \rho (x,t) \Delta x \partial_x r + \frac{(\Delta x)^2}{2} \rho \partial_x^2 r - r(x) \Delta \partial_x \rho + (\Delta x)^2 \partial_x r \partial_x \rho + r(x) \frac{(\Delta x)^2}{2} \partial_x^2 \rho] \\ 
+& + \rho(x,t) r(x) - \rho(x,t) u(x) r(x) - \Delta x \rho(x,t) r(x) \partial_x u(x) - \frac{(\Delta x)^2}{2} \rho(x,t) r(x) \partial_x^2 u(x) - \rho(x,t) \bar{r} \\ 
+\bar{r} \dot{\rho} &= -u \rho \Delta x \partial_x r - u r \Delta x \partial)x \rho - \Delta x \rho r \partial_x u + \frac{(\Delta x)^2}{2} (u \rho \partial^2_x r + u r \partial_x^2 \rho - \rho r \partial_x^2 u + 2u \partial_x r \partial_x \rho) + \rho(r-\bar{r}) \\ 
+&= - \Delta x \partial_x (u r \rho) + \rho (r - \bar{r}) + \frac{(\Delta x)^2}{2} \partial_x^2 (u r \rho) - 2 r \rho \partial_x^2 u - 2 \rho \partial_x u \partial_x r - 2 r \partial_x u \partial_x \rho
+\end{align*}
+
+Again, using the previous notation of $\hat{u} = u(x) \Delta x$. 
+
+\begin{align*}
+\overline{r} \dot{\rho} & = \rho \left(r - \bar{r} -  \frac{\partial}{\partial x} ( \hat{u} r) + \frac{\Delta x }{2} ( \hat{u} \frac{\partial ^2 r}{\partial x^2} - r \frac{\partial ^2 \hat{u}}{\partial x^2} ) \right) + \frac{\partial \rho}{\partial x} \left(- \hat{u} r + \frac{\Delta x}{2} \hat{u} \frac{\partial r}{\partial x} \right) + \frac{\Delta x}{2} \hat{u}r \frac{\partial ^2 \rho}{\partial ^2 x} \\
+\end{align*}
+
+This collapse into the flat case for constant $u$  and $r$. 
+
+
+Taking the small $\Delta x$ limit without forming the $\hat{u}$. 
+
+\begin{align*}
+\overline{r} \dot{\rho} & = \rho \left(r - \bar{r} - \Delta x \frac{\partial}{\partial x} (ur) + \frac{\Delta x ^2}{2} ( u \frac{\partial ^2 r}{\partial x^2} - r \frac{\partial ^2 u}{\partial x^2} ) \right) + \frac{\partial \rho}{\partial x} \left(- \Delta x u r + \frac{\Delta x^2}{2} u \frac{\partial r}{\partial x} \right) + \frac{\Delta x^2}{2} ur \frac{\partial ^2 \rho}{\partial ^2 x} \\
+ \bar{r} \dot{\rho} & = \rho \left(r - \bar{r} \right) \\
+ \bar{r} & = \int \rho(x, t = t_i) r(x) dx  
+\end{align*}
+
+Want to remove this integral, is this achieved by differentiating? 
+
+\begin{align*}
+\bar{r} \left( \dot{\rho} + \rho \right) & = \rho r \\
+\bar{r} & = \frac{\rho r}{(\dot{\rho} + \rho )} \\
+\int r(x) \rho(x , t) \mathrm{d} x & = \frac{\rho r}{(\dot{\rho} + \rho )} \\
+r \rho & =\frac{\partial}{\partial x} \left( \frac{\rho r}{\dot{\rho} + \rho} \right) \\
+& = \frac{1}{\dot{\rho} + \rho} \left( \frac{\partial \rho}{\partial x} r + \frac{\partial r}{\partial x} \rho \right) - \rho r \left( \frac{1}{(\dot{\rho} + \rho ) ^2} \right) \left( \frac{\partial ^2 \rho}{\partial x \partial t} + \frac{\partial \rho}{\partial	 x} \right)
+\end{align*}
+
+\newpage
+
+\section*{Our equation stability analysis}
+
+From our equation with varying $u$ and $r$ we will do some stability analysis of the fixed points. The coeffecients are just place holders at the minute. 
+
+\begin{align*}
+\dot{\rho} & = a \rho + b \frac{\partial \rho}{\partial x} +c \frac{\partial ^2 \rho}{\partial x ^2} \\
+\rho (z) & \equiv U(x-vt) \\
+\dot{\rho} & = - v \frac{dU}{dz} \\
+\frac{\partial \rho}{\partial x} & = \frac{d U}{d z} \\
+\frac{\partial ^2 \rho}{\partial x ^2} & = \frac{d ^2 U}{d z^2} \\
+\\
+- v U ' & = a U + b U' + c U'' \\
+c U '' & = - (b + v) U' - a U \\
+\end{align*}
+
+Now introduce a new variable to change this from a second order to two coupled first order equations. 
+
+\begin{align*}
+V & \equiv U' \\
+V ' & = - \frac{(b+v)}{c} V - \frac{a}{c} U
+\end{align*}
+
+This is a matrix equation 
+
+\begin{equation}
+\begin{pmatrix}
+U ' \\
+V '
+\end{pmatrix}  = 
+\begin{pmatrix}
+0 & 1 \\
+- \frac{a}{c} & - \frac{(b+v)}{c}
+\end{pmatrix}
+\begin{pmatrix}
+U \\ 
+V
+\end{pmatrix}
+\end{equation}
+
+This shows that there is only one fixed point. $(0,0)$. To calculate it's stability we need to evaluate the eigenvalues of this matrix. 
+
+\begin{align*}
+- \lambda \left( - \frac{(b+v)}{c} - \lambda \right) + \frac{a}{c} & = 0 \\
+& = \lambda ^2 + \frac{(b+v)}{c} + \frac{a}{c} \\
+\end{align*}
+
+\begin{align*}
+\lambda & = - \frac{(b+v)}{2c} \pm \frac{1}{2} \sqrt{\frac{(b+v)^2}{c^2} - \frac{4a}{c}} \\
+& = - \frac{(b+v)}{2c} \left( 1 \mp \sqrt{1 - \frac{4ac}{(b+v)^2}} \right)
+\end{align*}
+
+From the Fisher wave analysis we know that the $(0,0)$ fixed point needs to be a  stable node. 
+
+\begin{align*}
+1 - \frac{4ac}{(b+v)^2} \geq 0 \\
+(b+v)^2 \geq 4ac \\
+v \geq \pm 2 \sqrt{ac} - b \\
+\end{align*}
+
+Can ignore the minus solution if the positive is satisfied so is the minus. 
+
+\begin{equation}
+v \geq 2 \sqrt{ac} - b
+\end{equation}
+
+Also, for the node to be stable: 
+
+\begin{equation}
+1 - \sqrt{1 - \frac{4ac}{(b+v)^2}} > 0 \\
+\end{equation}
+
+\begin{align*}
+1 - \sqrt{1 - \frac{4ac}{(b+v)^2}} & > 0 \\
+\sqrt{1 - \frac{4ac}{(b+v)^2}} < 1  \\
+1 - \frac{4ac}{(b+v)^2} < 1 \\
+\end{align*}
+
+This is satisfied by the wave speed constraints, therefore so long as the wave speed constraint above is satisfied then the node will be stable. 
+
+Fisher waves are the connection between two points though, without the two fixed points implicit in the equation its not brilliant. 
+
+\subsubsection*{Wave Solution following Fisher}
+
+\begin{align*}
+\dot{\rho} & = a \rho + b \frac{\partial \rho}{\partial x} + c \frac{\partial ^2 \rho}{\partial x^2} \\
+\dot{\rho} & = - v \frac{\partial \rho}{\partial x} \\
+a \rho + (b+v) \frac{\partial \rho }{\partial x} + c \frac{\partial ^2 \rho }{\partial x ^2} & = 0 \\
+g & = - \frac{\partial \rho}{\partial x} \\
+a \rho - (b+v) g + c g \frac{\partial g}{\partial \rho} & = 0 \\
+\lim _{\rho \rightarrow 0 } \frac{g}{\rho} & = u \\
+a - (b + v) u + c u^2 & = 0 
+\end{align*}
+
+Quadratic equation with solutions: 
+
+\begin{align*}
+u &  = \frac{(b + v) \pm \sqrt{(b+v)^2 - 4ac}}{2a} \\
+(b+v ) ^2 & \geq  4ac \\
+v \geq & 2 \sqrt{ac} -b 
+\end{align*}
+
+Which is the same result as the stability analysis. 
+
+\subsubsection*{Flat $r$ and Flat $u$}
+
+\begin{align*}
+a & = 0 \\
+b & = - \tilde{u} \\
+\end{align*}
+
+This shows that there is a wave solution so long as the velocity is greater than the mutation probability. 
+
+\subsubsection*{Flat $r$, variable $u$}
+
+\begin{align*}
+a & = - \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{ \partial x ^2} \right) \\
+b & = - \hat{u} \\
+c & = \frac{\Delta x}{2} \hat{u}
+\end{align*}
+
+\begin{align*}
+v \geq & 2 \sqrt{- \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{ \partial x ^2} \right)\frac{\Delta x}{2} \hat{u} } + \hat{u} \\
+\end{align*}
+\begin{align*}
+\left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{ \partial x ^2} \right) & \leq 0 
+\end{align*}
+
+Find a family of solutions for this spectrum of mutation rates and see if there is a change in the way it behaves. 
+
+\subsubsection*{Variable $r$, variable $u$}
+
+\begin{align*}
+a & =\left( r-  \bar{r} - \Delta x \frac{\partial (ur)}{\partial x} + \frac{\Delta x ^2}{2} \left( u \frac{\partial ^2 r}{\partial x^2} - r \frac{\partial ^2 u}{\partial x^2} \right) \right) \frac{1}{\bar{r}} \\
+b & = \left( \frac{\Delta x^2}{2} u \frac{\partial r}{\partial x} - \Delta x ur \right) \frac{1}{\bar{r}} \\
+c & = \frac{\Delta x^2}{2 \bar{r}} ur
+\end{align*}
+
+\subsubsection*{Phase Portrait of Our System}
+
+\begin{equation}
+\dot{\rho} = a \rho + b \frac{\partial \rho}{\partial x} + c \frac{\partial ^2 \rho}{\partial x ^2}
+\end{equation}
+
+\begin{align*}
+- v U' & = a U + b U ' + c U '' \\
+0 & = a U + (b+v) U' +c U '' \\
+\\
+V & = U' \\
+V ' & = - \frac{(b+v)}{c} V - \frac{a}{c} U 
 \end{align*}
 
 \end{document}
