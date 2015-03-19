@@ -14,8 +14,14 @@ mesh = np.zeros(shape=(int(T/deltat),int(X/deltax)))
 #for k in range(0,int(1/deltax)):
 #	mesh[0][k] = 1.0
 
-for k in range(int(2/deltax),int(3/deltax)):
-	mesh[0][k] = 1.0
+#for k in range(int(2/deltax),int(3/deltax)):
+#	mesh[0][k] = 1.0
+
+mesh[0][1] = 1 
+mesh[0][0] = 1 
+mesh[0][2] = 1 
+mesh[0][3] = 1 
+mesh[0][4] = 1 
 
 # for k in range(0,int(10/deltax)):
 # 	mesh[0][k] = 0.5
