@@ -8,14 +8,14 @@ using ASCIIPlots
 
 #Set h equal to k. deltaX greater than h (2h usually). Match uhat to the proper mutation rate. 
 
-T = 200.0  #Maximum time value
+T = 20.0  #Maximum time value
 k = 0.0001 #t spacing
 
-deltaX = 0.1
+deltaX = 0.02
 M = 1  #Number of mutations
 
-h = 0.010 #x spacing
-x = [0:h:1]
+h = 0.01 #x spacing
+x = [0:h:50]
 
 a = int(T/k) #Time span
 b = int(1/h) #x span
@@ -51,6 +51,6 @@ end
 
 #outputString = join([h, "_", "hTEST","mesh", deltaX, "_", "deltaX", ".txt"])
 
-outputString = "MATTMESHTEST.txt"
+outputString = "MESHTESTMARCH.txt"
 
 writedlm(outputString, mesh)
