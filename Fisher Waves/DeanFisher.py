@@ -1,7 +1,7 @@
 import numpy as np 
 
 X = 50
-T = 25
+T = 35
 
 deltax = 0.5 
 deltat = 0.005
