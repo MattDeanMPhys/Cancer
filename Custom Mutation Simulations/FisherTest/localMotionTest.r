@@ -88,7 +88,7 @@ names(frameNeg) = c("Time", "Velocity", "Label")
 
 frame = rbind(framePos, frameNeg)
 
-graph = ggplot(frame, aes(Time, Velocity, colour = Label)) + geom_line() + theme_bw()
+graph = ggplot(frame, aes(Time, Velocity, colour = Label)) + geom_line() + theme_bw() + geom_smooth()
 
 
 

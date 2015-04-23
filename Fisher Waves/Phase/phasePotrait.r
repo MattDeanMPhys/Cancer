@@ -101,22 +101,22 @@ grph3 = grph3 + scale_y_continuous(expand=c(0,0))
 #print(grph2)
 #dev.off()
 
-tikz(file = "fisherStabilityLinesSpiral.tex", width = 3, height = 3)
-print(graph)
-dev.off()
-
-tikz(file = "fisherStabilityLinesStable.tex", width = 3, height = 3)
-print(graph2)
-dev.off()
-
-tikz(file = "fisherStabilityPointsStable.tex", width = 3, height = 3)
-print(grph2)
-dev.off()
-
-tikz(file = "fisherStabilityPointsSpiral.tex", width = 3, height = 3)
-print(grph3)
-dev.off()
-
+#tikz(file = "fisherStabilityLinesSpiral.tex", width = 3, height = 3)
+#print(graph)
+#dev.off()
+#
+#tikz(file = "fisherStabilityLinesStable.tex", width = 3, height = 3)
+#print(graph2)
+#dev.off()
+#
+#tikz(file = "fisherStabilityPointsStable.tex", width = 3, height = 3)
+#print(grph2)
+#dev.off()
+#
+#tikz(file = "fisherStabilityPointsSpiral.tex", width = 3, height = 3)
+#print(grph3)
+#dev.off()
+#
 
 
 
