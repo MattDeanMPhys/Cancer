@@ -39,6 +39,8 @@ while(i < 100){
 		break
 	}
 
+	plot(dataSnapPosCOM)
+
 	i = i + 1
 }
 

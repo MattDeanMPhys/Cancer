@@ -50,7 +50,7 @@ names(logframe) = c("Time", "Velocity")
 
 graphLog = ggplot(logframe, aes(Time, Velocity)) + geom_line() + theme_bw()
 
-tikz(file = "FKKPVelocity.tex", width = 3, height = 3)
-print(graph)
-dev.off()
+#tikz(file = "FKKPVelocity.tex", width = 3, height = 3)
+#print(graph)
+#dev.off()
 

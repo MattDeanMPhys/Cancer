@@ -77,7 +77,7 @@ graph2 = graph2 + scale_y_continuous(expand=c(0,0)) + theme(legend.position= c(0
 
 
 
-tikz(file = "mutationRateWaves.tex", width = 3, height = 3)
-print(graph2)
-dev.off()
+#tikz(file = "mutationRateWaves.tex", width = 3, height = 3)
+#print(graph2)
+#dev.off()
 

@@ -33,9 +33,8 @@ fishFrame = rbind(fishFrame1, fishFrame2, fishFrame3, fishFrame4)
 
 graph = ggplot(fishFrame, aes(x, Population, group=Time))  + geom_line() + theme_bw() + theme(panel.border = element_rect(colour = "black"), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 graph = graph + theme(legend.position = "none") + scale_x_continuous("$x$", expand=c(0,0)) + scale_y_continuous("$u$", expand=c(0,0), limits = c(0,1.05))
-graph = graph + geom_segment(aes(x = 29, xend = 45, y = 0.5, yend = 0.5), size=0.5, arrow = arrow(length = unit(0.25, "cm"))) 
-graph = graph + ggtitle("Illustration of Fisher Waves")
-graph = graph + annotate("text", x = 40, y = 0.55, label = "Wave Velocity")
+graph = graph + geom_segment(aes(x = 49, xend = 65, y = 0.5, yend = 0.5), size=0.5, arrow = arrow(length = unit(0.25, "cm"))) 
+graph = graph + ggtitle("Fisher Waves")
 
 tikz(file = "FisherWavesFKKP.tex", width = 3, height = 3)
 print(graph)

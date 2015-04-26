@@ -29,7 +29,7 @@ mesh[0][4] = 1
 for i in range(0,(int(T/deltat)-1)):
 	for j in range(0,(int(X/deltax)-1)):
 		if j == 0:
-			mesh[i+1][j] = mesh[i][j] + deltat*( (D*( mesh[i][j+1] - 2*mesh[i][j] )/(deltax*deltax)) + r*mesh[i][j]*(1-mesh[i][j]) )
+			mesh[i+1][j] = mesh[i][j] + deltat*( (D*( mesh[i][j+1] - 2*mesh[i][j] + 1 )/(deltax*deltax)) + r*mesh[i][j]*(1-mesh[i][j]) )
 		elif j == int(X/deltax)-1:
 			mesh[i+1][j] = mesh[i][j] + deltat*( (D*( mesh[i][j-1] - 2*mesh[i][j] )/(deltax*deltax)) + r*mesh[i][j]*(1-mesh[i][j]) )
 		elif (j>0 and j < int(X/deltax)-1):
