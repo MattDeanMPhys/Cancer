@@ -57,7 +57,13 @@ for(j in c(2:length(dispPos))){
 framePos = data.frame(c(1:length(velPos)), velPos, rep.int("Pos", length(velPos)))
 names(framePos) = c("Time", "Velocity", "Label")
 
+themeDean = theme_bw() + theme( panel.border = element_rect(colour = "black"), panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
 graph = ggplot(framePos, aes(Time, Velocity)) + geom_line()
+graph = graph + themeDean + scale_x_continuous(expand=c(0,0)) + scale_y_continuous(expand=c(0,0))
+graph = graph + ggtitle("$C > 0$, Local Motion")  
 
+tikz("LocalMotionPos.tex", width = 3, height = 3)
+print(graph)
+dev.off()
 
 

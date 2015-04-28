@@ -57,9 +57,14 @@ for(j in c(2:length(dispNeg))){
 frameNeg = data.frame(c(1:length(velNeg)), velNeg, rep.int("Neg", length(velNeg)))
 names(frameNeg) = c("Time", "Velocity", "Label")
 
+themeDean = theme_bw() + theme( panel.border = element_rect(colour = "black"), panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
 graph = ggplot(frameNeg, aes(Time, Velocity)) + geom_line()
+graph = graph + themeDean + scale_x_continuous(expand=c(0,0)) + scale_y_continuous(expand=c(0,0))
+graph = graph + ggtitle("$C < 0$, Local Motion")  
 
-
+tikz("LocalMotionNeg.tex", width = 3, height = 3)
+print(graph)
+dev.off()
 
 
 
