@@ -1,0 +1,11 @@
+import pygame
+mpl.plot(x[0],mesh[0,:])
+mpl.plot(x[0],mesh[5,:])
+mpl.plot(x[0],mesh[X/(4*deltax),:])
+mpl.plot(x[0],mesh[X/(2*deltax),:])
+mpl.plot(x[0],mesh[X/(3*deltax),:])
+mpl.plot(x[0],mesh[X/(5*deltax),:])
+mpl.plot(x[0],mesh[X/(6*deltax),:])
+mpl.plot(x[0],mesh[X/(deltax),:])
+mpl.axis([6,20,0,1.1])
+mpl.show()
