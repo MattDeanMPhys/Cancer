@@ -1,0 +1,26 @@
+source('~/Documents/Cancer/Initial/DeanGeneralMutation/GenData.r', chdir = TRUE)
+source('~/Documents/GenData.r', chdir = TRUE)
+source('~/Documents/Cancer/Initial/DeanGeneralMutation/GenData.r', chdir = TRUE)
+source('~/Documents/GenData.r', chdir = TRUE)
+source('~/Documents/Gen.r', chdir = TRUE)
+source('~/Documents/GenData.r', chdir = TRUE)
+ls
+ls()
+a
+head a
+head(a)
+plot(a[1])
+wd
+getwd()
+changewd()
+library(shine)
+library(shiny)
+install.packages("devtools")
+rm(list=ls())
+library(grid)
+library(ggplot2)
+library(tikzDevic)
+library(tikzDevice)
+fish = read.csv("test.txt", head = F, sep = "\t")
+tail(fish)
+fish
