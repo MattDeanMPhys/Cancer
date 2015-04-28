@@ -8,8 +8,8 @@ def find_nearest(array,value):
     idx = (np.abs(array-value)).argmin()
     return idx
 
-X=75
-T=15
+X=50
+T=35
 
 deltax = 0.5
 deltat = 0.005
@@ -25,11 +25,11 @@ mesh = np.zeros(shape=(int(T/deltat),int(X/deltax)))
 # 	print('Euler forward is unstable')
 # 	sys.exit()
 
-for k in range(0,int(15/deltax)):
+for k in range(0,int(4/deltax)):
 	mesh[0][k] = 1.0
 
-for k in range(int(35/deltax),int(45/deltax)):
-	mesh[0][k] = 0.25
+# for k in range(int(35/deltax),int(45/deltax)):
+# 	mesh[0][k] = 0.25
 
 for i in range(0,(int(T/deltat)-1)):
 	for j in range(0,(int(X/deltax)-1)):
@@ -54,7 +54,7 @@ print(x)
 print(t.T)
 print("Finished meshing")
 
-np.savetxt('test.txt', mesh)
+np.savetxt('test.txt',mesh,delimiter='\t')
 
 # U = 0.01
 # N = 100
@@ -71,14 +71,17 @@ np.savetxt('test.txt', mesh)
 # mpl.show()
 
 
-fig = mpl.figure()
-ax = fig.add_subplot(111, projection='3d')
-norm = colors.Normalize()
-ax.plot_surface(x,t.T,mesh, rstride = 400, cstride=50, facecolors=cm.jet(mesh), alpha=0.8, linewidth=0, antialiased=True)
-ax.set_xlabel('x')
-ax.set_ylabel('t')
-ax.set_zlabel('u')
-ax.set_title('Fisher wave (r=1, D=1)')
+
+# fig = mpl.figure()
+# ax = fig.add_subplot(111, projection='3d')
+# norm = colors.Normalize()
+# ax.plot_surface(x,t.T,mesh, rstride = 400, cstride=50, facecolors=cm.jet(mesh), alpha=0.8, linewidth=0, antialiased=True)
+# ax.set_xlabel('x')
+# ax.set_ylabel('t')
+# ax.set_zlabel('u')
+# ax.set_title('Fisher wave (r=1, D=1)')
+
+
 
 # mpl.savefig("plot.pdf", format='pdf')
 
