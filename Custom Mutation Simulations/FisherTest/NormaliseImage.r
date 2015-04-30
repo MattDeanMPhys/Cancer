@@ -48,7 +48,7 @@ graph = ggplot(frame, aes(x = x, y = u, linetype = label)) + geom_line()
 graph = graph + theme_bw() + theme(panel.border = element_rect(colour = "black"), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 graph = graph + scale_y_continuous(expand=c(0,0)) + scale_x_continuous(limits = c(1,25), expand=c(0,0))
 graph = graph + theme(legend.position = c(0.7, 0.7))
-
+graph = graph + theme(axis.title.y=element_text(vjust=0.1))
 graph = graph + geom_point(aes(x=3.9, y=0.5))+ geom_point(aes(x=5.65, y=0.5))+geom_point(aes(x=8.73, y=0.5))
 
 #tikz("unNormCOM.tex", width = 3, height = 3)

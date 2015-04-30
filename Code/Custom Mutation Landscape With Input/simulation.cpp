@@ -30,8 +30,8 @@ double rTrap = 1.00;
 int rTrapStart = 25;
 int rTrapEnd = 35;
 
-std::string uLandscape = "FILE";
-std::string uFileName = "negU100.TXT";
+std::string uLandscape = "FLAT";
+std::string uFileName = "negU100.txt";
 
 double uTrap = 0.10;
 double uTrapStart = 3;
@@ -101,6 +101,8 @@ if( uLandscape.compare("MANUAL") == 0 ){
 
 if( uLandscape.compare("FILE") == 0){
 
+	std::cout << "File Opened: " << uFileName << std::endl ;
+	parameterOutputFile << "File Opened: \t " << uFileName << std::endl ;
 	std::vector<double> uFileInput;
 
 	std::string line;
