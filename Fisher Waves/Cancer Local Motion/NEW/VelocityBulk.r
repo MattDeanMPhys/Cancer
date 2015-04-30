@@ -14,12 +14,28 @@ graphNeg = ggplot(negStats, aes(Time, Velocity)) + geom_line()  + themeDean + sc
 graphNeg = graphNeg + ggtitle("Bulk Motion, $C < 0$")
 graphPos = graphPos + ggtitle("Bulk Motion, $C > 0$")
 
+graphPos_ZOOM = graphPos + scale_x_continuous(limits = c(0, 100), expand=c(0,0)) + geom_smooth(fill = NA)
+graphNeg_ZOOM = graphNeg + scale_x_continuous(limits = c(0, 150), expand=c(0,0)) + geom_smooth(fill = NA)
+
+
+graphPos_TEST = graphPos + scale_x_continuous(limits = c(0, 250))
+graphNeg_TEST = graphNeg + scale_x_continuous(limits = c(0, 400))
+
 tikz("BulkMotionNeg.tex", width = 3, height = 3)
-print(graphNeg)
+print(graphNeg_TEST)
 dev.off()
 
 tikz("BulkMotionPos.tex", width = 3, height = 3)
-print(graphPos)
+print(graphPos_TEST)
 dev.off()
+
+tikz("BulkMotionPosZOOM.tex", width = 3, height =3)
+print(graphPos_ZOOM)
+dev.off()
+
+tikz("BulkMotionNegZOOM.tex", width = 3, height =3)
+print(graphNeg_ZOOM)
+dev.off()
+
 
 
