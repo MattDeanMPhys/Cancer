@@ -1,0 +1,243 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{geometry}
+\geometry{margin = 3cm}
+\usepackage{float, caption, subcaption}
+\begin{document}
+
+\section{Fisher Waves}
+
+The equation derived is of the form of a reaction-diffusion equation and as such it's solutions may consist of wave forms that propagate across the landscape the equation describes.
+
+The common form of a  reaction diffusion equation is 
+
+\begin{equation}
+\frac{\partial}{\partial t} u = \frac{\partial ^2}{\partial x ^2} u + f(u) ,
+\end{equation}
+
+this is the common heat equation with the function $f(u)$ added on. 
+
+For our equation, we see the combination of diffusion and advection in the flat mutation and fitness landscape and additional terms in the non-flat case. 
+
+A Fisher wave connects two equilibrium from the dynamics. In our case, this is the initial starting point  and the final fixation condition. 
+
+In solving these equations, the common substitution of $z = x + ct$ is used. 
+
+\subsection{Wave Solution}
+
+In Fisher's orginal paper the starting equation is used
+
+\begin{equation}
+\dot{p} = Dp'' + rp(1-p). 
+\end{equation}
+
+By using an ansatz of $\dot{p} = - v \frac{\partial p }{\partial x} $ the PDE can be reduced to an ODE
+
+\begin{equation}
+- v \frac{\mathrm{d}p}{\mathrm{d} x}  = D \frac{\mathrm{d} ^2 p}{\mathrm{d} x ^2} + rp(1-p)
+\end{equation}
+
+As there is no explicit $x$ dependence, we can use the substitution of a gradient $g = - \frac{\mathrm{d} p}{\mathrm{d} x}$.
+
+\begin{align*}
+g & = - \frac{\mathrm{d} p}{\mathrm{d} x} \\
+\frac{\mathrm{d} g}{\mathrm{d} p} & = \frac{\mathrm{d} g}{\mathrm{d} x} \frac{\mathrm{d} x}{\mathrm{d} p} \\
+& = - \frac{1}{g} \frac{\mathrm{d} g}{\mathrm{d} x} \\
+& = \frac{1}{g} \frac{\partial^2 p}{\partial x^2}
+\end{align*}
+
+\begin{equation}
+vg =  D g \frac{\partial g}{\partial p} + rp(1-p)
+\end{equation}
+
+We now take the limit 
+
+$$\lim _{p \rightarrow 0} \frac{g}{p} = u$$
+
+\begin{align*}
+D \frac{g}{p} \frac{\partial g}{\partial p} - v \frac{g}{p} + r(1-p) & = 0 \\
+D u ^2 - vu + r & = 0 
+\end{align*}
+
+Now this is a quadratic equation with solutions 
+
+\begin{align*}
+u & = \frac{v \pm \sqrt{v^2 - 4Dr}}{2D}
+\end{align*}
+
+This only has real roots for $v^2 - 4Dr \geq 0 $. 
+
+Therefore, this traveling wave only exists for $v \geq 2 \sqrt{Dr}$.
+
+\subsection{Initial Conditions that lead to traveling waves}
+
+This is the KKP part of the analysis. 
+
+\subsection{Stability Analysis}
+
+Using the ODE; 
+
+\begin{equation}
+D \frac{\mathrm{d} ^2 U}{\mathrm{d} z^2} + v \frac{\mathrm{d} U}{\mathrm{d} z}  + rU(1-U) =0.
+\end{equation}
+
+By defining a new variable we can transform the second order single dimmension to two coupled first order differential equations. 
+
+\begin{align}
+V & = \frac{\mathrm{d} U}{\mathrm{d} z} \\
+D \frac{\mathrm{d} V}{\mathrm{d} z} & = -v V + -rU(1-U) \\
+\end{align}
+
+If we rescale the dimensions such that $D=r=1$ we can reform the above into a matrix equation. 
+
+\begin{equation}
+\begin{pmatrix}
+U' \\
+V'
+\end{pmatrix}
+= 
+\begin{pmatrix}
+0 & 1 \\
+-(1-U) & -v \\
+\end{pmatrix}
+\begin{pmatrix}
+U \\
+V
+\end{pmatrix}
+\end{equation}
+
+The Jacobian of this system is 
+
+\begin{equation}
+J = 
+\begin{pmatrix}
+0 & 1 \\
+-1 + 2U & -v
+\end{pmatrix}
+\end{equation}
+
+We now take the usual approach for the stability analysis of the fixed points $A = (0,0)$ and $B = (1,0)$. 
+
+\begin{align*}
+-\lambda (-v - \lambda ) - (-1 + 2U) & = 0 \\
+\lambda ^2 + v \lambda + (1- 2U) & = 0 \\
+\lambda & = \frac{-v \pm \sqrt{v^2 - 4 (1-2U) }}{2}
+\end{align*}
+
+Point A $(0,0)$.
+
+\begin{align*}
+\lambda & = -\frac{v}{2} + \frac{1}{2} \sqrt{v^2 - 4} \\
+\lambda & = -\frac{v}{2} - \frac{1}{2} \sqrt{v^2 - 4} \\
+\end{align*}
+
+If $v < 2$ then this is a stable spiral. 
+
+If $v > 2$ then this is a stable node 
+
+Point B $(1,0)$
+
+\begin{align*}
+\lambda & = -\frac{v}{2} + \frac{1}{2} \sqrt{v^2 + 4} \\
+\lambda & = -\frac{v}{2} - \frac{1}{2} \sqrt{v^2 + 4} \\
+\end{align*}
+
+Therefore, this is a saddle point for all $v$. 
+
+We can see this by looking at the phase portrait of the system. 
+
+\begin{figure}[H]
+\begin{subfigure}[h]{0.5\textwidth}
+\input{phasePortrait1.tex}
+\end{subfigure}
+\begin{subfigure}[h]{0.5\textwidth}
+\input{phasePortrait3.tex}
+\end{subfigure}
+\end{figure}
+
+\newpage
+
+\section{Fisher Waves in Our Model}
+
+Doing the same analysis above but for our PDE produces the expression for velocity
+
+\begin{equation}
+v \geq \sqrt{- \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{\partial x^2} \right) \frac{\Delta x}{2} \hat{u} } + \hat{u}.
+\end{equation}
+
+Noticing that the exsistance of the Fisher waves is now based upon the sign under the square root, therefore by manupulating this expression we have testable conditions for the exsistance of Fisher waves within our model. 
+
+By solving the equation 
+
+\begin{equation}
+\frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{\partial x^2}  = C, 
+\label{eq:CancerFisherVelocity}
+\end{equation}
+where $C$ is a constant whose sign will dictate whether or not there are Fisher waves in the system. 
+
+If $C > 0$, then the sign underneath the square root will be negative as $u, \Delta x > 0 $. Therefore the velocity will be imaginary, this is unphysical therefore we would \textit{not} expect Fisher waves. 
+If $C < 0 $ then the sign underneath the square root will be positive, therefore a velocity for the Fisher waves will exist. 
+
+We now solve equation \eqref{eq:CancerFisherVelocity}. 
+
+\begin{align*}
+\frac{\partial u}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 u}{\partial x ^2} & = c \\
+\frac{\partial u_H}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 u_H}{\partial x ^2} & = 0 \\
+\frac{\partial u_H}{\partial x} & = v \\
+v & = - \frac{\Delta x}{2} v' \\ 
+v & = A e ^{- \frac{2x}{\Delta x}} \\
+u _H & = - A \frac{\Delta x}{2} e ^{- \frac{2x}{\Delta x}}
+\end{align*}
+
+\begin{align*}
+u & = u _H + D x^2 + F x + G \\
+u' & = u' _H + 2D x + F \\
+u'' & = u'' _H + 2D \\
+u' _H + 2D x + F + \frac{\Delta x}{2} \left( u'' _H + 2D \right) & = c \\
+2Dx + F + \Delta x D & = c \\
+D & = 0 \\
+F & = c \\
+\end{align*}
+
+Therefore the full solution is 
+
+\begin{equation}
+u(x)  = c x  + G - \frac{A \Delta x}{2} e^{- \frac{2x}{\Delta x}}
+\end{equation}
+$a, G, A$ are all constants that determine the shape of the mutation landscape. 
+
+As $u(x)$ is a probability for each value of $x$, then $ 0 \leq u(x) \leq 1 $. Using this and chosing the constants for simplicity. 
+
+\begin{align*}
+c & = \pm 0.5, \\
+A & = 1, \\
+G & = 0.5. 
+\end{align*}
+
+This produces both a decreasing and increasing mutation probability landscape. 
+
+\begin{figure}[H]
+\centering
+\input{MutationLandscape.tex}
+\caption{Increasing labels $c =0.5$ and decreasing has $c=-0.5$. }
+\end{figure}
+
+By implementing this mutation landscape in our simulation provides the following results.
+
+\begin{figure}[H]
+	\begin{subfigure}[h]{0.5\textwidth}
+		\input{Velocity100Pos.tex}	
+		\caption{Increasing mutation rate solution for a simulation with 100 mutations and $r=1$.}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.5\textwidth}
+		\input{Velocity100Neg.tex}
+	\caption{Decreasing mutation rate solution for a simulation with 100 mutations and $r=1$.}
+	\end{subfigure}
+\end{figure}
+
+As we can see the positive mutation rate has a near constant velocity for the propagation of the cloud. Where as the decreasing mutation rate has a declining velocity. 
+
+This appears to be a contradiction to the previous work.
+
+\end{document}

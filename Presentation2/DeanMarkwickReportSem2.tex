@@ -1,0 +1,949 @@
+\documentclass[12pt, a4paper,]{article}
+\usepackage{amsmath}
+\usepackage[backend = bibtex, sorting = none, style=numeric-comp]{biblatex}
+
+
+
+\DeclareCiteCommand{\supercite}[\mkbibsuperscript]
+  {\usebibmacro{cite:init}%
+   \let\multicitedelim=\supercitedelim
+   \iffieldundef{prenote}
+     {}
+     {\BibliographyWarning{Ignoring prenote argument}}%
+   \iffieldundef{postnote}
+     {}
+     {\BibliographyWarning{Ignoring postnote argument}}%
+  \bibopenbracket}%
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite:comp}}
+  {}
+  {\usebibmacro{cite:dump}\bibclosebracket}
+
+\usepackage{tikz}
+%\usepackage{pgfplots}
+%\usetikzlibrary{external}
+%\tikzexternalize[shell escape=-enable-write18]
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations.markings}
+
+\usepackage{geometry}
+\geometry{margin = 3cm}
+\usepackage{float, caption, subcaption}
+
+\let\cite=\supercite
+
+\bibliography{Sem2Bib.bib}
+
+%\addbibresource{TestLibrary.bib}
+
+\title{Stochastic Dynamics of Cancer Evolution}
+\author{Dean Markwick \\
+			\\
+			MPhys Report \\
+			\\
+			Supervisor: Dr. T. Galla \\
+			Collaborator: Matthew De Angelis 	\\
+			\\
+			School of Physics and Astronomy, \\
+			University of Manchester					
+			}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A model of cancer is developed using a Moran process to simulate the evolution of a population of cancer cells. The population undergoes a birth-death process where there is a probability that a cell acquires a mutation on birth. Cancer occurs when all cells of the population obtain the maximum amount of mutations. The case of inhomogeneous mutation probability is considered both computationally and analytically. A diffusion equation with non-constant diffusivity is derived. Fisher waves are also introduced and there existence within the model is tested but ultimately found to be inconclusive. 
+\end{abstract}
+
+
+\thispagestyle{empty}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section{Introduction}
+
+Cancer begins from a somatic mutation of a cell in the body. This is when the birth and growth mechanics of a cell introduces a defect into the genetic information of the cell. This mutation can then be passed into the offspring of this cell through inheritance. Slowly, the presence of a mutation can overtake the population of all cells, aswell as cells acquiring further mutations from continual cell reproduction. The mutation away from normality leads to aggressive and invasive behavior and as such leads to the negative impacts that are associated with cancer \cite{weinberg_biology_2014}. 
+
+The study of cancer evolution is inherently a cross-disciplinary problem \cite{sciences_converge}, calling on the knowledge of biologists, physicists and mathematicians. As a problem involving the birth and death of cells, population dynamics is an obvious parallel field. There are also inputs from non-linear dynamics, as the mutated cells are inherently unstable.  Cells have acquired mutations and this has pushed them away from the equilibrium state. Biologically, there are a number of process that can revert the state of cells back to normality, notably the human immune system will attempt to remove cells that are abnormal. Therefore, we have cancer can be modeled as a population of with various perturbing forces pushing it towards and away from equilibrium.
+
+By studying this non-equilibrium state of the human body, it is possible to gain insight into the dynamics of cancer and how it evolves depending on a number of properties derived from the biological knowledge of the field. Furthermore, a physicists tool kit may take us closer to a clinical solution. 
+
+\section{Model Description}
+
+A Moran process is used to control the evolution of the cells. It is commonly used to describe the dynamics of a finite population \cite{moran_random_1958} and therefore applicable for our simulation.  
+
+For a process with $N$ mutations, there exists $n_0, n_1 ... n_N$ cell types. With $n_0$ labeling the cell type with zero mutations, $n_1$ with one mutation etc. Each of the cell types has an associated fitness $r_i$ with $i = 0...N$. 
+
+At each time step, a cell type is removed and another is selected to reproduce with a probability proportional to it's fitness. The reproduced cell will inherit it's type from it's parent or obtain a mutation, promoting it to the next cell type. 
+The mutation probability is defined as $u_i$ for each cell type, again with $i = 0...N$. 
+
+The final state $n_N$ is an absorbing state, therefore all cells that acquire $N$ mutations can no longer mutate further, $u_N = 0$. The mutation probability $u_0 = 0$ as it is impossible for a $n_{-1}$ cell type to exist.  
+
+\begin{figure}[H]
+\centering 
+\input{MoranProcessImage.tex}
+\caption{An illustration of one iteration of the Moran process.}
+\end{figure}
+
+In a total population of $M$ cells, this type of dynamic allows us to write the transition rate of type $n_j$ to type $n_i$ as 
+
+\begin{equation}
+T^{j \rightarrow i } = \left( u_i r_{i-1} \frac{n_{i-1}}{M} + (1- u_{i+1} ) r _i \frac{n_i}{M} \right) \frac{n_j}{\bar{r}},
+\label{eq:TransRate}
+\end{equation}
+with $\bar{r} = \frac{1}{M} \sum _{i=0} ^{N} r_i n_i $ being the average fitness of the population of cells. 
+\\
+The components of this equation can be broken down and described as:
+
+\begin{itemize}
+\item A cell of type $j$ is selected to die. It's selection probability is weighted by the average fitness of the current population of cells, therefore the total amount of type $j$ cells is divided by the average fitness, $\frac{n_j}{\bar{r}}$ . 
+\item The term $u_i r_{i-1} \frac{n_{i-1}}{M}$ describes cell type $n_{i-1}$ reproducing with a mutation to make it an $n_i$ type. 
+\item Finally, the term $(1- u_{i+1} ) r _i \frac{n_i}{M}$ describes a $n_i$ type reproducing without a mutation. 
+\end{itemize}
+
+Previous work has mainly explored the dynamics of a small amount of mutation possibilities, i.e the cell can only have one or two mutations \cite{ashcroft_stochastic_2014}. Our initial goal is to extend the model to large amount of mutation possibilities and observe the resultant effects. Also, we wish to develop an analytical solution that describes the dynamics of the population of cells in simple cases. 
+
+\section{Simulation Method}
+
+To explore the dynamics of large amount of mutations we wrote a computer simulation of the model previously described. 
+
+An amount of mutations, $N$, and amount of cells, $M$, are chosen such that at $t=0$ all cells have no mutations, $n_0 = M$. 
+
+At each subsequent step in time, the populations of cells will change depending on the reaction that occurs. The reaction rate is calculated using equation \eqref{eq:TransRate} and selected via the standard Gillespie algorithm \cite{anderson_modified_2007}. 
+
+%Old Gillespie Description
+%The Gillespie algorithm is a stochastic algorithm that simulates the time evolution of each species of cell type. For each time step, the  possible states that the simulation can move into are calculated using the transition rate equation \eqref{eq:TransRate}. An exponentially random variable is drawn; this is the amount by which the time will increase and as such when the reaction will occur. The reaction that will occur is selected randomly (based off a second randomly drawn number) from the previously calculated transition rates. Next, the population is updated based on what transition occurs. This process is then repeated until the final mutation type holds the entire population, $n_N = M$. Once this has occurred, the simulation has become `fixed' and is halted.
+
+%New description start
+
+\begin{enumerate}
+\item Calculate all the possible states that the simulation can move into using the transition rate equation, eq. \eqref{eq:TransRate}. Set $\mu = \sum _i T^{j \rightarrow i }$.
+\item Draw an exponentially distributed random variable with parameter $\mu$. This is the amount by which time will be incremented and designate when a reaction will occur, causing the simulation to move into a new state. 
+\item A second random variable is drawn from a uniform distribution and is used to randomly select what reaction will occur. 
+\item The populations are updated based on the reaction occurs and the process is repeated.
+\end{enumerate}
+
+%New description end
+
+As the simulation is stochastic and requires two random numbers at each time step, the simulation must be repeated and averaged over. Due to the random increments of time, care must be taken to ensure that the correct population numbers at the correct time are used when calculating the average. 
+
+%\begin{figure}
+%\input{•}
+%\end{figure}
+
+\section{Validating Our Simulation}
+
+To validate our simulation method it must be shown that previous results from other experiments are reproducible. The paper `Stochastic Tunneling of Two Mutations in a Population of Cancer Cells'\cite{haeno_stochastic_2013} was chosen to be reproduced. This paper also used a Moran process and simulated the evolution of a population of cells with two possible mutations.
+
+The probability of fixation was calculated by allowing the simulation to run for 100 reactions  and checking to see if all the cells had obtained two mutations, if so, this is classified as fixed. By repeating this process, a probability of fixation can be calculated for a given parameter set. The fitness of the first mutation type, $r_1$, was varied and the resulting change in fixation probability was calculated. 
+
+\begin{figure}[H]
+	\begin{subfigure}[h]{0.5 \textwidth}
+		\includegraphics[scale=1.25]{HAENOA.png}
+		\caption{$r_2 = 1$.}
+		\label{fig:HaenoA}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.5 \textwidth}
+		\includegraphics[scale=1.25]{HAENOF.png}
+		\caption{$r_2 = 2$.}
+		\label{fig:HaenoF}
+	\end{subfigure}	
+	\caption{Taken from the Haeno report \cite{haeno_stochastic_2013}, these simulations had a population of $N=2$, $M=10$, $t=100$, $r_0 = 1$ and $r_1$ was varied as indicated by the axis. For both graphs the circles represent $u_2 = 0.1$, the triangles $u_2 = 0.01$ and the stars represent $u_2 = 0.001$.}
+	\label{fig:Haeno}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{subfigure}[h]{0.5\textwidth}
+		\input{GraphA.tex}
+		\vspace{-0.50cm}
+		\caption{$r_2 = 1$. }
+		\label{fig:OurA}
+	\end{subfigure}
+	\hspace{1mm}
+	\begin{subfigure}[h]{0.5\textwidth} 
+		\input{TESTGraphF.tex}
+		\vspace{-0.50cm}
+		\caption{$r_2 = 2$.}
+		\label{fig:OurF}
+	\end{subfigure}
+	\caption{Our simulation results using the same methodology and parameters of Haeno \cite{haeno_stochastic_2013} with the legend in both graphs labeling the different point styles for the $u_1$ values.}
+\end{figure}
+
+The graphs are very comparable, showing the same shape and  extremums for all mutation probabilities. Particularly, the plateau of fixation probability equal to 1 in figures \ref{fig:HaenoA} and \ref{fig:OurA} for $u=0.1$ both occur from $r_1 =0.8$ to $r_1 = 1.2$. In figures \ref{fig:HaenoF} and \ref{fig:OurF} the peak in fixation probability for $u_1 = 0.01$ occurs at approximately $r_1 = 1.5$.  
+
+As such, it can be concluded that the simulation method is valid. 
+
+\section{Extending to more mutations}
+As the simulation has now been verified, it is desirable to extend the parameters to a large number of cells with a large amount of mutation possibilities. 
+
+Using a flat fitness with $r=1$, flat mutation probability landscape $u = 0.1$,  $N=9$ mutation types and $M=1000$ cells is the simplest extension to previous results. These parameters were chosen due to low computational requirements for the simulation. 
+
+\begin{figure}[H]
+	\begin{subfigure}[h]{0.5\textwidth}
+		\input{10MutsFlat0.tex}
+	\end{subfigure}%
+	\begin{subfigure}[h]{0.5 \textwidth}
+		\input{10MutsFlat29.tex}
+	\end{subfigure}%
+	\vspace{-0.5cm}
+	\begin{subfigure}[h]{0.5 \textwidth}
+		\input{10MutsFlat59.tex}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.5 \textwidth}
+		\input{10MutsFlat89.tex}
+	\end{subfigure}
+	\caption{The formation of a cloud of mutations can be seen as the cells move along the mutation landscape. There is a flat fitness value of $r= 1$ and a mutation probability of $u = 0.1$ for all cell types. $M=1000$ total amount of cells and $N=9$.  }
+	\label{fig:Cloud}
+\end{figure}
+
+With an increased number of mutations, it is now possible to see  a `cloud' of mutations form and move across the mutations landscape as shown in figure \ref{fig:Cloud}. This was not previously seen for the small amount of mutations as the landscape was not large enough for the population of cells to fully disperse out across the possible cell types  \cite{ashcroft_stochastic_2014}\cite{haeno_stochastic_2013}. 
+
+To analyse the dynamics of the cloud, it was necessary to calculate a number of properties of the cloud; the displacement and standard deviation. Both are a function of time. The displacement tracks the center of mass of the cloud as it moves across the mutation landscape. The standard deviation indicates the width of the mutation cloud and shows how many different mutation types are populated as the simulation progresses. 
+
+For the displacement a weighted average of the population number of each cell type is calculated. The weights are given by the number of mutations for each cell type. This ensures that centre of mass starts at zero and progresses towards the maximum number of cell types as the time approaches the fixation time. The standard deviation is calculated in the usual way, it will approach zero as the time approaches fixation time, as all the cells will be located in the final state. 
+
+\begin{figure}[H]
+	\begin{subfigure}[h]{0.5 \textwidth}
+		\input{10MutsFlatDisp.tex}%
+		\caption{}
+		\label{fig:FlatDisp}
+	\end{subfigure}%
+	\begin{subfigure}[h]{ 0.5 \textwidth}	
+			\input{10MutsFlatVar.tex}%
+		\caption{}
+		\label{fig:FlatVar}
+	\end{subfigure}
+	\caption{The statistics calculated from the cloud formed in figure \ref{fig:Cloud}.}	
+	\label{fig:FlatStats}
+\end{figure}
+
+The displacement graph, figure \ref{fig:FlatDisp}, behaves linearly with respect to time until it reaches the end of the mutation landscape. This is due to the absorbing nature of the final mutation, in this case mutation number nine. No backward mutations can occur to states with less mutations, so the overall population of cells congregates to this final state. The peak of the standard deviation graph, figure \ref{fig:FlatVar}, shows that the cloud quickly diffuses and is most dispersed early on in the simulation before decreasing again as the cells move into the final state.
+
+Overall, the extension to the model has produced a good starting point for further parameter variations and the formation of the cloud is a good milestone in the exploration of the dynamics of cancer evolution.
+
+\section{Analytic Analysis}
+
+It is now desirable to use the transition rates (equation  \eqref{eq:TransRate}) to derive a deterministic equation that describes the dynamics of the cloud. 
+
+Firstly, a large number of cells limit is needed, such that the equations can be formed in terms of concentrations rather than population numbers
+
+\begin{equation}
+x _ i = \lim _{M \rightarrow \infty} \frac{n_i}{M}.
+\label{eq:LargeCellAsumption}
+\end{equation}
+
+The change in concentration is now governed by the transition of cells into and out of the specific cell type. Therefore, the change in a particular concentration can be defined as; 
+
+\begin{equation}
+\dot{x} _i = \frac{1}{M} \sum _{j \neq i } \left( T^{j \rightarrow i } - T^{i \rightarrow j}  \right).
+\end{equation}
+
+Substituting in the transition rates, equation \eqref{eq:TransRate}, and taking the large cell limit, equation \eqref{eq:LargeCellAsumption}, lead to the general equation: 
+
+\begin{equation}
+\bar{r} \dot{x} _i = \sum _{j \neq i} \left( u_i r_{i-1} x_{i-1} + (1 - u_{i+1} ) r_i x_i \right) x_j - \left( u _j r_{j-1} x_{j-1} + (1 - u_{j+1} ) r _j x_j \right) x_i .
+\end{equation}
+
+By using the fact that the concentrations are normalised, $\sum _i x_i = 1 $ and the expression for the average fitness $ \sum _i r _i x _i = \bar{r}  $ the concentration evolution equation can be simplified to
+
+\begin{equation}
+\bar{r} \dot{x} _i = u_i r_{i-1} x_{i-1} + x _i ( r_i ( 1 - u_{i+1} ) - \bar{r} ),
+\label{eq:MasterSimple}
+\end{equation}
+
+it is from this equation that all further work is derived from. 
+
+\subsection{A Poissonian Solution}
+
+For the simplest case, the fitness landscape and mutation probabilities are homogeneous
+
+\begin{align}
+r_i & = r \quad \forall i, \\
+u_i & = u \quad  \forall i, \\
+\bar{r} & = r.
+\end{align}
+
+Using these simplifications  and changing the label of $x _i$ to $\rho _i$ simplifies equation \eqref{eq:MasterSimple} to
+
+\begin{equation}
+\dot{\rho} _i  = u ( \rho _{i-1} - \rho _i ).
+\label{eq:PoisMasterSimple}
+\end{equation}
+
+This characterises itself as a Poissonian process and therefore can be solved exactly.
+
+By starting with $i=0$ and using the fact that $\rho _{-1} = 0$, a simple ordinary differential equation can be found and solved to produce
+
+\begin{equation}
+\rho _0 = e^{-ut} .
+\end{equation}
+
+The initial condition of $\rho _0 (t=0) = 1 $ is also used and shows that all the cells initially have zero mutations. 
+
+Now we notice that it is possible to iteratively solve equation \eqref{eq:PoisMasterSimple} with a general solution
+
+\begin{equation}
+\rho _n  = \frac{(u t)^n}{n!} e^{-ut}.
+\label{eq:PoisSolution}
+\end{equation}
+
+By using a proof by induction it possible to show that this is true for all $n$.
+ 
+The final state, where the cell has achieved the maximum amount of mutations has a separate equation as it is an absorbing state, i.e. once a cell is in state $\rho _N$ it never leaves. Since $\rho _i$ represents a concentration, the final state contains the amount of concentration that is not in the non-absorbing states
+\begin{equation}
+\rho _N = 1 - \sum _{n=0} ^{N-1} \rho _n.
+\label{eq:PoisSolutionFinal}
+\end{equation}
+
+We now wish to compare this analytic result with previous simulation data. 
+ 
+\begin{figure}[H]
+	\centering
+		\input{PoissonianGraphTEST.tex}
+	\caption{A comparison between the Poissonian solution (equations \eqref{eq:PoisSolution} and \eqref{eq:PoisSolutionFinal} ) and a simulation of 1000 cells with a mutation rate of $u= 0.01 $ and fitness value $r = 1$. The solid black line represents the Poissonian solution and the grey line represents the simulation.  }
+\label{fig:PoisSim}
+\end{figure}
+
+Figure \ref{fig:PoisSim} shows that the Poissonian solution closely replicates simulation dynamics. There is a systematic error which can be attributed to the finite number of cells used in the simulation. The evolution equation, eq. \eqref{eq:MasterSimple}, relies on the infinite cell assumption, equation \eqref{eq:LargeCellAsumption}. Therefore, to remove this error the amount of cells would have to be increased to a much larger number, but at the expense of computational cost. 
+
+However, figure \ref{fig:PoisSim} and the Poissonian solution have not helped us define cloud behavior and the dependence of cloud shape on the properties of the cells. We need to extend the discrete equations into a continuous version to arrive at a partial differentiation equation which will help describe the cloud formation. 
+
+\subsection{Solving the Continuous Case}
+
+So far, we have considered the discrete scenario in which a cell `hops' between mutations. However, as the number of possible mutation increases even further, it is desirable to move from a discrete description to a continuous model. Once using a continuous variable, the evolution equation will resemble a partial differential equation and can be solved using typical methods. 
+
+Starting with the discrete master equation 
+\begin{equation}
+\dot{\rho } _i  = u ( \rho _{i-1}  - \rho _i ) , 
+\label{eq:MasterDiscrete}
+\end{equation}
+we remap $\rho$ from a discrete function to a continuous one using the following definitions
+\begin{align}
+\rho _i & \rightarrow \rho (x, t), \\
+\rho _{i-1} & \rightarrow \rho (x - \Delta x, t),
+\end{align}
+where $\Delta x$ define the spacing between each successive mutation.
+
+Substituting these expressions into the discrete master equation (eq. \eqref{eq:MasterDiscrete}) results in
+
+\begin{equation}
+\dot{\rho}(x, t) = u ( \rho (x - \Delta x, t ) - \rho (x, t) ) .
+\label{eq:MasterContinuous}
+\end{equation}
+
+Assuming that $\Delta x$ is small, it is possible to Taylor expand the function $\rho (x- \Delta x, t) $ with respect to the $x$ variable and result in a partial differential equation
+
+\begin{equation}
+\dot{\rho} = u \left( - \Delta x \frac{\partial \rho  }{\partial x} + \frac{1}{2} \Delta x ^2  \frac{\partial ^2 \rho  }{\partial x^2} \right)  + \mathcal{O} (\Delta x ^3 ).
+\end{equation}
+
+By defining $\tilde{u} = u \Delta x$ leads to the final form of the continuous master equation 
+
+\begin{equation}
+\dot{\rho} = - \tilde{u} \frac{\partial \rho}{\partial x} + \frac{\tilde{u} \Delta x}{2} \frac{\partial ^2 \rho}{\partial x^2}.
+\label{eq:MasterContinuousFinal}
+\end{equation}
+ 
+This type of equation commonly describes a diffusion-drift process and equation \eqref{eq:MasterContinuousFinal} also has the same form as a Fokker Planck equation. This shows that our derivation is moving in the correct direction. A Fokker Planck equation of this form describes the time evolution of the velocity distribution of a particle under drag and random forces and highlights the stochastic nature of the problem. In our model, the forces that influence the cells evolution are it's fitness value and mutation probability. In the case of flat fitness and mutation probability, equation \eqref{eq:MasterContinuousFinal} shows that the only forces influencing the dynamics is the overall mutation probability. 
+
+By looking at our previous stochastic simulations we can also explain why the Taylor expansion had to be taken to second order. 
+If terms $\mathcal{O} (\Delta x^2) $ had been neglected, the resulting equation would have been of the form 
+
+\begin{equation}
+\dot{\rho} \propto - \frac{\partial \rho }{\partial x}. 
+\label{eq:Advection}
+\end{equation}
+ 
+Equations of the form eq. \eqref{eq:Advection} commonly describe the transport of a substance via the bulk motion of a fluid and are deterministic. From our simulations previously conducted, we can see that this description isn't applicable to our model. We require diffusion as the standard deviation graph, figure \ref{fig:FlatVar}, has shown that the width of the cloud increases due to the cells diffusing across the landscape as well as the bulk motion towards the final state. Therefore, it is necessary to take the Taylor expansion to second order to arrive at the required form. 
+
+Equation \eqref{eq:MasterContinuousFinal} can now be solved using Fourier methods 
+
+\begin{equation}
+\rho (x,t) = \frac{1}{\sqrt{2 \pi \Delta x \tilde{u} t}} \exp \left(- \frac{(\tilde{u}t - x + x_0 )^2}{2 \Delta x \tilde{u} t} \right),
+\label{eq:AnalyticSolution}
+\end{equation}
+
+this has the form of a propagating Gaussian. 
+
+To check that this is a valid result, it must be compared to our previous data collected through simulation and integrating the transition rates using the Euler forward method. 
+
+\begin{figure}[H]
+	\begin{subfigure}[h]{0.5 \textwidth}
+		\input{EulerFourierThirdWay.tex}
+		\caption{$t=950 $}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.5 \textwidth}
+		\input{EulerFouriertwothirdsway.tex}
+		\caption{$t=1267$}
+	\end{subfigure}
+\caption{Comparison between the equation \eqref{eq:AnalyticSolution} and an integration of the transition rates. The parameters used were: $u = 0.1$, $x_0 =1$ and $\Delta x = 1$. 200 mutations types were possible. A flat fitness of $r=1$ was used in the Euler forward integration. }
+\label{fig:fourierEuler}
+\end{figure}
+
+As figure \ref{fig:fourierEuler} shows, the analytic solution exactly matches up with the numerically integrated transition rates for the model. This shows, that our diffusion equation \eqref{eq:MasterContinuousFinal} derived for the simplest cases in flat fitness landscape and a constant mutation probability is correct. 
+However, our solution is only valid for the cloud dynamics in the middle of the cell type landscape. The absorbing state of the final mutation type has yet to be accounted for. 
+The agreement between simulation and equation \eqref{eq:AnalyticSolution} shows that the steps taking the model from discrete to continuous variables is also true and valid. 
+
+\subsection{Extending to a non-constant mutation landscape}
+We now include a non-constant mutation probability landscape but keep the fitness landscape constant. Biologically, this is a realistic and logical enhancement as the more mutations that a cell acquires will change it's probability to mutate. This means that the mutation probability is now dependent on the amount of mutations the cell has and is non-constant. 
+
+The discrete dynamics of the cells are now described by 
+
+\begin{equation}
+\dot{\rho}_i = u_i \rho _{i-1} - \rho _{i} u_{i+1}.
+\end{equation}
+
+This is derived from equation \eqref{eq:MasterSimple} and simplifying using a constant fitness $r$ and non-constant mutation probability $u$.  
+
+By repeating the Taylor expansions as previously used we arrive at the continuous form 
+
+\begin{equation}
+\frac{\partial \rho}{\partial t} = - \hat{u} \frac{\partial \rho}{\partial x} + \frac{\Delta x}{2} \hat{u} \frac{\partial ^2 \rho}{\partial x ^2} - \rho \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x }{2} \frac{\partial ^2 \hat{u}}{\partial x ^2} \right)
+\label{eq:NonConstantContinous}
+\end{equation}
+where $\hat{u} = u(x) \cdot \Delta x $. 
+
+This is a parabolic partial differential equation therefore we expect to be able to reduce it to the common diffusion equation using a suitable separable solution.
+
+By using $\rho (x ,t ) = f(t) g(x) h(x,t)$ we find
+
+\begin{equation}
+\rho (x, t) = A \exp \left(\frac{x}{\Delta x} - \left( \frac{\hat{u}}{2 \Delta x } + \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x }{2} \frac{\partial ^2 \hat{u}}{\partial x ^2} \right) t \right) h (x, t)
+\end{equation} 
+
+where $h$ satisfies the non-constant diffusion equation 
+
+\begin{equation}
+\frac{\partial h}{ \partial t} = \frac{\Delta x \hat{u}}{2} \frac{\partial ^2 h}{\partial x ^2} .
+\end{equation}
+
+This is an expected result as our previous analysis for the constant case also resulted in a diffusion equation. 
+
+Solving the non-constant diffusion problem has been done in depth in the context of chemical reactions by various people, therefore  proceeding down this path is unlikely to reveal any new results for our study in cancer evolution. 
+
+
+%Whilst is appears there is a sink term ($\propto - \rho$), the number of cells within the system remains conserved as equation \eqref{eq:NonConstantContinous} can be rearrange to a conservative form. 
+
+%DERRIVE CONSERVATION.
+
+%We use the same approach as before and apply a Fourier transform, however we must also apply the convolution theorem to derive
+
+%\begin{equation}
+%\dot{\tilde{\rho}} = - (ik + 2k^2) ( \tilde{\rho} * \tilde{u} ),
+%\label{eq:ConvolutionEq}
+%\end{equation}
+%where $\tilde{f}$ is the Fourier transform of $f$. 
+
+%The following conventions have been used 
+
+%\begin{equation}
+%f * g = \frac{1}{\sqrt{2 \pi}} \int _{-\infty} ^{\infty} g(y) f(x-y)
+%\end{equation}
+
+%We are free to chose a mutation landscape, therefore for simplicity we chose $u = \cos ( \frac{\pi}{2M} x )$ as it has a single Fourier mode and therefore a delta peak under Fourier transform. 
+
+%FURTHER DETAILS
+
+%This has not yielded any progress this equation is now dependent on a discrete set of points. The downfall in this approach is due to the coupling between the mutation probability landscape and the population concentration, therefore by not specifying the shape of the mutation landscape earlier in the set up of the model it becomes unsolvable. 
+\newpage
+\section{Fisher Waves within Our System}
+The phenomena of Fisher waves commonly occurs in reaction diffusion equations of the form 
+\begin{equation}
+\frac{\partial u}{\partial t} = \frac{\partial ^2 u}{\partial x^2} + f(u), 
+\end{equation}
+where $f(u)$ is an arbitrary function. The form of $u$ can adopt a stationary wave like appearance, progressing with constant velocity, hence the phrase ``Fisher wave''. This is applicable to our study of cancer dynamics as equation \eqref{eq:NonConstantContinous} is also of this form. 
+
+The existence of Fisher waves were derived by Fisher in 1959 in his paper `The Wave of Advance of Advantageous Genes' \cite{fisher_wave_1937} with the physical motivation of analyzing the progression of an advantageous mutant within a population of cells. The cells are distributed uniformly across a landscape with the possibility of an advantageous mutation occurring. The mutant cell will now take its place of the parent cell, diffuse throughout the rest of the population and a wave of increasing mutant frequency will form. 
+
+In terms of mathematics, the type of model Fisher used is described by logistic growth, where the function $f(u) = ru(1-u)$. Where $r$ is the rate of which the mutation is favourably selected and $u$ is the concentration of the mutation within the population. The full equation 
+\begin{equation}
+\frac{\partial u}{\partial t} = D \frac{\partial ^2 u}{\partial x^2} + ru(1-u), 
+\label{eq:FKKPEq}
+\end{equation}
+where $D$ is the diffusion constant, is commonly referred to as the FKPP equation after work by Fisher, Kolglomorov, Petrovskii and Piscounov \cite{kolmogorov_selected_1991}. By numerically solving this partial differential equation it is possible to illustrate the presence of a wave progressing across the landscape. 
+
+\begin{figure}[H]
+\centering
+\input{FisherWavesFKKP.tex}
+\caption{Numerically solving the FKPP equation to show the existence and progression of Fisher waves. The constants were set as $r=D=1$. Each curve represents an increment in time and the direction of the waves is indicated with the arrow.}
+\label{fig:FKKPWaves}
+\end{figure}
+
+As figure \ref{fig:FKKPWaves} shows, a wave-front is easy to distinguish and can be seen progressing with time. 
+
+The physical existence of these waves is commonly seen in biological process, both microscopic and macroscopic. Within the human body, the healing process for an open wound displays Fisher waves as the new tissue cells form a wave traveling across the cut \cite{maini_traveling_2004}.
+
+\subsection{Derivation of the wave velocity}
+
+For the existence of a traveling wave within the FKPP equation a solution of the form $u(x,t) \equiv u(x-vt)$, where $v$ is a positive constant detailing the velocity of the wave, should exist. By substituting this ansatz into equation \eqref{eq:FKKPEq} we reduce the partial differential equation to an ordinary differential equation 
+\begin{equation}
+- v \frac{\mathrm{d}u}{\mathrm{d} x} =  \frac{\mathrm{d} ^2 u }{\mathrm{d} x^2 } + u(1-u).
+\label{eq:FKKPODE}
+\end{equation}
+
+For convenience, the constants $r$ and $D$ are set to unity in the further details of the derivation. 
+
+As there is no explicit dependence on $x$, a population gradient can be defined, $p$ and substituted in
+
+\begin{align}
+\frac{\mathrm{d} u}{\mathrm{d} x} & = - p,  \\
+\frac{\mathrm{d} ^2 u}{\mathrm{d}x ^2 } & =  p \frac{\mathrm{d} p }{\mathrm{d} u}.
+\end{align}
+
+This results in a first order differential equation
+\begin{equation}
+v p  = p \frac{\mathrm{d} p}{\mathrm{d} u} + u(1-u).
+\end{equation}
+
+We assume the wave decays exponentially at the wave front, therefore in the limit of small $p$
+
+\begin{equation}
+\lim_{u \rightarrow 0} \frac{p}{u} = w,
+\label{eq:waveFrontExp}
+\end{equation} 
+as $p$ is the population gradient, this gives the appropriate equation for an exponential for a constant $w$. 
+
+Rearranging our first order differential equation and taking the limit $u$ tends to zero
+\begin{equation}
+w ^ 2 - vw + 1  = 0.
+\end{equation}
+
+This is now a quadratic equation which is solved using the normal formula 
+
+\begin{equation}
+w = v \pm \sqrt{v^2 - 4}.
+\end{equation}
+
+Fisher waves are physically possibly and observable, therefore we require a real solution, consequently $v \geq 2$. 
+
+By repeating the analysis with the constants not set to unit, we find that 
+\begin{equation}
+v \geq 2 \sqrt{rD}. 
+\label{eq:criticalVelocity}
+\end{equation}
+
+This analysis shows that a wave solution exists within the FKPP equation, so long as the velocity of the wave packet is greater than a critical value. This critical value is controlled by the diffusivity of the system, $D$ and the  mutation favourablity, $r$. 
+
+To confirm the existence of wave with constant velocity we numerically solved the FKPP equation with $r=D=1$, as shown in \ref{fig:FKKPWaves}. We then measured the position of the middle of the wave-front, i.e. $u(x) = 0.5$, at each time step. This allowed us to calculate the velocity of the progression of the wave. From equation \eqref{eq:criticalVelocity}, we expect the velocity to be larger than 2. 
+
+\begin{figure}[h]
+\centering
+\input{FKKPVelocity.tex}
+\caption{Calculating the velocity of the wave front of the FKPP equation. }
+\label{fig:FKKPVelocity}
+\end{figure}
+
+As figure \ref{fig:FKKPVelocity} shows, the velocity is great than $2$ and approaching as constant value. This confirms the previous derivation and demonstrates the real existence of Fisher waves. 
+
+To confirm the assumption of exponential decay of the wave front, equation \eqref{eq:waveFrontExp}, we plotted the resulting data from numerical simulations on a semi-log plot. As the assumption is valid for small $u$ we selected the data for $u < 0.1$ for $t=$ and took the logarithm. 
+
+\begin{figure}[H]
+	\centering
+	\input{FisherWavesFKKP_log.tex}
+\caption{The logarithm of the population concentration shows linear behavior for small $u$. $t=$.}
+\label{fig:FisherEXP}
+\end{figure}
+
+Figure \ref{fig:FisherEXP} confirms that there linear relation between the $\log u$ and $x$ for small $u$, therefore our assumption stated in equation \eqref{eq:waveFrontExp} is correct and valid. 
+
+\subsubsection{Stability Analysis of the FKPP Equation}
+
+The existence of this critical value of wave velocity also leads us perform stability analysis on the differentiation equation after we have substituted the ansatz
+\begin{equation}
+u = U(x -v t) \equiv U(z),
+\end{equation}
+
+to produce
+
+\begin{equation}
+D \frac{\mathrm{d} ^2 U}{\mathrm{d} z^2} + v \frac{\mathrm{d} U}{\mathrm{d} z}  + rU(1-U) =0.
+\end{equation}
+
+This equation is a second order linear differential equation but with a sensible substitution it can be reduced to a pair of two dimensional first order linear differential equations 
+
+\begin{align}
+\frac{\mathrm{d} U}{\mathrm{d} z} & = V, \\
+D \frac{\mathrm{d} V}{\mathrm{d} z} & = -v V -rU(1-U).
+\label{eq:FKPP2ODEs}
+\end{align}
+
+This can be re-written as a matrix equation 
+
+\begin{equation}
+\begin{pmatrix}
+U' \\
+V ' 
+\end{pmatrix} = 
+\begin{pmatrix}
+0 & 1 \\
+- \frac{r}{D} (1-U) & - \frac{v}{D}
+\end{pmatrix}
+\begin{pmatrix}
+U \\
+V
+\end{pmatrix},
+\end{equation}
+
+where $' \equiv \frac{\mathrm{d}}{\mathrm{d}z}$.
+
+There are two fixed points in this system: $A = (0,0)$ and $B = (1,0)$.  
+
+The Jacobian of this system can be calculated in the usual way and expressed as 
+
+\begin{equation}
+J  = \begin{pmatrix}
+0 & 1 \\
+- \frac{r}{D} (1 - 2U) & - \frac{v}{D}.
+\end{pmatrix}.
+\end{equation}
+
+The stability of the fixed points are defined by the signs of the eigenvalues of this Jacobian. Calculating the eigenvalues produces 
+
+\begin{equation}
+\lambda = - \frac{v}{2D} \pm \frac{1}{2} \sqrt{\frac{v^2}{D^2} - \frac{4r}{D} (1-2U)}.
+\end{equation}
+
+Evaluating at point $A$ and point $B$ leads to 
+
+\begin{align}
+\lambda _A  & = - \frac{v}{2D} \pm \frac{1}{2} \sqrt{\frac{v^2}{D^2} - \frac{4r}{D}}, \\
+\lambda _B  & = - \frac{v}{2D} \pm \frac{1}{2} \sqrt{\frac{v^2}{D^2} + \frac{4r}{D}}.
+\end{align}
+
+The eigenvalues for $B$ have opposite signs for all $v$, therefore the point is a saddle.
+For point $A$, the stability of the point depends on $v$. If $v < 2 \sqrt{rD}$ then the eignenvalues are imaginary and the point is stable spiral. If $v > 2 \sqrt{rD}$ then the eigenvalues are both less than zero and the point is a stable node. 
+
+\begin{figure}[H]
+	\begin{subfigure}[h]{0.5\textwidth}
+		\input{fisherStabilityPointsSpiral.tex}
+	\end{subfigure}%
+	\begin{subfigure}[h]{0.5\textwidth}
+		\input{fisherStabilityLinesSpiral.tex}
+	\end{subfigure}
+	\caption{The phase portrait of equations \eqref{eq:FKPP2ODEs}  where the velocity is less than the critical velocity thus Fisher waves are not present. The circular points (colour online) indicate the fixed points.}
+	\label{fig:FisherStabilitySpiral}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{subfigure}[h]{0.5\textwidth}
+		\input{fisherStabilityPointsStable.tex}
+	\end{subfigure}%
+	\begin{subfigure}[h]{0.5\textwidth}
+		\input{fisherStabilityLinesStable.tex}
+	\end{subfigure}
+	\caption{The phase portrait of equations \eqref{eq:FKPP2ODEs} where the velocity is greater than the critical velocity therefore Fisher waves are present. The circular points (colour online) indicate the fixed points.}
+	\label{fig:FisherStabilityStable}
+\end{figure}
+
+The existence of a spiral node in figure \ref{fig:FisherStabilitySpiral} is unphysical as $U$ represents a concentration and therefore cannot have a negative value. A spiral would imply that the concentration is able to smoothly move between positive and negative values, therefore we conclude that a spiral is impossible.  In figure \ref{fig:FisherStabilityStable} there is a continuous connection between the fixed points $A$ and $B$ with no such negative values, therefore there is a continuous solution which equates to a traveling wave. 
+
+\subsection{Is our cloud a Fisher Wave?}
+Our equation is a reaction-diffusion equation, therefore it is reasonable to test whether the cloud of mutations is a Fisher wave. 
+Having proven the existence of a traveling wave for the FKPP equation we use the same approach on our continuous model with a flat fitness landscape but a variable mutation probability landscape. 
+
+Starting with the initial partial differential equation as derived previously 
+
+\begin{equation}
+\frac{\partial \rho}{\partial t} = - \hat{u} \frac{\partial \rho}{\partial x} + \frac{\Delta x}{2} \hat{u} \frac{\partial ^2 \rho}{\partial x ^2} - \rho\left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{\partial x^2} \right),
+\end{equation}
+
+we substitute in the ansatz of $\rho \equiv \rho (x - vt)$. 
+
+\begin{equation}
+(- v + \hat{u} ) \frac{\partial \rho}{\partial x}  = \frac{\Delta x }{2} \hat{u} \frac{\partial ^2 \rho}{\partial x ^2}  - \rho \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{\partial x^2} \right).
+\end{equation}
+
+There is no explicit $x$ dependence, therefore a concentration gradient can be substituted in $- \frac{\partial \rho}{\partial x} = p$,
+
+\begin{equation}
+(- \hat{u} + v ) p  = \frac{\Delta x }{2} \hat{u} p \frac{\mathrm{d} p }{\mathrm{d} \rho} - \rho \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{\partial x^2} \right).
+\end{equation}
+
+Using the same previous assumption of an exponentially decaying wave-front we can divide through by $\rho$ and take the limit $\lim _{\rho \rightarrow 0} p / \rho = w$ to produce
+
+\begin{equation}
+(- \hat{u} + v ) w  = \frac{\Delta x}{2} \hat{u} w ^2 - \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{\partial x ^2} \right),
+\end{equation}
+
+again this is a quadratic equation with solution
+
+\begin{equation}
+w  = (\hat{u} - v ) \pm \sqrt{(- \hat{u} + v )^2 + 4 \frac{\Delta x}{2} \hat{u} \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{\partial x ^2} \right) }.
+\end{equation}
+
+We require a real solution, which allows us to obtain an expression for the velocity. 
+
+\begin{equation}
+(- \hat{u} + v )^2 + 4 \frac{\Delta x}{2} \hat{u} \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{\partial x ^2} \right)  > 0
+\end{equation}
+\begin{equation}
+v  > \hat{u} \pm  \sqrt{- 4 \frac{\Delta x}{2} \hat{u} \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{\partial x ^2} \right) }
+\end{equation}
+
+As we are free to chose the mutation probability landscape we now have the ability to control whether Fisher waves are present in our system or not. This is achieved by solving the differential equation 
+
+\begin{equation}
+\hat{u} \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{\partial x ^2} \right) = C ,
+\end{equation}
+where $C$ is a constant that controls whether or not Fisher waves are present. If $C > 0$, then the expression inside the square root is negative, the velocity is imaginary therefore Fisher waves will not be present. If $C<0$ then we expect Fisher waves as the expression inside the square root is now positive. 
+
+\subsubsection{Stability Analysis of Our Model}
+The same condition on the mutation probability landscape can also be derived by following a stability analysis of the fixed point present in our model. 
+
+Starting with the partial differential equation, \eqref{eq:NonConstantContinous}, and making the substitution $\rho(x-vt)\equiv \rho (z)$ we decouple the second order equation into two single order equations
+
+\begin{align}
+\frac{\mathrm{d} \rho}{\mathrm{d} z} & = V, \\
+\frac{\Delta x \hat{u}}{2} \frac{\mathrm{d} V}{\mathrm{d} z} & = (\hat{u} - v) V + \rho \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{\partial x ^2} \right).
+\end{align}
+
+The Jacobian for our system is 
+
+\begin{align*}
+J & = \begin{pmatrix}
+0 & 1 \\
+\frac{2}{\hat{u} \Delta x} \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{\partial x ^2} \right) & \frac{2}{\Delta x \hat{u}} (\hat{u} - v) \\
+\end{pmatrix}.
+\end{align*}
+
+There is only one fixed point in our system ($(\rho, V) = (0,0)$) that is explicit from the governing equations.  
+
+By calculating the eigenvalues, $\lambda $ of the Jacobian at this fixed point, we derive the expression 
+
+\begin{align*}
+\lambda & = \frac{2}{\hat{u} \Delta x} (\hat{u} - v) \pm \sqrt{\frac{4}{\hat{u} ^2 \Delta ^2 }(\hat{u} - v )^2 + \frac{8}{\Delta x \hat{u}}\left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{\partial x ^2} \right) }.
+\end{align*}
+
+From our stability analysis of the FKPP equation we found that the fixed point at the origin needs to be a stable node, therefore the expression under the square root must be greater than zero. After rearranging we find that the velocity forms the same equation as previously defined
+
+\begin{equation}
+v  > \hat{u} \pm  \sqrt{- 4 \frac{\Delta x}{2} \hat{u} \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{\partial x ^2} \right) },
+\end{equation}
+
+and therefore, the same condition on the mutation probability landscape
+
+\begin{equation}
+\hat{u} \left( \frac{\partial \hat{u}}{\partial x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{\partial x ^2} \right) = C.
+\end{equation}
+
+The constant $C$ is used to control the existence of Fisher waves in the same way as previously shown. 
+
+Therefore, by using two different methods we now have a testable condition on the existence of Fisher waves with our system. 
+
+
+\subsubsection{Solving the mutation rate equation}
+
+With the constraint on the mutation probability, we must solve the differentiation equation derived from both stability analysis and Fisher's approach
+
+\begin{equation}
+\hat{u} \left( \frac{\partial \hat{u}}{\partial	x} + \frac{\Delta x}{2} \frac{\partial ^2 \hat{u}}{\partial x ^2} \right) = C,
+\label{eq:MutationODE2}
+\end{equation}
+\begin{equation}
+C = \begin{cases}
+> 0 & \text{No Fisher Waves} \\
+< 0 & \text{Fisher Waves Exsists}
+\end{cases}
+\end{equation}
+
+With $\hat{u} = u(x) \Delta x $ where $\Delta x$ is a constant. Therefore equation \eqref{eq:MutationODE2} can be re-written as
+
+\begin{align}
+\frac{\Delta x}{2} \frac{\partial ^2 u}{\partial x ^2} + \frac{\partial u}{\partial x} - \frac{C}{u}  & = 0
+\end{align}
+
+This is a non-linear ordinary equation that must be solved numerically. As $u$ is a probability, the solution is contained between 0 and 1.  
+
+\begin{figure}[H]
+\centering
+\input{mutationRateWaves.tex}
+\caption{Mutation rates that will test whether or not Fisher waves will appear in our system. The dashed line indicates when $C < 0$ and we expect Fisher waves in this case. The solid line is when $C > 0$ and we do not expect Fisher waves. }
+\label{fig:mutationRateWaves}
+\end{figure}
+
+By running a simulation using these two mutation probability landscapes, it will be possible see whether Fisher waves as derived previously are present in our model. 
+
+\subsubsection{Simulation Results}
+
+We simulated a population of 1000 cells, with 100 mutations possible. A flat fitness landscape was used with $r=1$. The mutation probabilities were such that they satisfied eq. \eqref{eq:MutationODE2} and graphically shown with figure \ref{fig:mutationRateWaves}, explicit values are available on request. 
+
+To calculate the velocity of the cloud, we take the time derivative of the displacement of the cloud, figure \ref{fig:FlatDisp}. This velocity is the bulk motion of the cloud across the mutation landscape. 
+
+\begin{figure}[H]
+\centering
+\input{MotionDrawing.tex}
+\caption{The difference between local and bulk motion.}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{subfigure}[h]{0.5 \textwidth}
+		\input{BulkMotionPos.tex}
+		\caption{Simulation with the positive mutation probability rate.}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.5 \textwidth}
+		\input{BulkMotionNeg.tex}
+		\caption{Simulation with the negative mutation probability rate.}
+	\end{subfigure}
+	\caption{Test}
+	\label{fig:BulkSimVel}
+\end{figure}
+
+Figure \ref{fig:BulkSimVel} shows neither simulations have a constant velocity. Both figures display a peak in the velocity as the cloud reaches maximum dispersion before slowing down as it reaches fixation and occupation of the last mutant type. Therefore we can conclude that the bulk motion of the wave is not a Fisher wave.
+
+However, there is also the diffusive motion to consider. The above conclusion is true for the bulk motion of the wave as it travels across the mutation landscape, but from our earlier work, figure \ref{fig:FlatVar}, we have shown that the cloud also spreads locally, therefore we must calculate the velocity of the local spreading and see how this compares to the expected result. 
+
+To calculate the local spreading of the wave we must move to the center of mass frame of the cloud and interpolate the midpoint of the wave-front with each time step. The amplitude of the cloud is also decaying in time, therefore we must normalise with respect to the peak of the cloud so that the interpolation point can always be found. 
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[h] {0.5 \textwidth}
+		\input{unNormCOM.tex}
+		%\caption{A common point cannot be found.}
+	\end{subfigure}%
+	\begin{subfigure}[h] {0.5 \textwidth}
+		\input{NormedCOM.tex}
+		%\caption{After normalisation a common point is found. }
+	\end{subfigure}
+	\caption{The center of mass frame for the cloud for both unnormalised and normalised data sets. Only the right hand half of the cloud is shown as it is assumed symmetric about the $y$ axis.}
+\label{fig:NormedCOM}
+\end{figure}
+
+By examining the motion of such a point as shown in figure \ref{fig:NormedCOM} the velocity of the local motion of our cloud of mutations can be calculated.  
+
+\begin{figure}[H]
+	\begin{subfigure}[h]{0.5 \textwidth}
+		\input{LocalMotionPos.tex}
+		\caption{Local motion of our simulation.}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.5 \textwidth}
+		\input{LocalMotionNeg.tex}
+		\caption{Local motion of our simulation.}
+	\end{subfigure}
+	\caption{Comparisons of simulations with and without our differing mutation rates to test for Fisher Waves.}
+	\label{fig:LocalMotionCancer}
+\end{figure}
+
+Figure \ref{fig:LocalMotionCancer} shows that by changing the mutation probability landscape a slight resemblance to the velocity profile that we would expect for Fisher waves (~figure~\ref{fig:FKKPVelocity}~) emerges. 
+As expected for $C>0$ doesn't not produce Fisher waves and displays a constantly increasing velocity. This is expected as each subsequent mutation is easier to obtain, therefore the cloud expands quicker and locally progresses quicker. With a decreasing mutation landscape, $C < 0$,  a 'Fisher like' velocity occurs for the local motion. It increases before tapering off towards a constant. 
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[h]{0.5 \textwidth}
+		\input{BulkMotionPosZOOM.tex}
+	\end{subfigure}%
+	\begin{subfigure}[h]{0.5 \textwidth}
+		\input{BulkMotionNegZOOM.tex}
+	\end{subfigure}
+\end{figure}
+
+\subsection{Analysing the shape of the wavefront}
+
+As we have concluded that Fisher waves do not exist in our system it is a good idea to analyse where the analysis fails. 
+The major assumption in the deviation is the small limit 
+
+It is also desirable to test whether the wave front of our mutation cloud follows exponential decay. We follow the same process as previous used to show figure \ref{fig:FisherEXP}. 
+
+\begin{figure}[H]
+\begin{subfigure}[h]{0.5 \textwidth}
+		\input{exp_simdata_pos.tex}
+	\caption{Checking exp for positive simulation}
+\end{subfigure}
+\begin{subfigure}[h]{0.5 \textwidth}
+		\input{exp_simdata_neg.tex}
+	\caption{Checking exp for negative simulation}
+\end{subfigure}
+\caption{Checking the shape of the wavefront for a single moment in time. The linear fit is calculated using R's `lm' function.  }
+\end{figure}
+
+\begin{figure}[H]
+\centering
+	\begin{subfigure}[h]{0.5 \textwidth}
+		\input{res_data_pos.tex}
+	\end{subfigure}%
+	\begin{subfigure}[h]{0.5 \textwidth}
+		\input{res_data_neg.tex}
+	\end{subfigure}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\input{res_data_flat.tex}
+\end{figure}
+
+\subsection{Fisher Wave Conclusions}
+
+By following the same analysis as Fisher we have shown that both the bulk motion of our mutation cloud and the local motion of it diffusing are not Fisher waves.  
+
+\newpage
+
+
+
+\section{Conclusion}
+
+Overall, we have successfully analysed the dynamics of cancer evolution using both a computational approach and an analytical method. 
+
+We have extended our simulation to account for a variable mutation probability landscape and successfully obtained a number of new data sets.
+
+We also extended our analytic analysis to a non-constant mutation probability landscape and derived both the discrete and continuous equations that govern the evolution of the population numbers. In the case of constant fitness but non-constant mutation probability we successfully reduced the problem to the diffusion equation with a non constant diffusion constant.
+
+By drawing from the previous work of Fisher et al. we derived suitable criteria on the mutation landscape for the existence of Fisher waves within our system. Using numerical integration techniques we were able to include both cases of the mutation landscape in our simulation. The results of these simulations lead us to conclude that both the bulk progression of the wave and the local dispersion of the wave away from the centre of mass are not Fisher waves. By looking at the shape of the wave front we found that the key assumption of a exponentially decaying wave front was not true and as such explains why a constant velocity of progression was not found. 
+
+\subsection{Further Work}
+
+%With regards to the diffusion equation, we will extend the derivation to account for an inhomogeneous landscape for both fitness and mutation probabilities. This will require introducing non-linear terms into the diffusion equation, notably the $\bar{r}$ term in equation \eqref{eq:MasterSimple}. More complex techniques will have to be used to solve this type of equation, as Fourier methods will no longer prove feasible. Our first attempts will involve a mean-field approximation of the populations as time progresses. 
+%This will provide a more accurate model of cancer, as biologically, a larger number of mutations will have an adverse effect on the health and properties of the cell, therefore the fitness values and mutation probabilities will not all be equal. 
+
+To extend the scope of the simulation, it would interesting to replicate the human body more accurately. This would be achieved by setting up multiple populations of cells and creating rules that allow transfer of mutants from one population to another. This would mimic human biology better, as internally, humans have many different cell types that interact with each other in specific ways. It would then be possible to see both the development of mutations locally within a population group and how the mutations propagated through a connected network of populations. 
+It would also be interesting to obtain experimental data from lab grown cancer cells to test the application of the Moran process and how accurate it is in describing cancer growth. 
+
+\newpage
+
+\printbibliography
+
+\newpage
+
+\section*{Risk Assessment for Stochastic Dynamics of Cancer \\ Evolution MPhys Project}
+
+
+This project consists of building computer simulations to model the dynamics of cancer. Therefore, the majority of work will be done using a University computer or personal laptop. The work will be carried out in the Schuster Laboratory and the students homes. 
+
+
+\subsection*{Hazards}
+
+We have identified the following as our main hazards. 
+
+\begin{enumerate}
+\item Repetitive strain injury (RSI) from using keyboard and mouse. 
+\item Display screen equipment causing eyestrain after prolonged use.
+\item Fire risk from the electrical charging equipment of our laptops. 
+\item Electrical equipment. 
+\item Obstructions providing a trip/fall risk.
+\end{enumerate}
+
+\subsection*{Potential Victims}
+
+Items 1 and 2 concern both partners working on the project, without posing any risk to other people. However, items 3, 4 and 5 are a public hazard effecting not only the partners but surrounding people in the Schuster Laboratory.  
+
+\subsection*{Risk Evaluation}
+
+All the above risks are insignificant and can be adequately controlled by following both the University guidelines and ensuring that the current safety guidelines are followed. 
+
+\subsection*{Actions to be taken}
+
+Both persons working on the project need to ensure that this risk assessment is read and ensure that they follow the University guidelines. 
+
+\subsection*{Review}
+
+This risk assessment will be revised if there is change to the project brief. 
+
+\subsection*{Record}
+
+This risk assessment was carried out on 23/09/14 by Dean Markwick and Matthew de Angelis.  
+
+%\pagenumbering{gobble}
+
+\end{document}
