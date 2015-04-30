@@ -1,0 +1,59 @@
+rm(list=ls())
+library(ggplot2)
+library(tikzDevice)
+
+
+FixTime_1 =  read.csv("3712388518298864_FixationTimes.txt", head = F, sep = "\t")
+FixTime_2 = read.csv("3712396145837594_FixationTimes.txt", head = F, sep = "\t")
+
+negStats = read.csv("3712388518298864_StatisticOutput.txt", head = T, sep = "\t") 
+posStats = read.csv("3712396145837594_StatisticOutput.txt", head = T, sep = "\t")
+
+negPop = read.csv("3712388518298864_Populations.txt", head = F, sep = "\t") 
+posPop = read.csv("3712396145837594_Populations.txt", head = F, sep = "\t")
+
+time=negPop[,1]
+
+posPop = posPop[-1]
+posPop = posPop[-ncol(posPop)]
+
+negPop = negPop[-1]
+negPop = negPop[-ncol(negPop)]
+
+t=1
+vector = c(0)
+while(t <= nrow(negPop)) {
+	test2 = log(unlist(negPop[t,]/negPop[1,1]))
+	# test2 = test[!is.infinite(test)]
+	linstart = which.max( test2 )[[1]]
+	linend = which(is.infinite(test2[linstart:length(test2)]))[[1]]+linstart-2
+
+	# Frame2 = data.frame(c(1:ncol(negPop)), test2, rep.int("t=2", ncol(negPop)))
+	# names(Frame2) = c("x", "Population", "Time")
+
+	linsec = log(unlist(negPop[t,(linstart):(linend)])/negPop[1,1])
+	xt = seq(linstart,linend,length.out=(length(linsec)))
+	res=lm(linsec~xt)	
+
+	vector <- c(vector,summary(res)$r.^2)	
+
+	t=t+1
+	print(t)
+}
+
+vector = vector[-1]
+plot(vector)
+
+# dFrame = rbind(Frame2)
+
+# ymin = min(test2[linstart:linend])
+# ymax = max(test2[linstart:linend])
+
+# graph = ggplot(dFrame, aes(x, Population, group=Time))  + geom_point() + theme_bw() + theme(panel.border = element_rect(colour = 
+# 	"black"), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+# graph = graph + theme(legend.position = "none") + scale_x_continuous("Mutation Number", expand=c(0,0), limits=c(linstart,linend)) + scale_y_continuous("Log Concentration", expand=c(0,0), limits=c(ymin,ymax))
+# graph = graph + ggtitle("Test")
+# graph = graph + geom_abline(intercept = res[[1]][[1]], slope = res[[1]][[2]], aes(color='red'))
+# tikz(file = "exp_simdata_neg.tex", width = 3, height = 3)
+# print(graph)
+# dev.off()
