@@ -1,0 +1,8 @@
+Number of cells: 	 1000
+Number of mutations: 	 100
+Number of iteration: 	 30
+Fitness Landscape: 	 FLAT
+Mutation Landscape: 	 FILE
+Fitness Flat Value: 	 1
+Mutation Flat Value: 	 0.5
+File Opened: 	 posU100.txt
