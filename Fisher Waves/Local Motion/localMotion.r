@@ -41,7 +41,7 @@ frame = data.frame(c(1:length(vel))*0.005, vel)
 names(frame) = c("Time", "Velocity")
 
 
-graph = ggplot(frame, aes(Time, Velocity)) + geom_line() + theme_bw()
+graph = ggplot(frame, aes(Time, Velocity)) + theme_bw() + geom_smooth()
 graph = graph + theme(panel.border = element_rect(colour = "black"), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 graph = graph + scale_x_continuous(expand=c(0,0)) + scale_y_continuous(limits = c(0,4),  expand = c(0,0))
 
@@ -50,7 +50,7 @@ names(logframe) = c("Time", "Velocity")
 
 graphLog = ggplot(logframe, aes(Time, Velocity)) + geom_line() + theme_bw()
 
-#tikz(file = "FKKPVelocity.tex", width = 3, height = 3)
-#print(graph)
-#dev.off()
+tikz(file = "FKKPVelocitySmooth.tex", width = 3, height = 3)
+print(graph)
+dev.off()
 
